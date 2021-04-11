@@ -254,7 +254,7 @@ contract Bank is Ownable {
 
         //borrow functioning
         require(loanBook[msg.sender].remainingBalance >= 0);
-        loanBook[msg.sender] =loanBook[msg.sender] + (balanceOf * borrower);
+        loanBook[msg.sender] =loanBook[msg.sender];
         timestamp[borrower] = block.timestamp;
         emit balanceOf(borrower, balanceOfToken(_tokenAddress), timestamp);
         
