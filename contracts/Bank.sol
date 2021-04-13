@@ -492,12 +492,6 @@ contract Bank is Ownable {
             userBook[msg.sender].ethBalance,
             amount
         );
-<<<<<<< HEAD
-        // reset depositedTime
-        userBook[msg.sender].depositedTime = block.timestamp;
-
-
-=======
         // Transfer to user
         msg.sender.transfer(amount);
         emit onTransfer(address(this), msg.sender, amount);
@@ -563,7 +557,6 @@ contract Bank is Ownable {
 
     function voteYes(uint256 signature) public {
         loanBook[msg.sender].voters;
->>>>>>> upstream/main
     }
 
 
