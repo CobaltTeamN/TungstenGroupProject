@@ -103,7 +103,10 @@ contract Votes{
         emit voteDone(msg.sender);
         return found;
 
-          /**
+     
+    }
+
+         /**
      * @dev Ends the voting
      *  
      */
@@ -115,8 +118,6 @@ contract Votes{
 
             emit voteEnded(finalResult);
         }
-    }
-
 
 }
 
