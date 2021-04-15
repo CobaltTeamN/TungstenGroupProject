@@ -106,7 +106,7 @@ contract Votes{
      
     }
 
-         /**
+     /**
      * @dev Ends the voting
      *  
      */

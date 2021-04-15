@@ -258,11 +258,7 @@ contract Bank is Ownable {
             new address[](0)
         );
 
-        //borrow functioning
-        require(loanBook[msg.sender].remainingBalance >= 0);
-        loanBook[msg.sender] =loanBook[msg.sender] + (balanceOf * borrower);
-        timestamp[borrower] = block.timestamp;
-        emit balanceOf(borrower, balanceOfToken(_tokenAddress), timestamp);
+        
         
 
         uint256 x = _minimumPayment * units;
