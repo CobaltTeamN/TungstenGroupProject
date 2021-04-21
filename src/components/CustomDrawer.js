@@ -87,7 +87,7 @@ const StyledDrawer = styled(Drawer)`
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: -1;
+    z-index: 1;
   }
 `;
 const StyledDivider = styled.hr`
