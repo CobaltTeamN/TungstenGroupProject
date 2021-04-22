@@ -107,17 +107,27 @@ contract Votes{
     }
 
      /**
-     * @dev Ends the voting
+     * @dev Ends the voting 
      *  
      */
         function endVote()public inState(State.Voting)
         onlyOfficial{
+
             
             state = State.Ended;
             finalResult = countResult;
 
             emit voteEnded(finalResult);
         }
+       
+        // if voting is past 7 days then loan ends. Must be take take 21 votes 
+
+         uint number = 100/5
+
+         if( number > )
+         {
+
+         }
 
 }
 
