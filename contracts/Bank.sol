@@ -592,6 +592,7 @@ contract Bank is Ownable {
 
     // **************************** Voting *******************************
 
+    //
     mapping(uint256 => mapping(address => bool)) voteBook; // Signature key => mapping( voters => voted)
 
     enum State {Created, Voting, Ended}
