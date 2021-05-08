@@ -1,6 +1,10 @@
 /* eslint-disable */
 import Web3 from 'web3';
+<<<<<<< HEAD
 import Bank from './abis/Bank.json';
+=======
+import Bank from './abis/Bank 2.json';
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
 import CHC from './abis/CHCToken.json';
 import Wood from './abis/WoodToken.json';
 import Smit from './abis/SmitCoin.json';
@@ -8,14 +12,23 @@ import Slick from './abis/Token.json';
 import Ham from './abis/HAM.json';
 import Chromium from './abis/Chromium.json';
 import { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import Swap from './components/swap copy';
+=======
+import Swap from './components/exchange';
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
 import Router from './components/Router/Router';
 import { Link } from 'react-router-dom';
 import CustomDrawer from './components/CustomDrawer';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
+<<<<<<< HEAD
 import AppBar from './components/AppBar';
 import NavBar from './components/navBar';
+=======
+import NavBar from './components/navBar';
+import { DataProvider } from './GlobalState';
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
 
 const theme = {
   grayText: '#6b7774',
@@ -174,12 +187,21 @@ export default function NewApp() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
+<<<<<<< HEAD
       <NavBar/>
         <AppBar loadBlockchainData={loadBlockchainData} />
+=======
+      <DataProvider>
+      <NavBar/>
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
         <CustomDrawer />
         <div style={{ marginLeft: '240px' }}>
           <SRouter />
         </div>
+<<<<<<< HEAD
+=======
+        </DataProvider>
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
       </BrowserRouter>
     </ThemeProvider>
   );

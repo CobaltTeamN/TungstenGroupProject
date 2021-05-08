@@ -4,12 +4,16 @@ import "./interfaces/Ownable.sol";
 import "./interfaces/IERC20.sol";
 import "./interfaces/SafeMath.sol";
 import "./interfaces/UniversalERC20.sol";
+<<<<<<< HEAD
 import "./Chromium.sol";
+=======
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
 
 contract Bank is Ownable {
     using UniversalERC20 for IERC20;
 
     /**
+<<<<<<< HEAD
      * @dev modifier so that chromium can withdraw cblt form bank
      */
     modifier onlyChromium() {
@@ -17,6 +21,8 @@ contract Bank is Ownable {
         _;
     }
     /**
+=======
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
      * @dev storing CBLT token in ERC20 type
      */
     IERC20 token;
@@ -26,12 +32,15 @@ contract Bank is Ownable {
      */
     address oracleAddress;
 
+<<<<<<< HEAD
     /**
      * @dev chromium address for modifier
      */
     address chromiumAddress;
     Chromium chromium;
 
+=======
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
     constructor(
         address[] memory addresses,
         address _CBLT,
@@ -105,6 +114,7 @@ contract Bank is Ownable {
     mapping(address => uint256) public etherBalance;
 
     /**
+<<<<<<< HEAD
      * @dev sets the chromium address
      */
     function setChromium(address payable _chromium) public onlyOwner {
@@ -150,6 +160,8 @@ contract Bank is Ownable {
     }
 
     /**
+=======
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
      * @dev method that will withdraw tokens from the bank if the caller
      * has tokens in the bank
      */
@@ -266,6 +278,7 @@ contract Bank is Ownable {
         emit onReceived(msg.sender, msg.value);
     }
 
+<<<<<<< HEAD
     function swapTokensForCblt(
         IERC20 fromToken,
         IERC20 destToken,
@@ -308,6 +321,8 @@ contract Bank is Ownable {
         );
     }
 
+=======
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
     // ****************************** Lending **********************************
 
     /**
@@ -360,7 +375,11 @@ contract Bank is Ownable {
         uint256 riskScore = 20; // NFT ENTRY!!!!!!
         uint256 riskFactor = 15; // NFT ENTRY!!!!
         uint256 numerator = 2; // NFT ENTRY!!!!
+<<<<<<< HEAD
         uint256 denominator = 100; // NFT ENTRY!!!!
+=======
+        uint256 denominator = 10; // NFT ENTRY!!!!
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
 
         // Pulling prices from Oracle
         (bool result, bytes memory data) =
@@ -513,8 +532,11 @@ contract Bank is Ownable {
             loanBook[msg.sender].remainingBalance -= principal;
 
             loanBook[msg.sender].dueDate += loanBook[msg.sender].paymentPeriod;
+<<<<<<< HEAD
 
             require(token.transfer(recipient, units));
+=======
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
         }
     }
 
@@ -592,9 +614,29 @@ contract Bank is Ownable {
 
     // **************************** Voting *******************************
 
+<<<<<<< HEAD
     //
     mapping(uint256 => mapping(address => bool)) voteBook; // Signature key => mapping( voters => voted)
 
+=======
+    mapping(uint256 => mapping(address => bool)) voteBook; // Signature key => mapping( voters => voted)
+
+    mapping(uint256 => address[]) uintArray;
+
+    // User tries to vote
+    // Contract checks if they have sufficient funds in CBLT tokens - Tiers
+    // Function checks if 7 days have passsed since loan first went into voting
+    // Function checks if loan array has a length <= tier max
+    // Voter casts votes
+    // Vote gets added to counter to yes or no in loan
+    // msg.sender is added to uintArray - Access with the unique signature for each loan
+    // Validate loan checking if enough votes have been casted. 21% of the votes
+    // Check if majority of the votes say yes or no
+    // Change loan status depending on how voting went
+    // Give second wind to the loan depending on if its the first time
+    // Reset voting but keep voters inside
+
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
     enum State {Created, Voting, Ended}
     State public state;
 
@@ -609,7 +651,11 @@ contract Bank is Ownable {
      * they can for tier 1
      *
      */
+<<<<<<< HEAD
     function rightToVoteTiers(address loanSignature) public {
+=======
+    function rightToVoteTiers(address loanSignature) internal view {
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
         uint256 balanceInCBLT =
             SafeMath.add(
                 token.balanceOf(msg.sender),
@@ -682,6 +728,7 @@ contract Bank is Ownable {
      *
      */
 
+<<<<<<< HEAD
     function endVote() internal inState(State.Voting){
         // the  1619656173 represents 7 days in epoch and must be less then 7 days
         uint weekOfEpoch = 1619656173;
@@ -716,6 +763,42 @@ contract Bank is Ownable {
     
 
     // if voting is past 7 days then loan ends. Must be take take 21 votes
+=======
+    function endVote() internal inState(State.Voting) {
+        // the  1619656173 represents 7 days in epoch and must be less then 7 days
+        uint256 weekOfEpoch = 1619656173;
+
+        // in which it requires at least 50% of the voters to past
+        // will not use multiple ifs for tiers to save on gas
+        if (loanBook[msg.sender].timeCreated <= weekOfEpoch) {
+            require(
+                SafeMath.multiply(loanBook[msg.sender].totalVote, 50, 100) >= 50
+            );
+            require(
+                SafeMath.multiply(loanBook[msg.sender].totalVote, 50, 200) >= 50
+            );
+            require(
+                SafeMath.multiply(loanBook[msg.sender].totalVote, 50, 400) >= 50
+            );
+            require(
+                SafeMath.multiply(loanBook[msg.sender].totalVote, 50, 800) >= 50
+            );
+            require(
+                SafeMath.multiply(loanBook[msg.sender].totalVote, 50, 1600) >=
+                    50
+            );
+
+            state = State.Ended;
+        } else {
+            state = State.Ended;
+        }
+    }
+
+    //How to give voters another chance if the someone did not vote needs to be added
+    // in
+
+    // if voting is past 7 days then loan ends. Must take 21 votes
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
 
     // **************************** Staking *******************************
 
@@ -723,7 +806,11 @@ contract Bank is Ownable {
 
     mapping(address => User) userBook;
 
+<<<<<<< HEAD
     uint256 CBLTReserve = 1000000000000000000000000000000000;
+=======
+    uint256 CBLTReserve = 100000000000000000000000000000000000;
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
 
     struct User {
         uint256 depositTime;

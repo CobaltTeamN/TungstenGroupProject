@@ -5,12 +5,20 @@ import Wood from "../abis/WoodToken.json";
 import Smit from "../abis/SmitCoin.json";
 import Slick from "../abis/Token.json";
 import Ham from "../abis/HAM.json";
+<<<<<<< HEAD
+=======
+import Bank from "../abis/Bank 2.json"
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
 
 function ContractAPI() {
   const [contract, setContract] = useState([]);
   const [abiArr, setAbiArr] = useState([]);
   const [symbol, setSymbol] = useState([]);
   const [token, setToken] = useState([]);
+<<<<<<< HEAD
+=======
+  const [tokenName, setTokenName] = useState([]);
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
   const [input, setInput] = useState(0);
   const [coinAddress, setCoinAddress] = useState([]);
   const [callback, setCallback] = useState(false);

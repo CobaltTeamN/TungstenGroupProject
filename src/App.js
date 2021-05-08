@@ -12,7 +12,11 @@ import Wood from './abis/WoodToken.json';
 import Smit from './abis/SmitCoin.json';
 import Slick from './abis/Token.json';
 import Ham from './abis/HAM.json';
+<<<<<<< HEAD
 import Bank from './abis/Bank.json';
+=======
+import Bank from './abis/Bank 2.json';
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
 import Chromium from './abis/Chromium.json';
 import Lending from './pages/Lending/Lending';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';

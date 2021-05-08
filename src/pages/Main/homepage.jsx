@@ -1,9 +1,17 @@
 import React, { useState } from "react";
+<<<<<<< HEAD
 import "./homepage.scss";
 import NavBar from "../../components/navBar";
 import { Alert } from "react-bootstrap";
 import Tour from "reactour";
 import Swap from "../../components/swap";
+=======
+import "./homepage.css";
+import NavBar from "../../components/navBar";
+import { Alert } from "react-bootstrap";
+import Tour from "reactour";
+import Swap from "../../components/ex";
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
 import Loading from '../Loading/Loading';
 import Web3 from "web3";
 

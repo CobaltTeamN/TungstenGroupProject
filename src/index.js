@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+<<<<<<< HEAD
 // import './index.css';
+=======
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
 import App from './App';
 import NewApp from './NewApp';
 

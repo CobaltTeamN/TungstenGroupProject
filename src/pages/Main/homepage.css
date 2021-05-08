@@ -1,0 +1,318 @@
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* // ****** First button borrow */
+
+.buttonStart {
+  display: inline-block;
+  background-color: white;
+  padding: 0.35em 1.2em;
+  border: 0.1em solid #aab4c6;
+  margin: 0 -1px 0px 0;
+  border-radius: 0px 0px 0px 25px;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #6e768a;
+  text-align: center;
+  transition: all 0.2s;
+}
+.buttonStart:hover {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+/* // ****************** second & third button */
+
+.buttonMid {
+  display: inline-block;
+  background-color: white;
+  padding: 0.35em 1.2em;
+  border: 0.1em solid #aab4c6;
+  margin: 0 -1px 0px 0;
+  border-radius: 0px 0px 0px 0px;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #6e768a;
+  text-align: center;
+  transition: all 0.2s;
+}
+.buttonMid:hover {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+/* // ****************** last button */
+
+.buttonEnd {
+  display: inline-block;
+  background-color: white;
+  padding: 0.35em 1.2em;
+  border: 0.1em solid #aab4c6;
+  margin: 0 -1px 0px 0;
+  border-radius: 0px 0px 25px 0px;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #6e768a;
+  text-align: center;
+  transition: all 0.2s;
+}
+.buttonEnd:hover {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+/* // wallet actions div */
+
+.walletActions {
+  margin-top: -20px;
+  display: flex;
+  margin-left: 50px;
+}
+
+.inputAmount {
+  width: 575px;
+  margin-top: 0.5%;
+  margin-bottom: 0.5%;
+}
+
+.logo {
+  width: 40%;
+  margin-left: 30%;
+  margin-bottom: 4%;
+}
+
+.contractInfo {
+  margin-top: 2%;
+  width: 52%;
+}
+
+#pointer {
+  text-decoration: none;
+  color: blue;
+  cursor: pointer;
+}
+
+.clipboard {
+  margin: 12px 0px 0px 5px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.navbar {
+  border-bottom: solid 1px #ebebeb;
+}
+.bottom-tab-nav {
+  border-top: solid 1px #ebebeb;
+}
+.nav-link,
+.bottom-nav-link {
+  color: #55575b;
+}
+.bottom-nav-link.active {
+  color: #922c88;
+}
+.bottom-tab-label {
+  font-size: 12px;
+}
+
+.bottomBar {
+  margin-top: 2%;
+  display: flex;
+}
+
+.accountBalance {
+  margin-top: 3%;
+}
+
+/* // ******************************** input form field */
+
+:root {
+  --input-color: #99a3ba;
+  --input-border: #aab4c6;
+  --input-background: #fff;
+  --input-placeholder: #cbd1dc;
+
+  --input-border-focus: #4da5bd;
+
+  --group-color: var(--input-color);
+  --group-border: var(--input-border);
+  --group-background: #eef4ff;
+
+  --group-color-focus: #fff;
+  --group-border-focus: var(--input-border-focus);
+  --group-background-focus: #4da5bd;
+}
+
+.form-field {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  line-height: 25px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  border-radius: 6px;
+  -webkit-appearance: none;
+  color: var(--input-color);
+  border: 1px solid var(--input-border);
+  background: var(--input-background);
+  transition: border 0.3s ease;
+  /* &::placeholder {
+    color: var(--input-placeholder);
+  }
+  &:focus {
+    outline: none;
+    border-color: var(--input-border-focus);
+  } */
+}
+/* 
+// .form-group {
+//   position: relative;
+//   display: flex;
+//   width: 220%;
+//   margin-left: -60%;
+//   margin-top: 3%;
+//   & > span,
+//   .form-field {
+//     white-space: nowrap;
+//     display: block;
+//     &:not(:first-child):not(:last-child) {
+//       border-radius: 0;
+//     }
+//     &:first-child {
+//       border-radius: 20px 0 0 20px;
+//     }
+//     &:last-child {
+//       border-radius: 0 20px 20px 0;
+//     }
+//     &:not(:first-child) {
+//       margin-left: -1px;
+//     }
+//   }
+//   .form-field {
+//     position: relative;
+//     z-index: 1;
+//     flex: 1 1 auto;
+//     width: 10%;
+//     margin-top: 0;
+//     margin-bottom: 0;
+//   }
+//   & > span {
+//     text-align: center;
+//     padding: 8px 12px;
+//     width: 100px;
+//     font-size: 14px;
+//     line-height: 25px;
+//     color: var(--group-color);
+//     background: var(--group-background);
+//     border: 1px solid var(--group-border);
+//     transition: background 0.3s ease, border 0.3s ease, color 0.3s ease;
+//   }
+//   &:focus-within {
+//     & > span {
+//       color: var(--group-color-focus);
+//       background: var(--group-background-focus);
+//       border-color: var(--group-border-focus);
+//     }
+//   }
+// } */
+
+html {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* // * {
+//   box-sizing: inherit;
+//   &:before,
+//   &:after {
+//     box-sizing: inherit;
+//   }
+// } */
+
+.coinInputText {
+  width: 5%;
+}
+
+/* // *************************************** Token dropdown */
+
+.choices {
+  border-radius: 0 20px 20px 0;
+  margin-left: -4px;
+  padding-left: 20px;
+  padding-right: 10px;
+  border: 1px solid #aab4c6;
+  -webkit-appearance: none;
+  color: var(--input-color);
+  border: 1px solid var(--input-border);
+  background: var(--input-background);
+  transition: border 0.3s ease;
+  /* // &::placeholder {
+  //   color: var(--input-placeholder);
+  // }
+  // &:focus {
+  //   outline: none;
+  //   border-color: var(--input-border-focus);
+  // } */
+}
+
+/* // ************************************** balance formfield */
+
+#balanceNumber {
+  width: 150px;
+  margin-left: -4px;
+  border-radius: 0 20px 20px 0;
+}
+
+#balance {
+  border-radius: 20px 0 0 20px;
+  z-index: 1;
+}
+
+#refresh {
+  margin-left: -18px;
+  cursor: pointer;
+}
+
+.balanceText {
+  margin-top: 10px;
+  margin-bottom: -4px;
+}
+
+/* //  **************************** Contract address form field */
+
+.refreshLogo {
+  width: 25px;
+  margin: 7px 0px 0px -10px;
+}
+
+#contract {
+  display: flex;
+  border-radius: 20px 0 0 20px;
+  z-index: 1;
+  margin-left: 30px;
+}
+
+#contractAddress {
+  width: 150px;
+  margin-left: -4px;
+  border-radius: 0 20px 20px 0;
+}
+
+.cbltrender {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 80vh;
+  align-items: center;
+}

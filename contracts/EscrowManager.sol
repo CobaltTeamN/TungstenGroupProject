@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
+<<<<<<< HEAD
 import "./interfaces/SafeMath.sol";
 import "./interfaces/Ownable.sol";
 import "./interfaces/UniversalERC20.sol";
@@ -232,5 +233,45 @@ contract EscrowManager is Ownable {
     // GIVING ME AN ERROR -- NEEDS TO CHANGE
     function depositFees() external onlyOwner {
         // treasury.depositTokens(address(ETH_ADDRESS), fees);
+=======
+import './Escrow.sol';
+
+contract EscrowManager {
+
+    event CreatedEscrow(address escrow, address creator, address payee, uint createAt, uint amount);
+
+    mapping(address => Escrow[]) escrows;
+    address mediator;
+
+    constructor() {
+        mediator = msg.sender;
+    }
+
+    function getEscrows(address _user)
+    external
+    view
+    returns (Escrow[] memory)
+    {
+        return escrows[_user];
+    }
+
+    function newEscrowContract(address payable _payee, string memory _escrowDetails, uint _priceInWei)
+    external
+    payable
+    returns (Escrow escrow)
+    {
+        escrow = new Escrow(payable(msg.sender), _payee, mediator, _escrowDetails, _priceInWei);
+
+        escrows[msg.sender].push(escrow);
+        escrows[_payee].push(escrow);
+
+        payable(address(escrow)).transfer(msg.value);
+
+        CreatedEscrow(address(escrow), msg.sender, _payee, block.timestamp, _priceInWei);
+    }
+
+    receive() external payable{
+        revert();
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
     }
 }

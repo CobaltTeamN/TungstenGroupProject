@@ -25,6 +25,11 @@ const SidebarItems = [
   { icon: <Business />, text: 'CBLP', link: '/cblp' },
   { icon: <AccountBalance />, text: 'Borrow', link: '/lend' },
   { icon: <EnhancedEncryption />, text: 'Staking', link: '/staking' },
+<<<<<<< HEAD
+=======
+  { icon: <EnhancedEncryption />, text: 'Voting', link: '/voting' },
+  { icon: <EnhancedEncryption />, text: 'Single Vote', link: '/singlevote' },
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
   { icon: <Description />, text: 'Chronicles', link: '/chronicles' },
   { icon: <Collections />, text: 'Cobalt Collections', link: '/cobaltcollections' },
 ];
@@ -68,12 +73,15 @@ export default function CustomDrawer() {
   return (
     <>
       <StyledDrawer variant="permanent" anchor="left">
+<<<<<<< HEAD
         <img
           src="CobaltLogo.jpg"
           style={{ width: '50%', marginTop: '5%' }}
           alt="logo"
         />
         <StyledDivider />
+=======
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
         <StyledList> {Lists}</StyledList>
       </StyledDrawer>
     </>
@@ -83,6 +91,10 @@ export default function CustomDrawer() {
 const StyledDrawer = styled(Drawer)`
   margin: 0;
   .MuiDrawer-paper {
+<<<<<<< HEAD
+=======
+    top: auto;
+>>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
     margin-top: 0%;
     padding-top: 5%;
     width: 240px !important;
