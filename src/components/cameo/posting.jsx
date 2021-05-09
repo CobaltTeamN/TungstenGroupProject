@@ -26,7 +26,7 @@ const Posting = () => {
                                     </div>
                                 </div>
                                 <div className="job-right my-4 flex-shrink-0">
-                                    <a href="#" className="btn d-block w-100 d-sm-inline-block btn-light">Apply now</a>
+                                    <a href="/" className="btn d-block w-100 d-sm-inline-block btn-light">Apply now</a>
                                 </div>
                             </div>
                         </div>

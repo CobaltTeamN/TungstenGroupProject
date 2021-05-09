@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react'
-import {ListGroup, Badge, Container} from 'react-bootstrap'
+import {Container} from 'react-bootstrap'
 import Web3 from 'web3';
 import NFTScore from '../../abis/NFTLoan.json'
-import Slick from '../../abis/HAM.json'
+// import Slick from '../../abis/HAM.json'
 import NFTScoring from '../../components/nft/nftScoring';
 
 const NFT = () => {
     const [account, setAccount] = useState('');
-    const [contract, setContract] = useState(null);
-    const [totalSupply, setTotalSupply] = useState(0);
+    // const [contract, setContract] = useState(null);
+    // const [totalSupply, setTotalSupply] = useState(0);
    
     const loadWeb3 = async () => {
         if (window.ethereum) {
@@ -68,10 +68,13 @@ const NFT = () => {
             window.alert('Smart contract not deployed to detected network.')
         }
     }
-      useEffect(async() => {
+      useEffect(() => {
+        const fetchData = async () => {
        await loadWeb3()
         await loadBlockchainData();
-      }, []);
+        }
+        fetchData();
+      }, [account]);
 
   return (
     <Container>    

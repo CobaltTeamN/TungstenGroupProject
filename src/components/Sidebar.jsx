@@ -43,7 +43,6 @@ export default function CustomDrawer() {
 
   const Lists = SidebarItems.map((item) => {
     return (
-      <>
         <StyledLink to={item.link} key={item.text}>
           <ListItem
             style={{
@@ -67,7 +66,6 @@ export default function CustomDrawer() {
             <ListItemText primary={item.text} />
           </ListItem>
         </StyledLink>
-      </>
     );
   });
 
@@ -92,11 +90,11 @@ const StyledDrawer = styled(Drawer)`
     align-items: center;
   }
 `;
-const StyledDivider = styled.hr`
-  padding: 5px;
-  align-self: stretch;
-  margin: 4% 0 4% 0;
-`;
+// const StyledDivider = styled.hr`
+//   padding: 5px;
+//   align-self: stretch;
+//   margin: 4% 0 4% 0;
+// `;
 const StyledList = styled(List)`
   width: 80%;
   border-radius: 10px;

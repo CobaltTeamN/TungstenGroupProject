@@ -96,11 +96,12 @@ const SpaceAroundRow = styled.div`
   justify-content: space-around;
   margin: 2% 0 2% 0;
 `;
-const CenterRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-`;
+
+// const CenterRow = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: center;
+// `;
 
 const Spacer = styled.div`
   display: inline-block;

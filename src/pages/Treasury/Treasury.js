@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo from '../../icons/MovingLogo.mp4'
-import { SpaceAroundRow, CobaltCard} from '../../components/styled/Dashboard';
+import { CobaltCard} from '../../components/styled/Dashboard';
 import {Accordion, Card} from 'react-bootstrap';
 
 const Treasury = () => {
@@ -9,7 +9,7 @@ const Treasury = () => {
     <div className="cobalt-card">
       <div className="box">
         <h3>Cobalt Treasury</h3>
-        <video className="treasury-logo-video" autoplay="autoplay" muted="muted" loop="loop">
+        <video className="treasury-logo-video" autoPlay="autoplay" muted="muted" loop="loop">
           <source src={Logo} type="video/mp4"/>
         </video>
         <h2>Treasury Balance<br/><span>Crypto</span></h2>

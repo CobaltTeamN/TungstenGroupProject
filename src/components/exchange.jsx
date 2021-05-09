@@ -6,7 +6,7 @@ import { MyVerticallyCenteredModal } from './tokenSelection';
 import './exchange.css';
 
 const Swap = (props) => {
-  const [modalShow, setModalShow] = React.useState(false);
+  const [modalShow, setModalShow] = useState(false);
 
   return (
     <div className="swapwrapper mt-5">

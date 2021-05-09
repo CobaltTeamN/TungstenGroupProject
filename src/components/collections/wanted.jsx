@@ -1,6 +1,6 @@
 import React from 'react';
 import './wanted.css';
-import { SpaceAroundRow, StyledCard} from '../styled/Dashboard';
+import { SpaceAroundRow} from '../styled/Dashboard';
 
 
 const Wanted = () => {

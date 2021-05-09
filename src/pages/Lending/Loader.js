@@ -1,11 +1,11 @@
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext } from "react";
 import Web3 from "web3";
 import Bank from "../../abis/Bank.json";
 import { GlobalState } from "../../GlobalState";
 
 const Loader = () => {
   const state = useContext(GlobalState);
-  const [load, setLoad] = useState("wtf");
+  // const [load, setLoad] = useState("wtf");
 
   useEffect(async () => {
     if (typeof window.ethereum !== "undefined") {

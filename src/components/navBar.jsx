@@ -30,7 +30,7 @@ export default function NavBar(props) {
           <Nav.Link href="#memes">
             {" "}
             <button className="navbtn ">
-              <span>{3000 + " " + " " + "ETH"}</span>
+              <span>{3000 + " ETH"}</span>
             </button>
           </Nav.Link>
           <NavDropdown
