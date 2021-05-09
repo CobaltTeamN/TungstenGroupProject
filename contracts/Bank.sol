@@ -492,7 +492,7 @@ contract Bank is Ownable {
     mapping(uint256 => mapping(address => bool)) voteBook; // Signature key => mapping( voters => voted)
 
     mapping(uint256 => address[]) uintArray;
-
+    //
     // User tries to vote
     // Contract checks if they have sufficient funds in CBLT tokens - Tiers
     // Function checks if 7 days have passsed since loan first went into voting
