@@ -1,10 +1,14 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import Web3 from "web3";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Bank from "../../abis/Bank.json";
 =======
 import Bank from "../../abis/Bank 2.json";
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+import Bank from "../../abis/Bank 2.json";
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
 import { GlobalState } from "../../GlobalState";
 
 const Loader = () => {

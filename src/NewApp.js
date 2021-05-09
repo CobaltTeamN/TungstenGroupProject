@@ -1,4 +1,5 @@
 /* eslint-disable */
+<<<<<<< HEAD
 import Web3 from 'web3';
 <<<<<<< HEAD
 import Bank from './abis/Bank.json';
@@ -29,9 +30,28 @@ import NavBar from './components/navBar';
 import NavBar from './components/navBar';
 import { DataProvider } from './GlobalState';
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+import Web3 from "web3";
+import Bank from "./abis/Bank 2.json";
+import CHC from "./abis/CHCToken.json";
+import Wood from "./abis/WoodToken.json";
+import Smit from "./abis/SmitCoin.json";
+import Slick from "./abis/Token.json";
+import Ham from "./abis/HAM.json";
+import Chromium from "./abis/Chromium.json";
+import { useState, useEffect } from "react";
+import Swap from "./components/exchange";
+import Router from "./components/Router/Router";
+import { Link } from "react-router-dom";
+import CustomDrawer from "./components/CustomDrawer";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import styled, { ThemeProvider } from "styled-components";
+import NavBar from "./components/navBar";
+import { DataProvider } from "./GlobalState";
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
 
 const theme = {
-  grayText: '#6b7774',
+  grayText: "#6b7774",
 };
 
 export default function NewApp() {
@@ -51,12 +71,11 @@ export default function NewApp() {
   }, []);
   let currentAccount = null;
 
-
   async function loadBlockchainData() {
-    if (typeof window.ethereum !== 'undefined') {
-
+    if (typeof window.ethereum !== "undefined") {
       // ethereum,enable() is depericated
-      await window.ethereum.request({ method: 'eth_accounts' })
+      await window.ethereum
+        .request({ method: "eth_accounts" })
         .then(handleAccountsChanged)
         .catch((err) => {
           // For backwards compatibility reasons, if no accounts are available,
@@ -71,43 +90,42 @@ export default function NewApp() {
       const netId = await web3.eth.net.getId();
       switch (netId) {
         case 1:
-          console.log('This is mainnet')
-          break
+          console.log("This is mainnet");
+          break;
         case 4:
-          console.log('This is the Rinkeby test network.')
-          break
+          console.log("This is the Rinkeby test network.");
+          break;
         case 5777:
-          console.log('This is the Ganache test network.')
-          break
+          console.log("This is the Ganache test network.");
+          break;
         default:
-          console.log('This is an unknown network.')
+          console.log("This is an unknown network.");
       }
 
       // Current Metamask Account
       const accounts = await web3.eth.getAccounts();
-      if (typeof accounts[0] !== 'undefined') {
+      if (typeof accounts[0] !== "undefined") {
         const bal = await web3.eth.getBalance(accounts[0]);
         setAccount(accounts[0]);
         setWeb3(web3);
       } else {
-        window.alert('Please login with MetaMask');
+        window.alert("Please login with MetaMask");
       }
-      loadContracts(web3)
+      loadContracts(web3);
     }
     // If Metmask is not detected
     else {
-      window.alert('Please install MetaMask');
+      window.alert("Please install MetaMask");
     }
   }
-
 
   // Detect Meta Mask Accounts
   // For now, 'eth_accounts' will continue to always return an array
   function handleAccountsChanged(accounts) {
-    console.log(accounts)
+    console.log(accounts);
     if (accounts.length === 0) {
       // MetaMask is locked or the user has not connected any accounts
-      console.log('Please connect to MetaMask.');
+      console.log("Please connect to MetaMask.");
     } else if (accounts[0] !== currentAccount) {
       currentAccount = accounts[0];
     }
@@ -122,7 +140,6 @@ export default function NewApp() {
       // );
       // console.log(token)
       // setToken(token);
-
       //Load single token
       // const coinAddress = CHC.networks[netId].address;
       // console.log(coinAddress)
@@ -134,7 +151,6 @@ export default function NewApp() {
       //     console.log(result.toString());
       //     setBalance(result.toString());
       //   });
-
       // Array of tokens
       // const tempContractArr = [];
       // for (let i = 0; i < abiArr.length; i++) {
@@ -147,24 +163,24 @@ export default function NewApp() {
       // }
       // setAllContracts(tempContractArr);
     } catch (e) {
-      console.log('Error', e);
-      window.alert('Contracts not deployed to the current network');
+      console.log("Error", e);
+      window.alert("Contracts not deployed to the current network");
     }
   }
 
   //Add Token to MetaMask
   async function addToken() {
-    const tokenAddress = '0x29a99c126596c0Dc96b02A88a9EAab44EcCf511e';
-    const tokenSymbol = 'cblt';
+    const tokenAddress = "0x29a99c126596c0Dc96b02A88a9EAab44EcCf511e";
+    const tokenSymbol = "cblt";
     const tokenDecimals = 18;
-    const tokenImage = 'https://i.imgur.com/rRTK4EH.png';
+    const tokenImage = "https://i.imgur.com/rRTK4EH.png";
 
     try {
       // wasAdded is a boolean. Like any RPC method, an error may be thrown.
       const wasAdded = await window.ethereum.request({
-        method: 'wallet_watchAsset',
+        method: "wallet_watchAsset",
         params: {
-          type: 'ERC20', // Initially only supports ERC20, but eventually more!
+          type: "ERC20", // Initially only supports ERC20, but eventually more!
           options: {
             address: tokenAddress, // The address that the token is at.
             symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
@@ -175,9 +191,9 @@ export default function NewApp() {
       });
 
       if (wasAdded) {
-        console.log('Thanks for your interest!');
+        console.log("Thanks for your interest!");
       } else {
-        console.log('Your loss!');
+        console.log("Your loss!");
       }
     } catch (error) {
       console.log(error);
@@ -187,6 +203,7 @@ export default function NewApp() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
+<<<<<<< HEAD
 <<<<<<< HEAD
       <NavBar/>
         <AppBar loadBlockchainData={loadBlockchainData} />
@@ -202,6 +219,15 @@ export default function NewApp() {
 =======
         </DataProvider>
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+        <DataProvider>
+          <NavBar />
+          <CustomDrawer />
+          <div style={{ marginLeft: "240px" }}>
+            <SRouter />
+          </div>
+        </DataProvider>
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
       </BrowserRouter>
     </ThemeProvider>
   );
@@ -212,11 +238,11 @@ const SRouter = styled(Router)`
 
 async function getToken(str) {
   switch (str) {
-    case 'CHC':
+    case "CHC":
       return CHC;
-    case 'Wood':
+    case "Wood":
       return Wood;
-    case 'Slick':
+    case "Slick":
       return Slick;
   }
 }

@@ -1,4 +1,5 @@
 /* eslint-disable */
+<<<<<<< HEAD
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Error from './pages/NotFound/NotFound';
@@ -25,23 +26,47 @@ import Laon from './pages/Loan/Loan';
 import Exchange from './pages/Exchange/Exchange';
 import Voting from './pages/Voting/Voting';
 import Treasury from './pages/Treasury/Treasury';
+=======
+import React, { Component } from "react";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import Error from "./pages/NotFound/NotFound";
+import Home from "./pages/Main/homepage";
+import ComingSoon from "./pages/ComingSoon/ComingSoon";
+import "./App.css";
+import { DataProvider } from "./GlobalState";
+import Web3 from "web3";
+import CHC from "./abis/CHCToken.json";
+import Wood from "./abis/WoodToken.json";
+import Smit from "./abis/SmitCoin.json";
+import Slick from "./abis/Token.json";
+import Ham from "./abis/HAM.json";
+import Bank from "./abis/Bank 2.json";
+import Chromium from "./abis/Chromium.json";
+import Lending from "./pages/Lending/Lending";
+import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
+import DIDs from "./pages/DID/DIDs";
+import Laon from "./pages/Loan/Loan";
+import Exchange from "./pages/Exchange/Exchange";
+import Voting from "./pages/Voting/Voting";
+import Treasury from "./pages/Treasury/Treasury";
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
 
 export default class App extends Component {
   constructor() {
     super();
     this.state = {
       loading: false,
-      web3: 'undefined',
-      account: '',
+      web3: "undefined",
+      account: "",
       token: null,
-      result: 'null',
+      result: "null",
       coinAddress: null,
       balance: 0,
       cblt: null,
       balances: [],
       input: 0,
-      symbol: 'ETH',
-      tokenName: 'Bank',
+      symbol: "ETH",
+      tokenName: "Bank",
       abiArr: [Bank, CHC, Wood, Slick, Ham, Smit, Chromium],
       allContracts: [],
       ready: false,
@@ -83,17 +108,17 @@ export default class App extends Component {
 
   //check for metamask
   async loadBlockchainData(dispatch) {
-    if (typeof window.ethereum !== 'undefined') {
+    if (typeof window.ethereum !== "undefined") {
       const web3 = new Web3(window.ethereum);
       await window.ethereum.enable();
       const netId = await web3.eth.net.getId();
       const accounts = await web3.eth.getAccounts();
 
-      if (typeof accounts[0] !== 'undefined') {
+      if (typeof accounts[0] !== "undefined") {
         const balance = await web3.eth.getBalance(accounts[0]);
         this.setState({ account: accounts[0], web3: web3 });
       } else {
-        window.alert('Please login with MetaMask');
+        window.alert("Please login with MetaMask");
       }
 
       //load contracts
@@ -127,11 +152,11 @@ export default class App extends Component {
           );
         }
       } catch (e) {
-        console.log('Error', e);
-        window.alert('Contracts not deployed to the current network');
+        console.log("Error", e);
+        window.alert("Contracts not deployed to the current network");
       }
     } else {
-      window.alert('Please install MetaMask');
+      window.alert("Please install MetaMask");
     }
   }
 
@@ -147,7 +172,7 @@ export default class App extends Component {
       Token.networks[netId].address
     );
     console.log(this);
-    if (this.state.abiArr[event].contractName !== 'Bank') {
+    if (this.state.abiArr[event].contractName !== "Bank") {
       await token.methods
         .symbol()
         .call()
@@ -158,7 +183,7 @@ export default class App extends Component {
         });
     } else {
       this.setState({
-        symbol: 'ETH',
+        symbol: "ETH",
       });
     }
 
@@ -171,7 +196,7 @@ export default class App extends Component {
       coinAddress: coinAddress,
     });
 
-    if (this.state.tokenName === 'Bank') {
+    if (this.state.tokenName === "Bank") {
       await this.state.token.methods
         .balanceOf()
         .call({ from: this.state.account })
@@ -197,7 +222,7 @@ export default class App extends Component {
   async sendAmount() {
     if (this.state.token === Bank) {
     }
-    if (this.state.token !== 'undefined') {
+    if (this.state.token !== "undefined") {
       try {
         const response = await this.state.token.methods
           .donate(this.state.account, this.state.input)
@@ -208,13 +233,13 @@ export default class App extends Component {
           response: response,
         });
       } catch (e) {
-        console.log('Error, deposit: ', e);
+        console.log("Error, deposit: ", e);
       }
     }
   }
 
   async borrow() {
-    if (this.state.token !== 'undefined') {
+    if (this.state.token !== "undefined") {
       try {
         const response = await this.state.token.methods
           .borrow(this.state.account, this.state.input)
@@ -225,7 +250,7 @@ export default class App extends Component {
           response: response,
         });
       } catch (e) {
-        console.log('Error, deposit: ', e);
+        console.log("Error, deposit: ", e);
       }
     }
   }
@@ -236,7 +261,7 @@ export default class App extends Component {
     const token = new web3.eth.Contract(Bank.abi, Bank.networks[netId].address);
     const amount = this.state.input * 1000000000000000000;
 
-    if (this.state.token !== 'undefined') {
+    if (this.state.token !== "undefined") {
       try {
         const response = await token.methods.deposit().send({
           value: amount,
@@ -246,7 +271,7 @@ export default class App extends Component {
           response: response,
         });
       } catch (e) {
-        console.log('Error, deposit: ', e);
+        console.log("Error, deposit: ", e);
       }
     }
   }
@@ -256,7 +281,7 @@ export default class App extends Component {
     const netId = await web3.eth.net.getId();
     const amount = this.state.input * 1000000000000000000;
     const token = new web3.eth.Contract(Bank.abi, Bank.networks[netId].address);
-    if (this.state.token !== 'undefined') {
+    if (this.state.token !== "undefined") {
       try {
         const response = await token.methods.withdraw(amount.toString()).send({
           from: this.state.account,
@@ -265,7 +290,7 @@ export default class App extends Component {
           response: response,
         });
       } catch (e) {
-        console.log('Error, deposit: ', e);
+        console.log("Error, deposit: ", e);
       }
     }
   }
@@ -273,15 +298,15 @@ export default class App extends Component {
   async donateBank() {
     const web3 = new Web3(window.ethereum);
 
-    if (this.state.token !== 'undefined') {
+    if (this.state.token !== "undefined") {
       try {
         web3.eth.sendTransaction({
           from: this.state.account,
           to: this.state.coinAddress,
-          value: web3.utils.toWei('0.1', 'ether'),
+          value: web3.utils.toWei("0.1", "ether"),
         });
       } catch (e) {
-        console.log('Error, deposit: ', e);
+        console.log("Error, deposit: ", e);
       }
     }
   }
@@ -314,14 +339,14 @@ export default class App extends Component {
     const tokenAddress = this.state.coinAddress;
     const tokenSymbol = this.state.symbol;
     const tokenDecimals = 18;
-    const tokenImage = 'https://i.imgur.com/rRTK4EH.png';
+    const tokenImage = "https://i.imgur.com/rRTK4EH.png";
 
     try {
       // wasAdded is a boolean. Like any RPC method, an error may be thrown.
       const wasAdded = await window.ethereum.request({
-        method: 'wallet_watchAsset',
+        method: "wallet_watchAsset",
         params: {
-          type: 'ERC20', // Initially only supports ERC20, but eventually more!
+          type: "ERC20", // Initially only supports ERC20, but eventually more!
           options: {
             address: tokenAddress, // The address that the token is at.
             symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
@@ -332,9 +357,9 @@ export default class App extends Component {
       });
 
       if (wasAdded) {
-        console.log('Thanks for your interest!');
+        console.log("Thanks for your interest!");
       } else {
-        console.log('Your loss!');
+        console.log("Your loss!");
       }
     } catch (error) {
       console.log(error);

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // SPDX-License-Identifier: MIT
 
 /*
@@ -107,6 +108,8 @@ contract NFTLoan {
         _loanExists[_loan] = true;
     }
 =======
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
 pragma solidity >=0.6.0 <0.8.0;
 
 contract NFTLoan {
@@ -258,5 +261,8 @@ contract NFTLoan {
     //
     // Making a payment on loan will connect to the NFT and update the latest loan Status
     // NFT will handle striking system, colleting strikes on missed payments.
+<<<<<<< HEAD
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
 }

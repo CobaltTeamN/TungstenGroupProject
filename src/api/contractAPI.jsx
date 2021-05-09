@@ -6,9 +6,13 @@ import Smit from "../abis/SmitCoin.json";
 import Slick from "../abis/Token.json";
 import Ham from "../abis/HAM.json";
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import Bank from "../abis/Bank 2.json"
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+import Bank from "../abis/Bank 2.json";
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
 
 function ContractAPI() {
   const [contract, setContract] = useState([]);
@@ -16,9 +20,13 @@ function ContractAPI() {
   const [symbol, setSymbol] = useState([]);
   const [token, setToken] = useState([]);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   const [tokenName, setTokenName] = useState([]);
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+  const [tokenName, setTokenName] = useState([]);
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
   const [input, setInput] = useState(0);
   const [coinAddress, setCoinAddress] = useState([]);
   const [callback, setCallback] = useState(false);
@@ -28,43 +36,39 @@ function ContractAPI() {
   const [response, setResponse] = useState();
   const [allContracts, setAllContracts] = useState(false);
 
-//Send token
- const sendAmount = async () => {
+  //Send token
+  const sendAmount = async () => {
     if (token === Bank) {
     }
-    if (token !== 'undefined') {
+    if (token !== "undefined") {
       try {
-        const response = await token.methods
-          .donate(account, input)
-          .send({
-            from: account,
-          });
+        const response = await token.methods.donate(account, input).send({
+          from: account,
+        });
         setResponse({
           response: response,
         });
       } catch (e) {
-        console.log('Error, deposit: ', e);
+        console.log("Error, deposit: ", e);
       }
     }
-  }
+  };
 
   // Borrow tokens
   const borrow = async () => {
-    if (token !== 'undefined') {
+    if (token !== "undefined") {
       try {
-        const response = await token.methods
-          .borrow(account, input)
-          .send({
-            from: account,
-          });
+        const response = await token.methods.borrow(account, input).send({
+          from: account,
+        });
         setResponse({
           response: response,
         });
       } catch (e) {
-        console.log('Error, deposit: ', e);
+        console.log("Error, deposit: ", e);
       }
     }
-  }
+  };
 
   // refresh token balance
   const refreshBalance = async () => {
@@ -89,21 +93,21 @@ function ContractAPI() {
           });
         });
     }
-  }
+  };
 
-  // add token 
+  // add token
   const addToken = async () => {
     const tokenAddress = coinAddress;
     const tokenSymbol = symbol;
     const tokenDecimals = 18;
-    const tokenImage = 'https://i.imgur.com/rRTK4EH.png';
+    const tokenImage = "https://i.imgur.com/rRTK4EH.png";
 
     try {
       // wasAdded is a boolean. Like any RPC method, an error may be thrown.
       const wasAdded = await window.ethereum.request({
-        method: 'wallet_watchAsset',
+        method: "wallet_watchAsset",
         params: {
-          type: 'ERC20', // Initially only supports ERC20, but eventually more!
+          type: "ERC20", // Initially only supports ERC20, but eventually more!
           options: {
             address: tokenAddress, // The address that the token is at.
             symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
@@ -114,14 +118,14 @@ function ContractAPI() {
       });
 
       if (wasAdded) {
-        console.log('Thanks for your interest!');
+        console.log("Thanks for your interest!");
       } else {
-        console.log('Your loss!');
+        console.log("Your loss!");
       }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   //change tokens
   const changeToken = async (event) => {
@@ -135,7 +139,7 @@ function ContractAPI() {
       Token.abi,
       Token.networks[netId].address
     );
-    if (abiArr[event].contractName !== 'Bank') {
+    if (abiArr[event].contractName !== "Bank") {
       await token.methods
         .symbol()
         .call()
@@ -145,18 +149,19 @@ function ContractAPI() {
           });
         });
     } else {
-      setSymbol({symbol: 'ETH'});
+      setSymbol({ symbol: "ETH" });
     }
 
     const coinAddress = Token.networks[netId].address;
     // all data is saved inside state to use for later
-    setToken({tokenName: Token.contractName,
+    setToken({
+      tokenName: Token.contractName,
       tokenSymbol: Token.tokenSymbol,
       token: token,
       coinAddress: coinAddress,
     });
 
-    if (token.tokenName === 'Bank') {
+    if (token.tokenName === "Bank") {
       await token.methods
         .balanceOf()
         .call({ from: account })
@@ -177,7 +182,7 @@ function ContractAPI() {
           });
         });
     }
-  }
+  };
 
   // check metmask
   const loadBlockchainData = async (dispatch) => {

@@ -4,7 +4,7 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
   Home,
   SwapHoriz,
@@ -14,11 +14,12 @@ import {
   Description,
   Collections,
   EnhancedEncryption,
-} from '@material-ui/icons';
-import styled from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
+} from "@material-ui/icons";
+import styled from "styled-components";
+import { Link, useLocation } from "react-router-dom";
 
 const SidebarItems = [
+<<<<<<< HEAD
   { icon: <Home />, text: 'Dashboard', link: '' },
   { icon: <SwapHoriz />, text: 'Exchange', link: '/chromium' },
   { icon: <Work />, text: 'Catalyst', link: '/catalyst' },
@@ -32,12 +33,27 @@ const SidebarItems = [
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
   { icon: <Description />, text: 'Chronicles', link: '/chronicles' },
   { icon: <Collections />, text: 'Cobalt Collections', link: '/cobaltcollections' },
+=======
+  { icon: <Home />, text: "Dashboard", link: "" },
+  { icon: <SwapHoriz />, text: "Exchange", link: "/chromium" },
+  { icon: <Work />, text: "Catalyst", link: "/catalyst" },
+  { icon: <Business />, text: "CBLP", link: "/cblp" },
+  { icon: <AccountBalance />, text: "Borrow", link: "/lend" },
+  { icon: <EnhancedEncryption />, text: "Staking", link: "/staking" },
+  { icon: <EnhancedEncryption />, text: "Voting", link: "/voting" },
+  { icon: <EnhancedEncryption />, text: "Single Vote", link: "/singlevote" },
+  { icon: <Description />, text: "Chronicles", link: "/chronicles" },
+  {
+    icon: <Collections />,
+    text: "Cobalt Collections",
+    link: "/cobaltcollections",
+  },
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
 ];
 const StyledLink = styled(Link)`
   text-decoration: none !important;
   color: inherit;
 `;
-
 
 export default function CustomDrawer() {
   const location = useLocation();
@@ -49,23 +65,26 @@ export default function CustomDrawer() {
         <StyledLink to={item.link} key={item.text}>
           <ListItem
             style={{
-              whiteSpace: 'normal',
+              whiteSpace: "normal",
               color:
-                location.pathname.substr(1) === item.link ? '#5664d2' : 'inherit',
-            }}>
+                location.pathname.substr(1) === item.link
+                  ? "#5664d2"
+                  : "inherit",
+            }}
+          >
             <ListItemIcon
               style={{
                 color:
                   location.pathname.substr(1) === item.link
-                    ? '#5664d2'
-                    : 'inherit',
-              }}>
+                    ? "#5664d2"
+                    : "inherit",
+              }}
+            >
               {item.icon}
             </ListItemIcon>
             <ListItemText primary={item.text} />
           </ListItem>
         </StyledLink>
-
       </>
     );
   });
@@ -73,6 +92,7 @@ export default function CustomDrawer() {
   return (
     <>
       <StyledDrawer variant="permanent" anchor="left">
+<<<<<<< HEAD
 <<<<<<< HEAD
         <img
           src="CobaltLogo.jpg"
@@ -82,6 +102,8 @@ export default function CustomDrawer() {
         <StyledDivider />
 =======
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
         <StyledList> {Lists}</StyledList>
       </StyledDrawer>
     </>
@@ -92,9 +114,13 @@ const StyledDrawer = styled(Drawer)`
   margin: 0;
   .MuiDrawer-paper {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     top: auto;
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+    top: auto;
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
     margin-top: 0%;
     padding-top: 5%;
     width: 240px !important;

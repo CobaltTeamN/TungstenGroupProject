@@ -14,23 +14,23 @@ pragma solidity >=0.4.22 <0.9.0;
  * tokens in the contract to make the exchange. if we do then the exchange will happen here. if we dont, then
  * the 1inch swap protocol will be called to complete the exchange
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
  */
 
 import "./interfaces/UniversalERC20.sol";
 import "./interfaces/Ownable.sol";
 import "./interfaces/IOneSplit.sol";
 import "./ExchangeOracle.sol";
-import "./Bank.sol";
 
 contract Chromium is Ownable {
     using UniversalERC20 for IERC20;
 
     mapping(IERC20 => uint256) public liquidityAmount;
-    uint256 amountOfCblt;
-
+    uint256 public amountOfCblt;
     address oracleAddress;
 
-    Bank treasury;
     ExchangeOracle oracle;
     IERC20 cblt_token;
 
@@ -40,6 +40,7 @@ contract Chromium is Ownable {
         IERC20(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE); // eth address substitute
     IOneSplit private constant oneSplitImpl =
         IOneSplit(0xc3037b2A1a9E9268025FF6d45Fe7095436446D52); // sets 1inch protocol
+<<<<<<< HEAD
 =======
 */
 
@@ -62,6 +63,8 @@ contract Chromium is Ownable{
     IERC20 private constant ETH_ADDRESS = IERC20(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE); // eth address substitute
     IOneSplit private constant oneSplitImpl = IOneSplit(0xc3037b2A1a9E9268025FF6d45Fe7095436446D52); // sets 1inch protocol
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
 
     event depositToken(address indexed _from, uint256 _amount);
     event onTransfer(
@@ -79,6 +82,7 @@ contract Chromium is Ownable{
     /**
      * pass in the oracle contract so that it can pull info from it
      */
+<<<<<<< HEAD
 <<<<<<< HEAD
     constructor(
         address _oracle,
@@ -98,6 +102,8 @@ contract Chromium is Ownable{
     }
 
 =======
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
     constructor(address _oracle, address _cbltToken) {
         oracle = ExchangeOracle(_oracle);
         oracleAddress = _oracle;
@@ -105,7 +111,10 @@ contract Chromium is Ownable{
     }
 
     /** this sets the treasury, and oracle */
+<<<<<<< HEAD
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
     function setOracle(address _oracle) public onlyOwner {
         oracle = ExchangeOracle(_oracle);
         oracleAddress = _oracle;
@@ -115,6 +124,7 @@ contract Chromium is Ownable{
         cblt_token = IERC20(_cblt);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     /**
      * @dev this function should be called to deposit the cblt tokens that are initial sent
@@ -132,12 +142,15 @@ contract Chromium is Ownable{
 
 =======
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
     /************ chromium functions ************/
     /**
      * @dev this function will get the exchagne rate for the token being exchanged for cblt token
      * it will call on the oracle to make the calculation. the returnAmount is going to be a factor
      * of three larger than the actual amount which means the returnAmount will need to be divided by
      * 1000 to get the correct amount that will be swapped
+<<<<<<< HEAD
 <<<<<<< HEAD
      */
     function getCbltExchangeRate(
@@ -156,26 +169,37 @@ contract Chromium is Ownable{
     */
     function getCbltExchangeRate(
         IERC20 fromToken,
+=======
+     */
+    function getCbltExchangeRate(
+        IERC20 fromToken,
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
         IERC20 cbltToken,
         uint256 amount
-    )
-    public
-    view
-    returns(uint returnAmount)
-    {
+    ) public view returns (uint256 returnAmount) {
         require(_checkTokensAllowed(cbltToken));
+<<<<<<< HEAD
         (uint256 sellTokenValue, uint256 buyTokenValue) = oracle.priceOfPair(fromToken, cbltToken);
         returnAmount = SafeMath.mul(amount,
             SafeMath.findRate(sellTokenValue, buyTokenValue)
         );
 
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+        // (uint256 sellTokenValue, uint256 buyTokenValue) =
+        // oracle.priceOfPair(fromToken, cbltToken);
+        // returnAmount = SafeMath.mul(
+        //     amount,
+        // SafeMath.findRate(sellTokenValue, buyTokenValue)
+        // );
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
     }
 
     /**
      * @dev this function will swap cblt tokens for tokens that are allowed in the bank
      * it calls on a function inside of the bank to do the exchange since no tokens are going
      * to be held in the exchange
+<<<<<<< HEAD
 <<<<<<< HEAD
      */
     function swapForCblt(
@@ -237,23 +261,29 @@ contract Chromium is Ownable{
             );
 =======
     */
+=======
+     */
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
     function swapForCblt(
         IERC20 fromToken,
         IERC20 cbltToken,
         uint256 amount,
         uint256 minReturn
-    )
-    external
-    payable
-    {
+    ) external payable {
         require(_checkTokensAllowed(cbltToken));
-        require(cbltToken.universalBalanceOf(address(this)) >= minReturn, "Not enough tokens in Treasury.");
+        require(
+            cbltToken.universalBalanceOf(address(this)) >= minReturn,
+            "Not enough tokens in Treasury."
+        );
 
         fromToken.universalTransferFromSenderToThis(amount);
 
         cbltToken.universalTransfer(msg.sender, minReturn);
+<<<<<<< HEAD
 
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
     }
 
     /**
@@ -265,10 +295,14 @@ contract Chromium is Ownable{
      * @param distribution (uint256[]) Array of weights for volume distribution returned by `getExpectedReturn`
      * @param flags (uint256) Flags for enabling and disabling some features, default 0
 <<<<<<< HEAD
+<<<<<<< HEAD
      */
 =======
     */
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+     */
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
     function swap(
         IERC20 fromToken,
         IERC20 destToken,
@@ -277,6 +311,9 @@ contract Chromium is Ownable{
         uint256[] memory distribution,
         uint256 flags
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
     ) external payable returns (uint256 returnAmount) {
         // makes sure tokens aren't the same and amount is greater than 0
         require(fromToken != destToken && amount > 0, "Unable to swap");
@@ -293,6 +330,7 @@ contract Chromium is Ownable{
             );
         uint256 destTokenBalanceBefore =
             destToken.universalBalanceOf(address(this));
+<<<<<<< HEAD
 =======
     ) external payable returns(uint returnAmount){
         // makes sure tokens aren't the same and amount is greater than 0
@@ -303,15 +341,21 @@ contract Chromium is Ownable{
         uint fromTokenBalanceBefore = SafeMath.sub(fromToken.universalBalanceOf(address(this)), msg.value);
         uint destTokenBalanceBefore = destToken.universalBalanceOf(address(this));
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
 
         fromToken.universalTransferFromSenderToThis(amount);
         fromToken.universalApprove(address(oneSplitImpl), amount);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         oneSplitImpl.swap{value: msg.value}(
 =======
         oneSplitImpl.swap{value:msg.value}(
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+        oneSplitImpl.swap{value: msg.value}(
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
             fromToken,
             destToken,
             amount,
@@ -321,6 +365,9 @@ contract Chromium is Ownable{
         );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
         uint256 fromTokenBalanceAfter =
             fromToken.universalBalanceOf(address(this));
         uint256 destTokenBalanceAfter =
@@ -349,6 +396,7 @@ contract Chromium is Ownable{
             address(destToken),
             minReturn
         );
+<<<<<<< HEAD
 =======
         uint fromTokenBalanceAfter = fromToken.universalBalanceOf(address(this));
         uint destTokenBalanceAfter = destToken.universalBalanceOf(address(this));
@@ -363,18 +411,24 @@ contract Chromium is Ownable{
 
         emit tokensExchanged(address(fromToken), amount, address(destToken), minReturn);
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
     }
 
     /**
      * @dev this function will check to see if the both tokens are correct when wanting
      * to make the exchange with chromium
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
      */
-    function _checkTokensAllowed(IERC20 fromToken, IERC20 destToken)
+    function _checkTokensAllowed(IERC20 cbltToken)
         internal
         view
         returns (bool)
     {
+<<<<<<< HEAD
         if (
             treasury.isTokenAllowed(address(fromToken)) &&
             destToken == cblt_token
@@ -388,6 +442,9 @@ contract Chromium is Ownable{
     {
         if ( cbltToken == cblt_token) {
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+        if (cbltToken == cblt_token) {
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
             return true;
         } else {
             return false;
@@ -395,6 +452,7 @@ contract Chromium is Ownable{
     }
 
     function testCall() public view returns (uint256 value) {
+<<<<<<< HEAD
 <<<<<<< HEAD
         (uint256 sellTokenValue, uint256 buyTokenValue) =
             oracle.testConnection();
@@ -404,6 +462,11 @@ contract Chromium is Ownable{
         value = sellTokenValue + buyTokenValue;
 
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+        (uint256 sellTokenValue, uint256 buyTokenValue) =
+            oracle.testConnection();
+        value = sellTokenValue + buyTokenValue;
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
     }
 
     // fallback function

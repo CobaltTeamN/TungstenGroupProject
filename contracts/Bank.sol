@@ -5,14 +5,18 @@ import "./interfaces/IERC20.sol";
 import "./interfaces/SafeMath.sol";
 import "./interfaces/UniversalERC20.sol";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import "./Chromium.sol";
 =======
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
 
 contract Bank is Ownable {
     using UniversalERC20 for IERC20;
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * @dev modifier so that chromium can withdraw cblt form bank
      */
@@ -23,6 +27,8 @@ contract Bank is Ownable {
     /**
 =======
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
      * @dev storing CBLT token in ERC20 type
      */
     IERC20 token;
@@ -33,6 +39,7 @@ contract Bank is Ownable {
     address oracleAddress;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     /**
      * @dev chromium address for modifier
      */
@@ -41,6 +48,8 @@ contract Bank is Ownable {
 
 =======
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
     constructor(
         address[] memory addresses,
         address _CBLT,
@@ -115,6 +124,7 @@ contract Bank is Ownable {
 
     /**
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @dev sets the chromium address
      */
     function setChromium(address payable _chromium) public onlyOwner {
@@ -162,6 +172,8 @@ contract Bank is Ownable {
     /**
 =======
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
      * @dev method that will withdraw tokens from the bank if the caller
      * has tokens in the bank
      */
@@ -279,6 +291,7 @@ contract Bank is Ownable {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     function swapTokensForCblt(
         IERC20 fromToken,
         IERC20 destToken,
@@ -323,6 +336,8 @@ contract Bank is Ownable {
 
 =======
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
     // ****************************** Lending **********************************
 
     /**
@@ -376,10 +391,14 @@ contract Bank is Ownable {
         uint256 riskFactor = 15; // NFT ENTRY!!!!
         uint256 numerator = 2; // NFT ENTRY!!!!
 <<<<<<< HEAD
+<<<<<<< HEAD
         uint256 denominator = 100; // NFT ENTRY!!!!
 =======
         uint256 denominator = 10; // NFT ENTRY!!!!
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+        uint256 denominator = 10; // NFT ENTRY!!!!
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
 
         // Pulling prices from Oracle
         (bool result, bytes memory data) =
@@ -533,10 +552,13 @@ contract Bank is Ownable {
 
             loanBook[msg.sender].dueDate += loanBook[msg.sender].paymentPeriod;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
             require(token.transfer(recipient, units));
 =======
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
         }
     }
 
@@ -636,7 +658,10 @@ contract Bank is Ownable {
     // Give second wind to the loan depending on if its the first time
     // Reset voting but keep voters inside
 
+<<<<<<< HEAD
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
     enum State {Created, Voting, Ended}
     State public state;
 
@@ -652,10 +677,14 @@ contract Bank is Ownable {
      *
      */
 <<<<<<< HEAD
+<<<<<<< HEAD
     function rightToVoteTiers(address loanSignature) public {
 =======
     function rightToVoteTiers(address loanSignature) internal view {
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+    function rightToVoteTiers(address loanSignature) internal view {
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
         uint256 balanceInCBLT =
             SafeMath.add(
                 token.balanceOf(msg.sender),
@@ -729,6 +758,7 @@ contract Bank is Ownable {
      */
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     function endVote() internal inState(State.Voting){
         // the  1619656173 represents 7 days in epoch and must be less then 7 days
         uint weekOfEpoch = 1619656173;
@@ -764,6 +794,8 @@ contract Bank is Ownable {
 
     // if voting is past 7 days then loan ends. Must be take take 21 votes
 =======
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
     function endVote() internal inState(State.Voting) {
         // the  1619656173 represents 7 days in epoch and must be less then 7 days
         uint256 weekOfEpoch = 1619656173;
@@ -798,7 +830,10 @@ contract Bank is Ownable {
     // in
 
     // if voting is past 7 days then loan ends. Must take 21 votes
+<<<<<<< HEAD
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
 
     // **************************** Staking *******************************
 
@@ -807,10 +842,14 @@ contract Bank is Ownable {
     mapping(address => User) userBook;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     uint256 CBLTReserve = 1000000000000000000000000000000000;
 =======
     uint256 CBLTReserve = 100000000000000000000000000000000000;
 >>>>>>> 356b79db46ddae412c8182ec59f278828bde0646
+=======
+    uint256 CBLTReserve = 100000000000000000000000000000000000;
+>>>>>>> 3848d8968bfc3fce2fc9ef31cedf56cc186704a2
 
     struct User {
         uint256 depositTime;
