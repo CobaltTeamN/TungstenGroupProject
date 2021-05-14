@@ -163,13 +163,15 @@ contract NFTLoan {
         _safeTransferFrom(_from, _to, _tokenId);
     }
 
-    // A crypter has function for the NFT to protect certain sensitive data.
+    // An encrypter has function for the NFT to protect certain sensitive data.
 
     function Encrypter(address _to , uint256 _tokenId) 
     public pure returns (bytes32)
     {
         return keccak256(abi.encodePacked(_to , _tokenId));
     }
+
+    
  
  
     // ------------------------ Future development ----------------------------
