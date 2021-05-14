@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { StyledCard, Container,
   //  CobaltCard, CobaltContainer, StyledCardHeightFit, Row, Col
@@ -8,9 +8,13 @@ import { StyledCard, Container,
 import {Button} from 'react-bootstrap';
 import Logo from '../icons/MovingLogo.mp4'
 import './dashboard.css'
+import { GlobalState } from "../GlobalState.js";
 
 export default function DashBoardHome() {
-
+  const state = useContext(GlobalState)
+  console.log(state)
+  // const [isLoggedIn] = state.web3API.isLoggedIn
+  // const loadWeb3 = state.web3API.loadWeb3
   const [cryptolist ,setCryptoList] = useState([]);
   // const [crypto, setCrypto] = useState('');
 
@@ -28,9 +32,10 @@ export default function DashBoardHome() {
       console.error(error);
     }
   }
-  useEffect(() => {
-    getCrypto()
-  }, [cryptolist])
+  // useEffect(() => {
+  //   console.log(state)
+  //   getCrypto()
+  // }, [])
 
   // function handleChange(event) {
   //   setCrypto(event.target.value);

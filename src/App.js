@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Error from "./pages/NotFound/NotFound";
@@ -19,8 +18,10 @@ import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import DIDs from "./pages/DID/DIDs";
 import Laon from "./pages/Loan/Loan";
 import Exchange from "./pages/Exchange/Exchange";
+import ChromiumApp from './pages/Exchange/ChromiumApp';
 import Voting from "./pages/Voting/Voting";
 import Treasury from "./pages/Treasury/Treasury";
+
 
 export default class App extends Component {
   constructor() {
@@ -371,7 +372,7 @@ export default class App extends Component {
             <Route exact path="/" render={() => <ComingSoon />} />
             <Route exact path="/lending" render={() => <Lending />} />
             <Route exact path="/dids" render={() => <DIDs />} />
-            <Route exact path="/exchange" render={() => <Exchange />} />
+            <Route exact path="/Chromium" render={() => <ChromiumApp />} />
             <Route exact path="/loan" render={() => <Laon />} />
             <Route exact path="/voting" render={() => <Voting />} />
             <Route exact path="/treasury" render={() => <Treasury />} />

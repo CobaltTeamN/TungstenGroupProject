@@ -15,13 +15,13 @@ import Sidebar from "./components/sidebar";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 import NavBar from "./components/navBar";
-import { DataProvider } from "./GlobalState";
 
 const theme = {
   grayText: "#6b7774",
 };
 
 export default function NewApp() {
+  const [userWeb3, setUserWeb3] = useState(null);
   const [account, setAccount] = useState(null);
   const [stateWeb3, setWeb3] = useState(null);
   const [sToken, setToken] = useState(null);
@@ -167,16 +167,21 @@ export default function NewApp() {
     }
   }
 
+
+useEffect( async () => {
+  // const fetchData = async () => {
+  // }
+  // fetchData();
+}, []);
+
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        {/* <DataProvider> */}
-          <NavBar />
-          <Sidebar />
-          <div style={{ marginLeft: "240px" }}>
-            <SRouter />
-          </div>
-        {/* </DataProvider> */}
+        <NavBar />
+        <Sidebar />
+        <div style={{ marginLeft: "240px" }}>
+          <SRouter />
+        </div>
       </BrowserRouter>
     </ThemeProvider>
   );

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.6.0 <0.8.0;
 
 contract NFTLoan {
@@ -13,6 +14,9 @@ contract NFTLoan {
 
     // Attaches the NFT id to a particular address
     mapping(uint256 => address) internal ownerId;
+    
+    // Attaches the Nonce id to the address
+    mapping(uint256 => address) internal ownerNonceId;
 
     // Creates a counter for how many NFTokens an account has
     //
@@ -34,6 +38,17 @@ contract NFTLoan {
         // Changed address of event to this
         emit Transfer(address(this), _to, _tokenId);
     }
+    
+    // Created a separate mint function for the NFT that will hold the Nonce
+    // This NFT will have its own id, but as for right now both nfts will hold the same name
+    function _mintNonce(address _to, uint256 _nonceId) internal virtual {
+        require(_to != address(0));
+        require(ownerNonceId[_nonceId] == address(0));
+        
+        _addNFTNonce(_to, _nonceId);
+        
+        emit Transfer(address(this), _to, _nonceId);
+    }
 
     function _addNFToken(address _to, uint256 _tokenId) internal virtual {
         require(ownerId[_tokenId] == address(0));
@@ -43,6 +58,14 @@ contract NFTLoan {
         // where we could store the data
         ownerId[_tokenId] = _to;
         ownerToNFTokenCount[_to] = ownerToNFTokenCount[_to] + 1;
+    }
+    
+    
+    //Does not add to the counter but attaches the owner address to "_to" so that ids cant be replicated
+    //Not sure how to implement the other regular functions with the nonceNFT (like _removeNFToken)
+    function _addNFTNonce(address _to, uint256 _nonceId) internal virtual {
+        require(ownerNonceId[_nonceId] == address(0));
+        ownerNonceId[_nonceId] = _to;
     }
 
     function _removeNFToken(address _from, uint256 _tokenId) internal virtual {
@@ -120,12 +143,15 @@ contract NFTLoan {
 
     // Mint is can be the entry point where we check if the Oracle
     // gave this wallet a greenlight and is ready to create the NFT
+    // Implmented the nonce function in this so that everything can be called at once
     function mint(
         address _to,
         uint256 _tokenId,
+        uint256 _nonceId,
         string memory _uri
     ) public {
         _mint(_to, _tokenId);
+        _mintNonce(_to, _nonceId);
         _setTokenUri(_tokenId, _uri);
     }
 
@@ -136,7 +162,8 @@ contract NFTLoan {
     ) external {
         _safeTransferFrom(_from, _to, _tokenId);
     }
-
+ 
+ 
     // ------------------------ Future development ----------------------------
     // Encrypted data
     // Minting two NFTs -- Encrypted data and key do decrypt it

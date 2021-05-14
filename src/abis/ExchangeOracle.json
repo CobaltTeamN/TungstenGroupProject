@@ -80,7 +80,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -93,7 +94,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -173,7 +175,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -191,7 +194,8 @@
         }
       ],
       "stateMutability": "pure",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -210,7 +214,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.7.6+commit.7338295f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"_previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"deletedToken\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"string\",\"name\":\"_name\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"_symbol\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"_img\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"tokenUpdatedData\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"_owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_tokenAddress\",\"type\":\"address\"}],\"name\":\"getValue\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"isOwner\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_sellTokenAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_buyTokenAddress\",\"type\":\"address\"}],\"name\":\"priceOfPair\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"sellTokenPrice\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"buyTokenPrice\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"testConnection\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"sellTokenPrice\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"buyTokenPrice\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_tokenAddress\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"_name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_symbol\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_img\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"_value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"_active\",\"type\":\"bool\"}],\"name\":\"updateToken\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/D/TungstenGroupProject/contracts/ExchangeOracle.sol\":\"ExchangeOracle\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/D/TungstenGroupProject/contracts/ExchangeOracle.sol\":{\"keccak256\":\"0x60c019931121bf5b5ff2ff1e3b19ca9d7798a5aa2558d688a3a84ec33152a15e\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c733c133b8915bdcc31e246d97ecaa860b3eacb2774c6a34e0285249b41b0c8d\",\"dweb:/ipfs/QmQo2PkH6noQSfEWWq2to52s4TktAPvDEYuTxqJVvV5Dzx\"]},\"/D/TungstenGroupProject/contracts/interfaces/Ownable.sol\":{\"keccak256\":\"0xbd7f85398b292b398687841f9bf5d62fbc84331011176ac7346493eb16bfea04\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://38aee67161c3b7dfb42dba96f4a0dc9e79c761cb8fe31e2d564e76ad85454104\",\"dweb:/ipfs/QmbTStaCBLdSuDQ1sXLeGDRv3yhdF17RLehvdT3EUbXhJ7\"]}},\"version\":1}",
@@ -3753,9 +3758,21 @@
     "name": "solc",
     "version": "0.7.6+commit.7338295f.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "4": {
+      "events": {},
+      "links": {},
+      "address": "0x23a4123492D27406318bB44633Ca7F5005e601E2",
+      "transactionHash": "0x8cbfc068d01b9cf56a0355c2eb41b244bab30837cb7e24c1afe2515c1e89754e"
+    }
+  },
   "schemaVersion": "3.3.4",
+<<<<<<< HEAD
   "updatedAt": "2021-05-10T06:22:15.216Z",
+=======
+  "updatedAt": "2021-05-09T21:47:43.133Z",
+  "networkType": "ethereum",
+>>>>>>> 5de18e0f500a89f1f641d061d6eee7abf148037d
   "devdoc": {
     "kind": "dev",
     "methods": {},
