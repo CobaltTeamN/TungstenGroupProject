@@ -44,6 +44,6 @@ module.exports = async function (deployer) {
   );
   const bank = await Bank.deployed();
 
-  await deployer.deploy(Chromium, oracle.address, bank.address);
+  await deployer.deploy(Chromium, oracle.address, '0x433c6e3d2def6e1fb414cf9448724efb0399b698');
   const chromium = await Chromium.deployed();
 };

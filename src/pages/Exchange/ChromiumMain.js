@@ -21,6 +21,9 @@ class Main extends Component {
                 sellTokens={this.props.sellTokens}
                 tokenBalance={this.props.tokenBalance}
                 ethBalance={this.props.ethBalance}
+                handleInput={this.props.handleInput}
+                ethAddress={this.props.ethAddress}
+                cbltToken={this.props.cbltToken}
             />
         } else {
             content = <OneInchSwap

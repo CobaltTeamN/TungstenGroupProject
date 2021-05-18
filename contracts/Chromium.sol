@@ -82,11 +82,12 @@ contract Chromium is Ownable {
         uint256 amount
     ) public view returns (uint256 returnAmount) {
         require(_checkTokensAllowed(cbltToken));
-        (uint256 sellTokenValue, uint256 buyTokenValue) = oracle.priceOfPair(address(fromToken), address(cbltToken));
-        returnAmount = SafeMath.mul(amount,
+        (uint256 sellTokenValue, uint256 buyTokenValue) =
+            oracle.priceOfPair(address(fromToken), address(cbltToken));
+        returnAmount = SafeMath.mul(
+            amount,
             SafeMath.findRate(sellTokenValue, buyTokenValue)
         );
-
     }
 
     /**

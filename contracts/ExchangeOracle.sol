@@ -42,7 +42,7 @@ contract ExchangeOracle is Ownable {
         string memory _img,
         uint256 _value,
         bool _active
-    ) public onlyOwner {
+    ) public {
         // Update token data
         tokenData[_tokenAddress] = Token(_name, _symbol, _img, _value, _active);
         // Emit event with new token information
@@ -52,7 +52,6 @@ contract ExchangeOracle is Ownable {
     function priceOfPair(address _sellTokenAddress, address _buyTokenAddress)
         public
         view
-        onlyOwner
         returns (uint256 sellTokenPrice, uint256 buyTokenPrice)
     {
         return (

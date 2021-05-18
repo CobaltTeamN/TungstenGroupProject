@@ -30,7 +30,6 @@ class Oracle extends Component {
 
     handleValueChange = async (e) => {
         let value = e.target.value.toString()
-        value = window.web3.utils.toWei(value, 'ether')
         this.setState({value: value})
     }
 

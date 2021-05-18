@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 
 const fromOptions =
     <>
+        <option>...</option>
         <option value={"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"}>ETH</option>
         <option value={"0x111111111117dc0aa78b770fa6a738034120c302"}>One Inch</option>
         <option value={"0x55d398326f99059ff775485246999027b3197955"}>USDT</option>
@@ -13,39 +14,21 @@ const fromOptions =
 class ChromiumSwap extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            output: '0',
-            fromToken: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-            cbltToken: '0x433c6e3d2def6e1fb414cf9448724efb0399b698',
-            amount: ''
-        }
     }
 
-    handleChange = async (e) => {
+    handleChange = (e) => {
         e.preventDefault()
-        await this.setState({amount: e.target.value.toString()})
-        console.log(this.state.amount)
-        if(this.state.amount !== '') {
-            await this.props.getCbltExchangeRate(
-                this.state.fromToken,
-                this.state.cbltToken,
-                this.state.amount
-            )
-        }
+        this.props.getCbltExchangeRate()
+    }
 
+    handleSubmit = (e) => {
+        e.preventDefault()
+        this.props.swapForCblt()
     }
 
     render() {
         return (
-            <form className="mb-3" onSubmit={(event) => {
-                event.preventDefault()
-                let amount
-                amount = window.web3.utils.toWei('1', 'ether')
-                let returnAmount = window.web3.utils.toWei(this.props.returnAmount, 'ether')
-                let returnInWei = window.web3.utils.toWei(returnAmount, 'ether')
-                this.props.swapForCblt(this.state.fromToken, this.state.cbltToken,
-                    amount, returnAmount)
-            }}>
+            <form className="mb-3" onSubmit={this.handleSubmit}>
                 <div>
                     <label className="float-left"><b>Input</b></label>
                     <span className="float-right text-muted">
@@ -56,16 +39,16 @@ class ChromiumSwap extends Component {
                     <input
                         type="text"
                         name='amount'
-                        onChange={this.handleChange}
+                        onChange={this.props.handleInput}
                         ref={(input) => { this.input = input }}
                         className="form-control form-control-lg"
-                        placeholder={this.state.amount}
+                        placeholder='0'
                     />
                     <div className="input-group-append">
                         <div className="input-group-text">
                             <select
                                 name='fromToken'
-                                onChange={this.handleChange}>
+                                onChange={this.props.handleInput}>
                                 {fromOptions}
                             </select>
                         </div>
@@ -91,6 +74,7 @@ class ChromiumSwap extends Component {
                         </div>
                     </div>
                 </div>
+                <button type="submit" onClick={this.handleChange} className="btn btn-primary btn-block btn-lg">Quote</button>
                 <button type="submit" className="btn btn-primary btn-block btn-lg">SWAP!</button>
             </form>
         );
