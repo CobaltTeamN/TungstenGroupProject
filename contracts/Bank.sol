@@ -106,17 +106,21 @@ contract Bank is Ownable {
     mapping(address => Loan) loanBook;
 
     /**
-     * @dev mapping used to record information on loan tiers i.e. maximum period, votes
+     * @dev Informstion from previously fullfilled loans are stored into the blockchain
+     * before being permanently deleted
      */
-    mapping(uint256 => Tier) tierBook;
+    mapping(uint256 => Loan) loanRecords;
 
     /**
-     * @dev mapping used to record information on loan tiers i.e. maximum period, votes
+     * @dev struct to access information on tier structure
      */
-    struct Tier {
-        uint128 voterLimit;
-        uint128 maximumPeriodPayment;
+    struct loanTier {
+        uint256 principalLimit;
+        uint256 maximumPaymentPeriod;
+        uint256 maxVoters;
     }
+
+    mapping(uint256 => loanTier) loanTiers;
 
     /**
      * @dev Struct to store loan information
@@ -127,55 +131,66 @@ contract Bank is Ownable {
         uint256 minimumPayment; // MinimumPayment // Can be calculated off total amount
         bool active; // Is the current loan active (Voted yes)
         bool initialized; // Does the borrower have a current loan application
-        uint64 dueDate; // Time of contract ending
-        uint64 timeCreated; // Time of loan application also epoch in days
-        uint64 totalVote; // Total amount determined by tier
-        uint64 yes; // Amount of votes for yes
+        uint256 dueDate; // Time of contract ending
+        uint256 timeCreated; // Time of loan application also epoch in days
+        uint256 totalVote; // Total amount determined by tier
+        uint256 yes; // Amount of votes for yes
     }
 
     /**
      * @dev Recalculates interest and also conducts check and balances
      */
 
-    function newLoan(uint256 _paymentPeriod, uint256 principal) public payable {
-        // require(_paymentPeriod <= )
+    function newLoan(uint256 _paymentPeriod, uint256 _principal)
+        public
+        payable
+    {
+        require(loanBook[msg.sender].initialized == false);
 
-        uint256 riskScore = 20; // NFT ENTRY!!!!!!
+        uint256 riskScore = 20; // NFT ENTRY!!!!
         uint256 riskFactor = 15; // NFT ENTRY!!!!
-        uint256 numerator = 2; // NFT ENTRY!!!!
+        uint256 interestRate = 2; // NFT ENTRY!!!!
+        uint256 userMaxTier = 5; // NFT ENTRY!!!!
 
-        // Pulling prices from Oracle
-        (bool result, bytes memory data) =
-            oracleAddress.call(
-                abi.encodeWithSignature(
-                    "getValue(address)",
-                    0x29a99c126596c0Dc96b02A88a9EAab44EcCf511e
-                )
+        require(
+            _paymentPeriod <= loanTiers[userMaxTier].maximumPaymentPeriod,
+            "Payment period exceeds that of the tier, pleas try again"
+        );
+
+        uint256 ETHpriceUSD = oracle.priceOfETH();
+
+        // One dollar in ETH
+        uint256 oneUSDinETH = SafeMath.div(100000000000000000000, ETHpriceUSD);
+
+        // Calculate how much is being borrowed in USD - must be within limits of the tier
+        uint256 amountBorrowed = SafeMath.div(_principal, oneUSDinETH);
+        require(amountBorrowed <= loanTiers[userMaxTier].principalLimit);
+
+        (uint256 CBLTprice, uint256 ETHprice) =
+            oracle.priceOfPair(
+                address(token),
+                0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
             );
-
-        // Check if oracle is functional
-        require(result == true, "Oracle is down");
-
-        uint256 tokenPrice = abi.decode(data, (uint256));
 
         // Calculate collateral in CBLT based on principal, riskScore and riskFactor
         uint256 collateralInCBLT =
             SafeMath.div(
                 SafeMath.multiply(
+                    _principal,
                     SafeMath.mul(riskScore, riskFactor),
-                    principal,
-                    1000
+                    100
                 ),
-                tokenPrice
+                CBLTprice
             );
 
-        // Payment in
-        uint256 paymentPeriodInMonths = SafeMath.div(_paymentPeriod, 2629743);
+        // Calculate new principal with the added interest
+        uint256 finalPrincipal =
+            SafeMath.add(
+                _principal,
+                SafeMath.multiply(_principal, interestRate, 100)
+            );
 
-        uint256 collateralPerPayment =
-            SafeMath.div(collateralInCBLT, paymentPeriodInMonths);
-
-        require(loanBook[msg.sender].initialized == false);
+        uint256 monthlyPayment = SafeMath.div(finalPrincipal, _paymentPeriod);
 
         require(
             token.transferFrom(msg.sender, address(this), collateralInCBLT) ==
@@ -183,50 +198,18 @@ contract Bank is Ownable {
             "Payment was not approved."
         );
 
-        // loanBook[msg.sender] = Loan(
-        //     msg.sender,
-        //     (block.timestamp + _paymentPeriod),
-        //     // Rational(numerator, denominator),
-        //     _paymentPeriod,
-        //     principal,
-        //     // _minimumPayment, // Needs to be calculated!!!!!!
-        //     collateralPerPayment,
-        //     false,
-        //     true,
-        //     block.timestamp,
-        //     0,
-        //     0,
-        //     0,
-        //     0
-        // );
-
-        uint256 timeCreated; // Time of loan application
-        uint256 yes; // Amount of votes for yes
-        uint256 no; // Amount of votes for no
-        uint256 totalVote; // Total amount determined by tier
-        uint256 tier; // Tier based on amount intended to be borrowed
-
-        // uint256 x = _minimumPayment * units; // NEEDS TO BE WORKED AT NIGTHT!!!!!!!!
-        // require(
-        //     x / units == _minimumPayment,
-        //     "minimumPayment * collateralPerPayment overflows"
-        // );
+        loanBook[msg.sender] = Loan(
+            msg.sender,
+            finalPrincipal,
+            monthlyPayment,
+            false,
+            true,
+            SafeMath.add(block.timestamp, 2629743),
+            block.timestamp,
+            loanTiers[userMaxTier].maxVoters,
+            0
+        );
     }
-
-    /**
-    function tallyVotes() public {}
-
-    /**
-     * @dev Prevents overflows
-     *
-     */
-    // function multiplyDecimal(uint256 x, Rational memory r)
-    //     internal
-    //     pure
-    //     returns (uint256)
-    // {
-    //     return (x * r.numerator) / r.denominator;
-    // }
 
     /**
      * @dev Recalculates interest and also conducts check and balances
