@@ -5,13 +5,13 @@ import "./SafeMath.sol";
 import "./IERC20.sol";
 import './SafeERC20.sol';
 
-
 library UniversalERC20 {
 
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
-    IERC20 private constant ZERO_ADDRESS = IERC20(0x0000000000000000000000000000000000000000);
+    IERC20 private constant WETH_MAINNET = IERC20(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
+    IERC20 private constant WETH_KINKEBY = IERC20(0xc778417E063141139Fce010982780140Aa0cD5Ab);
     IERC20 private constant ETH_ADDRESS = IERC20(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
 
     function universalTransfer(IERC20 token, address to, uint256 amount) internal returns(bool) {
@@ -88,7 +88,7 @@ library UniversalERC20 {
 
 
     function isETH(IERC20 token) internal pure returns(bool) {
-        return (address(token) == address(ZERO_ADDRESS) || address(token) == address(ETH_ADDRESS));
+        return (address(token) == address(WETH_MAINNET) || address(token) == address(ETH_ADDRESS) || address(token) == address(WETH_KINKEBY));
     }
 
     function eq(IERC20 a, IERC20 b) internal pure returns(bool) {

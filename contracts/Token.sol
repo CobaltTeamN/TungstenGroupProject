@@ -25,7 +25,7 @@ contract CHCToken {
     event Borrowed(address borrower, uint256 amount, uint256 timestamp);
 
     // on contract deploy set the total supply and assign ownership
-    constructor(uint256 _initialSupply) public {
+    constructor(uint256 _initialSupply) {
         owner = msg.sender;
         total = _initialSupply;
     }

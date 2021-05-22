@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import OneInchSwap from './OneInchSwap'
 import ChromiumSwap from './ChromiumSwap'
 import Oracle from "./Oracle";
 
@@ -25,11 +24,6 @@ class Main extends Component {
                 ethAddress={this.props.ethAddress}
                 cbltToken={this.props.cbltToken}
             />
-        } else {
-            content = <OneInchSwap
-                slippage={this.props.slippage}
-                driver={this.props.driver}
-            />
         }
 
         return (
@@ -45,14 +39,6 @@ class Main extends Component {
                         CBLT
                     </button>
                     <span className="text-muted">&lt; &nbsp; &gt;</span>
-                    <button
-                        className="btn btn-light"
-                        onClick={(event) => {
-                            this.setState({currentForm: 'ONEINCH'})
-                        }}
-                    >
-                        ONE INCH
-                    </button>
                 </div>
 
                 <div className="card mb-4">

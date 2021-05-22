@@ -20,7 +20,7 @@ import Laon from "./pages/Loan/Loan";
 import Exchange from "./pages/Exchange/Exchange";
 import ChromiumApp from './pages/Exchange/ChromiumApp';
 import Voting from "./pages/Voting/Voting";
-import Treasury from "./pages/Treasury/Treasury";
+import Hugo from "./pages/Exchange/ChromiumSwap";
 
 
 export default class App extends Component {
@@ -375,7 +375,7 @@ export default class App extends Component {
             <Route exact path="/Chromium" render={() => <ChromiumApp />} />
             <Route exact path="/loan" render={() => <Laon />} />
             <Route exact path="/voting" render={() => <Voting />} />
-            <Route exact path="/treasury" render={() => <Treasury />} />
+            <Route exact path="/hugo" render={() => <Hugo />} />
             <Route
               exact
               path="/swap"

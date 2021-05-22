@@ -15,7 +15,7 @@ contract WoodToken {
     // Events
     event Borrowed(address borrower, uint256 amount, uint256 timestamp);
 
-    constructor() public {
+    constructor() {
         _totalSupply = 1000000000;
     }
 

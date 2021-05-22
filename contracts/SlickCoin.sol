@@ -21,7 +21,7 @@ contract Token {
     mapping(address => mapping(address => uint256)) public allowance;
     mapping(address => uint256) timestamp; // timestamp of last borrowed time
 
-    constructor() public {
+    constructor() {
         balances[msg.sender] = _totalSupply;
     }
 

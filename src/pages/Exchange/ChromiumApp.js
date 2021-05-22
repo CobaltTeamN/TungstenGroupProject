@@ -3,8 +3,8 @@ import Web3 from 'web3'
 import Chromium from '../../abis/Chromium.json'
 import Oracle from '../../abis/ExchangeOracle.json'
 import navBar from '../../components/navBar'
+import IERC20 from '../../abis/IERC20.json'
 import Main from './ChromiumMain'
-import {ChainId, Fetcher, WETH, Route, Trade, TokenAmount, TradeType} from '@uniswap/sdk'
 
 
 class App extends Component {
@@ -15,20 +15,22 @@ class App extends Component {
             account: '',
             token: {},
             chromium: {},
+            ierc20: {},
             oracle: {},
             chainId: '',
             ethAddress: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-            cbltToken: '0x433c6e3d2def6e1fb414cf9448724efb0399b698',
+            cbltToken: '0xAA9E1c266B6A62314A6f8c1EE347991Ceb8b6690',
             fromToken: null,
             destToken: null,
-            amount: '',
+            amount: '0',
             returnAmount: '',
             tokenBalance: '',
             ethBalance: '',
+            uniswapQuote: '',
             loading: true
         }
 
-        this.quote = this.quote.bind(this)
+        // this.quote = this.quote.bind(this)
         this.swapForCblt = this.swapForCblt.bind(this)
         this.getCbltExchangeRate = this.getCbltExchangeRate.bind(this)
         this.updateToken = this.updateToken.bind(this)
@@ -50,7 +52,12 @@ class App extends Component {
         // Load Token
         const networkId = await web3.eth.net.getId()
         this.setState({chainId: networkId})
-        const chainId = ChainId.networkId
+
+        const ierc20Data = IERC20.networks[networkId]
+        if(ierc20Data) {
+            const ierc20 = new web3.eth.Contract(IERC20.abi, ierc20Data)
+            this.setState({ierc20})
+        }
 
         const chromiumData = Chromium.networks[networkId]
         if (chromiumData) {
@@ -59,7 +66,7 @@ class App extends Component {
         } else {
             window.alert('Chromium contract not deployed to detected network.')
         }
-
+        
         const oracleData = Oracle.networks[networkId]
         if(oracleData) {
             const oracle = new web3.eth.Contract(Oracle.abi, oracleData.address)
@@ -91,35 +98,75 @@ class App extends Component {
         console.log(name, value)
     };
 
-    async getCbltExchangeRate() {
+    getCbltExchangeRate() {
         this.setState({loading: true})
-        await this.state.chromium.methods.getCbltExchangeRate(this.state.fromToken, this.state.cbltToken, this.state.amount).call({from: this.state.account})
-            .then((results) => {
-                let res = results / 1000
-                this.setState({returnAmount: res.toString()})
-            })
-        this.setState({loading: false})
+        if(this.state.fromToken !== null && this.state.amount !== 0 && this.state.amount !== '') {
+            console.log(this.state.fromToken)
+            this.state.chromium.methods.getCbltExchangeRate(this.state.fromToken, this.state.cbltToken, this.state.amount).call({from: this.state.account})
+                .then((results) => {
+                    let res = results / 1000000
+                    this.setState({
+                        returnAmount: res.toString()
+                    })
+                })
+            this.setState({loading: false})
+        } else {
+            this.setState({loading: false})
+        }
     }
 
-    async swapForCblt() {
+    swapForCblt() {
+        console.log('what')
         this.setState({loading: true})
-        if(this.state.fromToken === this.state.ethAddress) {
-            await this.state.chromium.methods.swapForCblt(this.state.fromToken, this.state.destToken, this.state.amount, this.state.returnAmount).send({
-                value: this.state.amount,
-                from: this.state.account
-            }).on('transactionHash', (hash) => {
-                this.setState({loading: false})
-            })
+        if(this.state.fromToken !== null && this.state.amount !== '' && this.state.amount !== 0) {
+            console.log(this.state.amount)
+            console.log(this.state.account)
+            console.log(this.state.fromToken)
+            console.log('in there')
+            // Handle Ether Transaction
+            if(this.state.fromToken === this.state.ethAddress && this.state.amount !== 0 && this.state.amount !== '') {
+                try{
+                    let etherAmount
+                    etherAmount = this.state.amount
+                    console.log(etherAmount)
+                    etherAmount = window.web3.utils.toWei(etherAmount, "ether")
+                    console.log(etherAmount)
+                    console.log(this.state.chromium)
+                    this.state.chromium.methods.swapForCblt(this.state.fromToken, "100000000000000000").send({
+                        value: etherAmount,
+                        from: this.state.account
+                    }).on('transactionHash', (hash) => {
+                        this.setState({loading: false})
+                    })
+                } catch (e) {
+                    console.log("Error, deposit: ", e);
+                }
+            } else {
+                console.log('in there there')
+                try {
+                    let etherAmount
+                    etherAmount = this.state.amount
+                    console.log('ether')
+                    console.log(etherAmount)
+                    etherAmount = window.web3.utils.toWei(etherAmount, "ether")
+                    console.log('ether convert')
+                    console.log(etherAmount)
+                    this.state.chromium.methods.swapForCblt(this.state.fromToken, etherAmount).send({
+                        from: this.state.account
+                    }).on('transactionHash', (hash) => {
+                        this.setState({loading: false})
+                    })
+                } catch (e) {
+                    console.log("Error, deposit: ", e);
+                }
+                // this.state.ierc20.methods.approve(this.state.chromium.address, etherAmount).send({
+                //     from: this.state.account
+                // }).on('transactionHash', (hash) => {
+
+                // })
+            }
         } else {
-            this.state.fromToken.methods.approve(this.state.chromium.address, this.state.amount).send({
-                from: this.state.account
-            }).on('transactionHash', (hash) => {
-                this.state.chromium.methods.swapForCblt(this.state.fromToken, this.state.destToken, this.state.amount, this.state.returnAmount).send({
-                    from: this.state.account
-                }).on('transactionHash', (hash) => {
-                    this.setState({loading: false})
-                })
-            })
+            this.setState({loading: false})
         }
     }
 
@@ -132,16 +179,8 @@ class App extends Component {
         })
     }
 
-    async quote(fromToken, destToken, amount) {
-        const fToken = await Fetcher.fetchTokenData(this.state.chainId,  fromToken)
-        const dToken = await Fetcher.fetchTokenData(this.state.chainId, destToken)
-        const pair = await Fetcher.fetchPairData(fToken, dToken)
-        const route = new Route([pair], fToken)
-        const trade = new Trade(route, new TokenAmount(fToken, amount), TradeType.EXACT_INPUT)
-        console.log(route.midPrice.toSignificant(6))
-        console.log(trade.executionPrice.toSignificant(6))
-        let returnAmount = trade.executionPrice.toSignificant(6)
-        this.setState({returnAmount})
+    async swapCbltForToken() {
+
     }
 
     render() {

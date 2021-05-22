@@ -16,7 +16,7 @@ export default function NavBar(props) {
           />
         </Navbar.Brand>
         <Nav className="justify-content-end align-items-center ml-auto">
-          <Nav.Link href="#deets">
+          {/* <Nav.Link href="#deets">
             <button className="navbtn tour" onClick={props.openTour}>
               Take A Tour
             </button>
@@ -32,7 +32,7 @@ export default function NavBar(props) {
             <button className="navbtn ">
               <span>{3000 + " ETH"}</span>
             </button>
-          </Nav.Link>
+          </Nav.Link> */}
           <NavDropdown
             className="navbtn settings mr-2"
             title="..."

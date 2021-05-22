@@ -1,10 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
-import { StyledCard, Container,
-  //  CobaltCard, CobaltContainer, StyledCardHeightFit, Row, Col
- } from '../components/styled/Dashboard';
-// import Activity from '../components/activity';
-// import Wallet from '../components/wallet';
+import { StyledCard, Container} from '../components/styled/Dashboard';
 import {Button} from 'react-bootstrap';
 import Logo from '../icons/MovingLogo.mp4'
 import './dashboard.css'
@@ -12,17 +8,9 @@ import { GlobalState } from "../GlobalState.js";
 
 export default function DashBoardHome() {
   const state = useContext(GlobalState)
-  console.log(state)
-  // const [isLoggedIn] = state.web3API.isLoggedIn
-  // const loadWeb3 = state.web3API.loadWeb3
+  
   const [cryptolist ,setCryptoList] = useState([]);
-  // const [crypto, setCrypto] = useState('');
-
-  // const formatter = new Intl.NumberFormat('en-US', {
-  //   minimumFractionDigits: 2,
-  //   maximumFractionDigits: 2,
-  // });
-
+  
   const getCrypto = async () => {
     const url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false"
     try {
@@ -32,16 +20,9 @@ export default function DashBoardHome() {
       console.error(error);
     }
   }
-  // useEffect(() => {
-  //   console.log(state)
-  //   getCrypto()
-  // }, [])
-
-  // function handleChange(event) {
-  //   setCrypto(event.target.value);
-  //   console.log(crypto)
-  // }
-
+  if (!state) {
+    console.log(state + cryptolist + getCrypto) 
+  }
   return (
     <Container>
       <StyledCard className="dashboard-main" elevation={3}>
@@ -69,69 +50,6 @@ export default function DashBoardHome() {
           </div>
         </div>
       </StyledCard>
-
-      {/* <CobaltContainer>
-        <CobaltCard elevation={3}>
-          <img
-            src="CobaltLogo.jpg"
-            style={{ width: '50%', padding: '5%' }}
-            alt="cobalt logo"
-          />
-          <form>
-            <label>
-              Please add token to your wallet
-              <select onChange={handleChange}>
-                <option>
-                  Please add token to your wallet
-                </option>
-                {cryptos.map(crypto => {
-                  return (<>
-                    <option key={crypto.name} value={crypto.name}>
-                      <img src={crypto.image} alt={crypto.name} width="40px" />
-                      {crypto.name}
-                    </option>
-                  </>)
-                })}
-              </select>
-            </label>
-          </form>
-          <h3>CBLT</h3>
-          <p>Current Price</p>
-          <SpaceAroundRow style={{ width: '100%' }}>
-            <span> .5 BTC</span>
-            <span> 2 ETH</span>
-            <span>100,000 USD</span>
-          </SpaceAroundRow>
-        </CobaltCard>
-        <CobaltCard elevation={3} className="ml-5">
-        <Activity />
-        </CobaltCard>
-        <SpaceAroundRow className="ml-5">
-          <Col>
-          <StyledCardHeightFit className="mb-5" elevation={3}>
-          <Row>
-        <Col>
-        <Wallet/>   
-        </Col>
-        </Row>
-        </StyledCardHeightFit>
-        <StyledCardHeightFit className="mb-5" elevation={3}>
-          <Row>
-        <Col>
-        <Wallet/>   
-        </Col>
-        </Row>
-        </StyledCardHeightFit>
-        <StyledCardHeightFit className="mb-5" elevation={3}>
-          <Row>
-        <Col>
-        <Wallet/>   
-        </Col>
-        </Row>
-          </StyledCardHeightFit>
-          </Col>
-        </SpaceAroundRow>
-      </CobaltContainer> */}
     </Container>
   );
 }

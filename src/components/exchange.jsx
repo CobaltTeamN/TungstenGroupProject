@@ -1,16 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Gear from '../icons/settings.svg'
 import Arrow from '../icons/arrow-down.svg'
 import Down from '../icons/chevron-down.svg'
-import { MyVerticallyCenteredModal } from './tokenSelection';
+import { TokenSelection } from './tokenSelection';
+import { GlobalState } from '../GlobalState';
+
 import './exchange.css';
 
 const Swap = (props) => {
+  const state = useContext(GlobalState)
+  const [metaMaskAddress] = state.web3API.userWeb3[0];
+  const swapForCblt = state.exchangeAPI.swapForCblt;
   const [modalShow, setModalShow] = useState(false);
+  const setAmount= state.exchangeAPI.amount[1];
+
+  console.log(state)
+  if(!state) {
+    console.log(metaMaskAddress)
+  }
+  function handleInput(e) {
+    let value = e.target.value
+    setAmount(value.toString());
+  };
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    swapForCblt()
+}
 
   return (
     <div className="swapwrapper mt-5">
-      <div className="swapcard">
+      <form className="swapcard"  onSubmit={handleSubmit}>
         <div className="cardtitle ml-4 mt-2 mb-3 mr-4">
           <h5>Swap</h5>
           <img alt="gear" src={Gear} />
@@ -22,7 +42,7 @@ const Swap = (props) => {
               className="form-input"
               type="number"
               placeholder="0.0"
-            // onChange={props.handleInput}
+              onChange={handleInput}
             ></input>
           </div>
           <div>
@@ -35,14 +55,14 @@ const Swap = (props) => {
               </div>
             </div>
             <div style={{ display: 'flex' }}>
-              <button className="tokenbtn choice" type="submit"
+              {/* <button className="tokenbtn choice" type="submit"
                 onClick={() => setModalShow(true)}>
                 {"CBLT"}  <img src={Down} alt="downarrow" />
               </button>
-              <MyVerticallyCenteredModal
+              <TokenSelection
                 show={modalShow}
                 onHide={() => setModalShow(false)}
-              />
+              /> */}
 
             </div>
           </div>
@@ -57,7 +77,7 @@ const Swap = (props) => {
               className="form-input"
               type="number"
               placeholder="0.0"
-            // onChange={props.handleInput}
+              disabled
             ></input>
           </div>
           <div>
@@ -65,9 +85,9 @@ const Swap = (props) => {
           </div>
         </div>
         <div className="swapbtn">
-          <button className="swapconfirmbtn mt-4">Select a token </button>
+          <button className="swapconfirmbtn mt-4">Buy Cobalt Tokens </button>
         </div>
-      </div>
+      </form>
     </div>
   )
 }

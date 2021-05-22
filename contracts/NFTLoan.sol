@@ -11,9 +11,13 @@ contract NFTLoan {
 
     //
     string internal nftName;
+    
+    //mapping(uint256 => string) internal nftNames;
 
     // Attaches the NFT id to a particular address
     mapping(uint256 => address) internal ownerId;
+    
+    mapping(address => string) public data;
     
     // Attaches the Nonce id to the address
     mapping(uint256 => address) internal ownerNonceId;
@@ -27,14 +31,16 @@ contract NFTLoan {
     // Attaches the NFT id to a string for the name
     //
     // NOTE --- No need to attach it to a string ID
-    mapping(uint256 => string) internal idToUri;
+    mapping(uint256 => string) public idToUri;
 
     function _mint(address _to, uint256 _tokenId) internal virtual {
         require(_to != address(0));
         require(ownerId[_tokenId] == address(0));
 
         _addNFToken(_to, _tokenId);
-
+        // Create a struct for 3 diff values: risk score, risk factor, interest
+        // use 4 uint64 
+        
         // Changed address of event to this
         emit Transfer(address(this), _to, _tokenId);
     }
@@ -144,16 +150,26 @@ contract NFTLoan {
     // Mint is can be the entry point where we check if the Oracle
     // gave this wallet a greenlight and is ready to create the NFT
     // Implmented the nonce function in this so that everything can be called at once
-    function mint(
+    function mintBorrower(
         address _to,
         uint256 _tokenId,
-        uint256 _nonceId,
+        string memory _uri,
+        string memory _data
+    ) public {
+        nftName = _uri;
+        _mint(_to, _tokenId);
+        _setTokenUri(_tokenId, _uri);
+        setEncrypted(_to, _data);
+    }
+    
+    function mintVoter(
+        address _to,
+        uint256 _tokenId,
         string memory _uri
     ) public {
-        _mint(_to, _tokenId);
-        _mintNonce(_to, _nonceId);
         _setTokenUri(_tokenId, _uri);
-    }
+        _mint(_to, _tokenId);
+        }
 
     function safeTransferFrom(
         address _from,
@@ -173,6 +189,13 @@ contract NFTLoan {
 
     
  
+    function setEncrypted(address _to, string memory _data) internal {
+        data[_to] = _data;
+    } 
+    
+    function seeData(address _from) public view returns (string memory _data) {
+        return data[_from];
+    }
  
     // ------------------------ Future development ----------------------------
     // Encrypted data

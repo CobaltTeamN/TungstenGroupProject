@@ -4,13 +4,11 @@ pragma solidity >=0.4.22 <0.9.0;
 import "./interfaces/Ownable.sol";
 
 contract ExchangeOracle is Ownable {
+    uint256 USDpriceETH = 400000;
     mapping(address => Token) tokenData; // Token information accessed by token address
 
     // Struct saving token data
     struct Token {
-        string name;
-        string symbol;
-        string img;
         uint256 value;
         bool active;
     }
@@ -18,35 +16,28 @@ contract ExchangeOracle is Ownable {
     // Events
     event deletedToken(address token);
 
-    event tokenUpdatedData(
-        string _name,
-        string _symbol,
-        string _img,
-        uint256 _value
-    );
+    event tokenUpdatedData(uint256 _value);
 
     constructor() {
         tokenData[0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE] = Token(
-            "Ethereum",
-            "ETH",
-            "url",
-            40000000000000,
+            1000000000000000000,
+            true
+        );
+        tokenData[0x433C6E3D2def6E1fb414cf9448724EFB0399b698] = Token(
+            2000000000000,
             true
         );
     }
 
     function updateToken(
         address _tokenAddress,
-        string memory _name,
-        string memory _symbol,
-        string memory _img,
         uint256 _value,
         bool _active
     ) public {
         // Update token data
-        tokenData[_tokenAddress] = Token(_name, _symbol, _img, _value, _active);
+        tokenData[_tokenAddress] = Token(_value, _active);
         // Emit event with new token information
-        emit tokenUpdatedData(_name, _symbol, _img, _value);
+        emit tokenUpdatedData(_value);
     }
 
     function priceOfPair(address _sellTokenAddress, address _buyTokenAddress)
@@ -65,10 +56,29 @@ contract ExchangeOracle is Ownable {
         pure
         returns (uint256 sellTokenPrice, uint256 buyTokenPrice)
     {
-        return (2, 3);
+        return (1, 1);
     }
 
-    function getValue(address _tokenAddress) public view returns (uint256) {
-        return tokenData[_tokenAddress].value;
+    function priceOfPairWithETH(
+        address _sellTokenAddress,
+        address _buyTokenAddress
+    )
+        public
+        view
+        returns (
+            uint256,
+            uint256,
+            uint256
+        )
+    {
+        return (
+            tokenData[_sellTokenAddress].value,
+            tokenData[_buyTokenAddress].value,
+            USDpriceETH
+        );
+    }
+
+    function priceOfETH() public view returns (uint256) {
+        return (USDpriceETH);
     }
 }
