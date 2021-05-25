@@ -10,8 +10,7 @@ library UniversalERC20 {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
-    IERC20 private constant WETH_MAINNET = IERC20(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
-    IERC20 private constant WETH_KINKEBY = IERC20(0xc778417E063141139Fce010982780140Aa0cD5Ab);
+    IERC20 private constant ZERO_ADDRESS = IERC20(0x0000000000000000000000000000000000000000);
     IERC20 private constant ETH_ADDRESS = IERC20(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
 
     function universalTransfer(IERC20 token, address to, uint256 amount) internal returns(bool) {
@@ -36,10 +35,10 @@ library UniversalERC20 {
         if (isETH(token)) {
             require(from == msg.sender && msg.value >= amount, "Wrong useage of ETH.universalTransferFrom()");
             if (to != address(this)) {
-                payable(address(uint160(to))).transfer(amount);
+                address(uint160(to)).transfer(amount);
             }
             if (msg.value > amount) {
-                payable(msg.sender).transfer(msg.value.sub(amount));
+                msg.sender.transfer(msg.value.sub(amount));
             }
         } else {
             token.safeTransferFrom(from, to, amount);
@@ -54,7 +53,7 @@ library UniversalERC20 {
         if (isETH(token)) {
             if (msg.value > amount) {
                 // Return remainder if exist
-                payable(msg.sender).transfer(msg.value.sub(amount));
+                msg.sender.transfer(msg.value.sub(amount));
             }
         } else {
             token.safeTransferFrom(msg.sender, address(this), amount);
@@ -64,16 +63,16 @@ library UniversalERC20 {
     function universalApprove(IERC20 token, address to, uint256 amount) internal {
         if (!isETH(token)) {
             if (amount == 0) {
-                token.safeApprove(to, 0);
+                token.safeIncreaseAllowance(to, 0);
                 return;
             }
 
             uint256 allowance = token.allowance(address(this), to);
             if (allowance < amount) {
                 if (allowance > 0) {
-                    token.safeApprove(to, 0);
+                    token.safeIncreaseAllowance(to, 0);
                 }
-                token.safeApprove(to, amount);
+                token.safeIncreaseAllowance(to, amount);
             }
         }
     }
@@ -86,12 +85,33 @@ library UniversalERC20 {
         }
     }
 
+    function universalDecimals(IERC20 token) internal view returns (uint256) {
+
+        if (isETH(token)) {
+            return 18;
+        }
+
+        (bool success, bytes memory data) = address(token).staticcall{gas:10000}(
+            abi.encodeWithSignature("decimals()")
+        );
+        if (!success || data.length == 0) {
+            (success, data) = address(token).staticcall{gas:10000}(
+                abi.encodeWithSignature("DECIMALS()")
+            );
+        }
+
+        return (success && data.length > 0) ? abi.decode(data, (uint256)) : 18;
+    }
 
     function isETH(IERC20 token) internal pure returns(bool) {
-        return (address(token) == address(WETH_MAINNET) || address(token) == address(ETH_ADDRESS) || address(token) == address(WETH_KINKEBY));
+        return (address(token) == address(ZERO_ADDRESS) || address(token) == address(ETH_ADDRESS));
     }
 
     function eq(IERC20 a, IERC20 b) internal pure returns(bool) {
         return a == b || (isETH(a) && isETH(b));
+    }
+
+    function notExist(IERC20 token) internal pure returns(bool) {
+        return (address(token) == address(-1));
     }
 }
