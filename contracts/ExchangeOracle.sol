@@ -1,3 +1,7 @@
+/*
+* before deploying oracle, onlyOwner modifier should be added back to test functions
+*/
+
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
@@ -12,7 +16,8 @@ contract ExchangeOracle is Ownable {
         string symbol;
         string img;
         uint256 value;
-        bool active;
+        bool activeFromToken;
+        bool activeDestToken;
     }
 
     // Events
@@ -31,13 +36,15 @@ contract ExchangeOracle is Ownable {
             "ETH",
             "url",
             1000000000000000000,
+            true,
             true
         );
         tokenData[0x433C6E3D2def6E1fb414cf9448724EFB0399b698] = Token(
             "Cobalt Rinkeby",
             "CBLT",
             "url",
-            27014488466940,
+            29836543717266,
+            true,
             true
         );
     }
@@ -48,10 +55,11 @@ contract ExchangeOracle is Ownable {
         string memory _symbol,
         string memory _img,
         uint256 _value,
-        bool _active
+        bool _fromActive,
+        bool _destActive
     ) public {
         // Update token data
-        tokenData[_tokenAddress] = Token(_name, _symbol, _img, _value, _active);
+        tokenData[_tokenAddress] = Token(_name, _symbol, _img, _value, _fromActive, _destActive);
         // Emit event with new token information
         emit tokenUpdatedData(_name, _symbol, _img, _value);
     }
@@ -61,21 +69,16 @@ contract ExchangeOracle is Ownable {
     view
     returns (uint256 sellTokenPrice, uint256 buyTokenPrice)
     {
-        return (
-        tokenData[_sellTokenAddress].value,
-        tokenData[_buyTokenAddress].value
-        );
-    }
-
-    function testConnection()
-    public
-    pure
-    returns (uint256 sellTokenPrice, uint256 buyTokenPrice)
-    {
-        return (2, 3);
+        if (tokenData[_sellTokenAddress].activeFromToken == true && tokenData[_buyTokenAddress].activeDestToken == true) {
+            return (
+            tokenData[_sellTokenAddress].value,
+            tokenData[_buyTokenAddress].value
+            );
+        }
     }
 
     function getValue(address _tokenAddress) public view returns (uint256) {
         return tokenData[_tokenAddress].value;
     }
+
 }
