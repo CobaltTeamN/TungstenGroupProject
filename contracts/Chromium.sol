@@ -93,7 +93,6 @@ contract Chromium is Ownable {
             require(cbltToken.universalBalanceOf(address(this)) >= returnAmount, "Not enough tokens in Treasury.");
 
             cbltToken.universalTransfer(msg.sender, returnAmount);
-            feeTotal[fromToken] = SafeMath.add(feeTotal[fromToken], usdFee);
             liquidityAmount[fromToken] = SafeMath.add(liquidityAmount[fromToken], SafeMath.add(amount, usdFee));
             emit ChromiumTrade(msg.sender, address(fromToken), amount, returnAmount);
         } else {
@@ -115,7 +114,6 @@ contract Chromium is Ownable {
             require(cbltToken.universalBalanceOf(address(this)) >= returnAmount, "Not enough tokens in Treasury.");
 
             cbltToken.universalTransfer(msg.sender, returnAmount);
-            feeTotal[fromToken] = SafeMath.add(feeTotal[fromToken], usdFee);
             liquidityAmount[fromToken] = SafeMath.add(liquidityAmount[fromToken], SafeMath.add(amount, usdFee));
             emit ChromiumTrade(msg.sender, address(fromToken), amount, returnAmount);
         }
