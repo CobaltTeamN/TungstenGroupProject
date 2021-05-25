@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
 import "./interfaces/Ownable.sol";
@@ -218,50 +217,43 @@ contract Bank is Ownable {
     mapping(address => Loan) loanBook;
 
     /**
-     * @dev Struct used to store decimal values
+     * @dev mapping used to record information on loan tiers i.e. maximum period, votes
      */
-    struct Rational {
-        uint256 numerator;
-        uint256 denominator;
+    mapping(uint256 => Tier) tierBook;
+
+    /**
+     * @dev mapping used to record information on loan tiers i.e. maximum period, votes
+     */
+    struct Tier {
+        uint128 voterLimit;
+        uint128 maximumPeriodPayment;
     }
 
     /**
-     * @dev Struct created so save all loan information
+     * @dev Struct to store loan information
      */
     struct Loan {
         address borrower; // Address of wallet
-        uint256 dueDate; // Time of contract ending
-        Rational interestRate; // Interest rate for loan
-        uint256 paymentPeriod; // Epoch in months
         uint256 remainingBalance; // Remaining balance
-        uint256 minimumPayment; // MinimumPayment
-        uint256 collateralPerPayment; // CollateralPerPayment
+        uint256 minimumPayment; // MinimumPayment // Can be calculated off total amount
         bool active; // Is the current loan active (Voted yes)
         bool initialized; // Does the borrower have a current loan application
-        uint256 timeCreated; // Time of loan application also epoch in days
-        uint256 yes; // Amount of votes for yes
-        uint256 no; // Amount of votes for no
-        uint256 totalVote; // Total amount determined by tier
-        uint256 tier; // Tier based on amount intended to be borrowed
+        uint64 dueDate; // Time of contract ending
+        uint64 timeCreated; // Time of loan application also epoch in days
+        uint64 totalVote; // Total amount determined by tier
+        uint64 yes; // Amount of votes for yes
     }
 
     /**
      * @dev Recalculates interest and also conducts check and balances
      */
 
-    function newLoan(
-        uint256 _paymentPeriod,
-        uint256 _minimumPayment, // NEEDS TO BE CALCULATED
-        uint256 principal
-    ) public payable {
-        // Needs user approve on transfer funds amount
-        // token.approve(address(this), _minimumPayment);
-        // loanbook[msg.sender] -> loanbook[uint signature]
+    function newLoan(uint256 _paymentPeriod, uint256 principal) public payable {
+        // require(_paymentPeriod <= )
 
         uint256 riskScore = 20; // NFT ENTRY!!!!!!
         uint256 riskFactor = 15; // NFT ENTRY!!!!
         uint256 numerator = 2; // NFT ENTRY!!!!
-        uint256 denominator = 10; // NFT ENTRY!!!!
 
         // Pulling prices from Oracle
         (bool result, bytes memory data) =
@@ -302,22 +294,22 @@ contract Bank is Ownable {
             "Payment was not approved."
         );
 
-        loanBook[msg.sender] = Loan(
-            msg.sender,
-            (block.timestamp + _paymentPeriod),
-            Rational(numerator, denominator),
-            _paymentPeriod,
-            principal,
-            _minimumPayment, // Needs to be calculated!!!!!!
-            collateralPerPayment,
-            false,
-            true,
-            block.timestamp,
-            0,
-            0,
-            0,
-            0
-        );
+        // loanBook[msg.sender] = Loan(
+        //     msg.sender,
+        //     (block.timestamp + _paymentPeriod),
+        //     // Rational(numerator, denominator),
+        //     _paymentPeriod,
+        //     principal,
+        //     // _minimumPayment, // Needs to be calculated!!!!!!
+        //     collateralPerPayment,
+        //     false,
+        //     true,
+        //     block.timestamp,
+        //     0,
+        //     0,
+        //     0,
+        //     0
+        // );
 
         uint256 timeCreated; // Time of loan application
         uint256 yes; // Amount of votes for yes
@@ -339,13 +331,13 @@ contract Bank is Ownable {
      * @dev Prevents overflows
      *
      */
-    function multiplyDecimal(uint256 x, Rational memory r)
-        internal
-        pure
-        returns (uint256)
-    {
-        return (x * r.numerator) / r.denominator;
-    }
+    // function multiplyDecimal(uint256 x, Rational memory r)
+    //     internal
+    //     pure
+    //     returns (uint256)
+    // {
+    //     return (x * r.numerator) / r.denominator;
+    // }
 
     /**
      * @dev Recalculates interest and also conducts check and balances
@@ -366,28 +358,6 @@ contract Bank is Ownable {
     }
 
     /**
-     * @dev he loan is parameterized with collateralPerPayment,
-     *which represents the amount of collateral that will be returned
-     * or forfeited based on a minimumPayment. If the borrower pays an
-     *amount different than the minimum, the amount of collateral returned
-     * is adjusted proportionally.
-     *
-     */
-    function calculateCollateral(uint256 payment)
-        internal
-        view
-        returns (uint256 units)
-    {
-        uint256 product = loanBook[msg.sender].collateralPerPayment * payment;
-        require(
-            product / loanBook[msg.sender].collateralPerPayment == payment,
-            "payment causes overflow"
-        );
-        units = product / loanBook[msg.sender].minimumPayment;
-        return units;
-    }
-
-    /**
      * @dev a symmetry between accepting loan payments and handling missed payments.
      * In both cases, there is an adjustment to the remaining principal balance and a
      * corresponding transfer of tokens. The only difference is that the tokens are
@@ -397,23 +367,24 @@ contract Bank is Ownable {
      *Additional Note: the code above does the token transfer last, which follows the
      * Checks-Effects-Interactions pattern to avoid potential reentrancy vulnerabilities
      */
+
     function processPeriod(
         uint256 interest,
         uint256 principal,
         address recipient
     ) internal {
         if (recipient == 0x0000000000000000000000000000000000000000) {
-            uint256 units = calculateCollateral(interest + principal);
+            // uint256 units = calculateCollateral(interest + principal);
 
             loanBook[msg.sender].remainingBalance -= principal;
 
-            loanBook[msg.sender].dueDate += loanBook[msg.sender].paymentPeriod;
+            loanBook[msg.sender].dueDate += 30; // days
         } else {
-            uint256 units = calculateCollateral(interest + principal);
+            // uint256 units = calculateCollateral(interest + principal);
 
             loanBook[msg.sender].remainingBalance -= principal;
 
-            loanBook[msg.sender].dueDate += loanBook[msg.sender].paymentPeriod;
+            loanBook[msg.sender].dueDate += 30; // days
         }
     }
 
@@ -495,6 +466,8 @@ contract Bank is Ownable {
 
     mapping(uint256 => address[]) uintArray;
 
+    // mapping(uint => uint) voterCost;
+
     // User tries to vote
     // Contract checks if they have sufficient funds in CBLT tokens - Tiers
     // Function checks if 7 days have passsed since loan first went into voting
@@ -539,23 +512,6 @@ contract Bank is Ownable {
                 1000000000000000000,
                 SafeMath.mul(2000000000000, 2843)
             );
-
-        if (loanBook[loanSignature].tier == 1) {
-            require(balanceInCBLT >= SafeMath.mul(100, USDtoCBLT));
-            require(loanBook[loanSignature].totalVote == 100);
-        } else if (loanBook[loanSignature].tier == 2) {
-            require(balanceInCBLT >= SafeMath.mul(10000, USDtoCBLT));
-            require(loanBook[loanSignature].totalVote == 200);
-        } else if (loanBook[loanSignature].tier == 3) {
-            require(balanceInCBLT >= SafeMath.mul(50000, USDtoCBLT));
-            require(loanBook[loanSignature].totalVote == 400);
-        } else if (loanBook[loanSignature].tier == 4) {
-            require(balanceInCBLT >= SafeMath.mul(100000, USDtoCBLT));
-            require(loanBook[loanSignature].totalVote == 800);
-        } else if (loanBook[loanSignature].tier == 5) {
-            require(balanceInCBLT >= SafeMath.mul(250000, USDtoCBLT));
-            require(loanBook[loanSignature].totalVote == 1600);
-        }
     }
 
     /**
@@ -577,21 +533,18 @@ contract Bank is Ownable {
         returns (bool voted)
     {
         // bool found = false;
-        require(
-            voteBook[_signature][msg.sender] == false,
-            "You have already voted."
-        );
-
-        voteBook[_signature][msg.sender] = true;
-
-        if (_vote == true) {
-            loanBook[msg.sender].yes++;
-        } else {
-            loanBook[msg.sender].no++;
-        }
-        loanBook[msg.sender].totalVote++;
-
-        return true;
+        // require(
+        //     voteBook[_signature][msg.sender] == false,
+        //     "You have already voted."
+        // );
+        // voteBook[_signature][msg.sender] = true;
+        // if (_vote == true) {
+        //     loanBook[msg.sender].yes++;
+        // } else {
+        //     loanBook[msg.sender].no++;
+        // }
+        // loanBook[msg.sender].totalVote++;
+        // return true;
     }
 
     /**
@@ -635,6 +588,8 @@ contract Bank is Ownable {
     // if voting is past 7 days then loan ends. Must take 21 votes
 
     // **************************** Staking *******************************
+
+    // Pools
 
     mapping(uint256 => mapping(uint256 => uint256)) stakingRewardRate;
 
@@ -707,6 +662,11 @@ contract Bank is Ownable {
     }
 
     function depositEth(uint256 _timeStakedTier) public payable {
+        require(
+            _timeStakedTier > 0 && _timeStakedTier < 6,
+            "Tier number must be a number between 1 and 5."
+        );
+
         // Check the amountStakedTier based on deposit
         uint256 _amountStakedTier;
 
@@ -984,3 +944,30 @@ contract Bank is Ownable {
 // Long term stakers - 12
 // long term pool
 // staking - indebt
+
+// Points of entry, restricting value
+// Validate
+
+// 25% - 6
+// 50% - 12
+
+// FUNCTION TO VALIDATE LENDING
+
+// function validate(address[] memory _votersAddress, bool _voteFinal, uint _loanSignature ) public { // only devs
+//     // Oracle inject
+//     // loanbook[_loanSignature].tierUSD;
+
+//     uint256 USDtoCBLT =
+//         SafeMath.div(
+//             1000000000000000000,
+//             SafeMath.mul(2000000000000, 2843)
+//         );
+
+//     for(uint i = 0; i < _votersAddress.length;i++) { // 8 // 100
+//          _votersAddress[i];
+//          // uint tierVoters = loanbook[_loanSignature].maxVoters;
+//          // Two things
+//          // token.balanceOf(_votersAddress[i]);
+//     }
+//     // loanbook[_loanSignature].status;
+// }

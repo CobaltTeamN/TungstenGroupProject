@@ -46,7 +46,7 @@ contract Chromium is Ownable {
      * @dev this function will get the exchagne rate for the token being exchanged for cblt token
      * it will call on the oracle to make the calculation. the returnAmount is going to be
      * three times larger than the actual amount (so that we can get decimals) which means the returnAmount
-     * will need to be divided by 1000 by the frontend to get the correct amount that will be swapped
+     * will need to be divided by 100000 by the frontend to get the correct amount that will be swapped
     */
     function getCbltExchangeRate(
         IERC20 fromToken,
@@ -61,7 +61,6 @@ contract Chromium is Ownable {
         returnAmount = SafeMath.mul(amount,
             SafeMath.findRate(sellTokenValue, buyTokenValue)
         );
-
     }
 
     /**
