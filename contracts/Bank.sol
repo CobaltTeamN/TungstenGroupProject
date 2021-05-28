@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
 import "./interfaces/Ownable.sol";
@@ -168,7 +169,7 @@ contract Bank is Ownable {
         uint256 amountBorrowed = SafeMath.div(_principal, oneUSDinETH);
         require(amountBorrowed <= loanTiers[userMaxTier].principalLimit);
 
-        (uint256 CBLTprice, uint256 ETHprice) =
+        (bool possibleTrade, uint256 CBLTprice, uint256 ETHprice) =
             oracle.priceOfPair(
                 address(token),
                 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
@@ -307,7 +308,7 @@ contract Bank is Ownable {
         uint256 _amountStakedTier,
         uint256 percentBasedAmount
     ) internal returns (uint256) {
-        (uint256 CBLTprice, uint256 ETHprice) =
+        (bool tokensAllowed, uint256 CBLTprice, uint256 ETHprice) =
             oracle.priceOfPair(
                 address(token),
                 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
@@ -376,7 +377,7 @@ contract Bank is Ownable {
         uint256 percentBasedAmount = 100;
         uint256 userReserved = userBook[msg.sender].cbltReserved;
 
-        (uint256 CBLTprice, uint256 ETHprice) =
+        (bool tokensAllowed, uint256 CBLTprice, uint256 ETHprice) =
             oracle.priceOfPair(
                 address(token),
                 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE

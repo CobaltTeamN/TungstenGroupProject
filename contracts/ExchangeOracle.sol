@@ -10,7 +10,8 @@ contract ExchangeOracle is Ownable {
     // Struct saving token data
     struct Token {
         uint256 value;
-        bool active;
+        bool fromActive;
+        bool destActive;
     }
 
     // Events
@@ -21,10 +22,12 @@ contract ExchangeOracle is Ownable {
     constructor() {
         tokenData[0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE] = Token(
             1000000000000000000,
+            true,
             true
         );
         tokenData[0x433C6E3D2def6E1fb414cf9448724EFB0399b698] = Token(
             2000000000000,
+            true,
             true
         );
     }
@@ -32,29 +35,40 @@ contract ExchangeOracle is Ownable {
     function updateToken(
         address _tokenAddress,
         uint256 _value,
-        bool _active
+        bool _fromActive,
+        bool _destActive
     ) public {
         // Update token data
-        tokenData[_tokenAddress] = Token(_value, _active);
+        tokenData[_tokenAddress] = Token(_value, _fromActive, _destActive);
         // Emit event with new token information
         emit tokenUpdatedData(_value);
     }
 
     function priceOfPair(address _sellTokenAddress, address _buyTokenAddress)
-        public
-        view
-        returns (uint256 sellTokenPrice, uint256 buyTokenPrice)
+    public
+    view
+    returns (bool possibleTrade, uint256 sellTokenPrice, uint256 buyTokenPrice)
     {
-        return (
+        require(_sellTokenAddress != _buyTokenAddress, "ExchangeOracle:: Tokens can't have the same address");
+        if (tokenData[_sellTokenAddress].fromActive == true && tokenData[_buyTokenAddress].destActive == true) {
+            return (
+            possibleTrade = true,
             tokenData[_sellTokenAddress].value,
             tokenData[_buyTokenAddress].value
-        );
+            );
+        } else {
+            return (
+            possibleTrade = false,
+            0,
+            0
+            );
+        }
     }
 
     function testConnection()
-        public
-        pure
-        returns (uint256 sellTokenPrice, uint256 buyTokenPrice)
+    public
+    pure
+    returns (uint256 sellTokenPrice, uint256 buyTokenPrice)
     {
         return (1, 1);
     }
@@ -63,18 +77,18 @@ contract ExchangeOracle is Ownable {
         address _sellTokenAddress,
         address _buyTokenAddress
     )
-        public
-        view
-        returns (
-            uint256,
-            uint256,
-            uint256
-        )
+    public
+    view
+    returns (
+        uint256,
+        uint256,
+        uint256
+    )
     {
         return (
-            tokenData[_sellTokenAddress].value,
-            tokenData[_buyTokenAddress].value,
-            USDpriceETH
+        tokenData[_sellTokenAddress].value,
+        tokenData[_buyTokenAddress].value,
+        USDpriceETH
         );
     }
 
