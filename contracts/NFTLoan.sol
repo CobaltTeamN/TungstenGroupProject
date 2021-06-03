@@ -1,124 +1,65 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.6.0 <0.8.0;
+import "./interfaces/SafeMath.sol";
 
 contract NFTLoan {
-    // Events
+    string internal nftName;
+
+    mapping(uint256 => address) internal ownerId;
+
+    mapping(address => Data) private userData;
+
+    mapping(address => uint256) private ownerToNFTokenCount;
+
+    mapping(uint256 => string) public idToUri;
+
+    address Oracle;
+    address Treasury;
+
+    struct Data {
+        uint256 flatfee;
+        uint64 riskScore;
+        uint64 riskFactor;
+        uint64 interestRate;
+        uint64 userMaxTier;
+    }
+
+    modifier canTransfer(uint256 _tokenId) {
+        address tokenOwner = ownerId[_tokenId];
+        require(tokenOwner == msg.sender);
+        _;
+    }
+
+    modifier validNFToken(uint256 _tokenId) {
+        require(ownerId[_tokenId] != address(0));
+        _;
+    }
+
+    modifier validEntry() {
+        require(msg.sender == Oracle || msg.sender == Treasury);
+        _;
+    }
+
     event Transfer(
         address indexed _from,
         address indexed _to,
         uint256 indexed _tokenId
     );
 
-    //
-    string internal nftName;
-    
-    //mapping(uint256 => string) internal nftNames;
-
-    // Attaches the NFT id to a particular address
-    mapping(uint256 => address) internal ownerId;
-    
-    mapping(address => string) public data;
-    
-    // Attaches the Nonce id to the address
-    mapping(uint256 => address) internal ownerNonceId;
-
-    // Creates a counter for how many NFTokens an account has
-    //
-    // NOTE ----- Might not need this - We can create another NFT inside
-    // another mapping. This should happen on minting.
-    mapping(address => uint256) private ownerToNFTokenCount;
-
-    // Attaches the NFT id to a string for the name
-    //
-    // NOTE --- No need to attach it to a string ID
-    mapping(uint256 => string) public idToUri;
-
-    function _mint(address _to, uint256 _tokenId) internal virtual {
-        require(_to != address(0));
-        require(ownerId[_tokenId] == address(0));
-
-        _addNFToken(_to, _tokenId);
-        // Create a struct for 3 diff values: risk score, risk factor, interest
-        // use 4 uint64 
-        
-        // Changed address of event to this
-        emit Transfer(address(this), _to, _tokenId);
-    }
-    
-    // Created a separate mint function for the NFT that will hold the Nonce
-    // This NFT will have its own id, but as for right now both nfts will hold the same name
-    function _mintNonce(address _to, uint256 _nonceId) internal virtual {
-        require(_to != address(0));
-        require(ownerNonceId[_nonceId] == address(0));
-        
-        _addNFTNonce(_to, _nonceId);
-        
-        emit Transfer(address(this), _to, _nonceId);
+    constructor() {
+        nftName = "CNFT";
+        Oracle = 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4;
+        Treasury = 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4;
     }
 
-    function _addNFToken(address _to, uint256 _tokenId) internal virtual {
-        require(ownerId[_tokenId] == address(0));
-
-        // Next step would be encrypt the information
-        // Create a struct inside the mapping or a different mapping
-        // where we could store the data
-        ownerId[_tokenId] = _to;
-        ownerToNFTokenCount[_to] = ownerToNFTokenCount[_to] + 1;
-    }
-    
-    
-    //Does not add to the counter but attaches the owner address to "_to" so that ids cant be replicated
-    //Not sure how to implement the other regular functions with the nonceNFT (like _removeNFToken)
-    function _addNFTNonce(address _to, uint256 _nonceId) internal virtual {
-        require(ownerNonceId[_nonceId] == address(0));
-        ownerNonceId[_nonceId] = _to;
-    }
-
-    function _removeNFToken(address _from, uint256 _tokenId) internal virtual {
-        require(ownerId[_tokenId] == _from);
-        ownerToNFTokenCount[_from] = ownerToNFTokenCount[_from] - 1;
-        delete ownerId[_tokenId];
-    }
-
-    // Testing
     function balanceOf(address _owner) external view returns (uint256) {
         require(_owner != address(0));
         return _getOwnerNFTCount(_owner);
     }
 
-    function _getOwnerNFTCount(address _owner)
-        internal
-        view
-        virtual
-        returns (uint256)
-    {
-        return ownerToNFTokenCount[_owner];
-    }
-
-    // Testing
     function ownerOf(uint256 _tokenId) external view returns (address _owner) {
         _owner = ownerId[_tokenId];
         require(_owner != address(0));
-    }
-
-    // Might have to get rid off -- We are accessing the NFT using just wallet address
-    function _setTokenUri(uint256 _tokenId, string memory _uri)
-        internal
-        validNFToken(_tokenId)
-    {
-        idToUri[_tokenId] = _uri;
-        nftName = _uri;
-    }
-
-    // Looks good -- Only needs to be accessed by the Oracle after validation goes through
-    modifier validNFToken(uint256 _tokenId) {
-        require(ownerId[_tokenId] != address(0));
-        _;
-    }
-
-    //testing
-    function name() external view returns (string memory _name) {
-        _name = nftName;
     }
 
     function _safeTransferFrom(
@@ -133,12 +74,6 @@ contract NFTLoan {
         _transfer(_to, _tokenId);
     }
 
-    modifier canTransfer(uint256 _tokenId) {
-        address tokenOwner = ownerId[_tokenId];
-        require(tokenOwner == msg.sender);
-        _;
-    }
-
     function _transfer(address _to, uint256 _tokenId) internal {
         address from = ownerId[_tokenId];
         _removeNFToken(from, _tokenId);
@@ -147,30 +82,49 @@ contract NFTLoan {
         emit Transfer(from, _to, _tokenId);
     }
 
-    // Mint is can be the entry point where we check if the Oracle
-    // gave this wallet a greenlight and is ready to create the NFT
-    // Implmented the nonce function in this so that everything can be called at once
-    function mintBorrower(
-        address _to,
-        uint256 _tokenId,
-        string memory _uri,
-        string memory _data
-    ) public {
-        nftName = _uri;
-        _mint(_to, _tokenId);
-        _setTokenUri(_tokenId, _uri);
-        setEncrypted(_to, _data);
+    function name() external view returns (string memory _name) {
+        _name = nftName;
     }
-    
-    function mintVoter(
+
+    function _setTokenUri(uint256 _tokenId, string memory _uri)
+        internal
+        validNFToken(_tokenId)
+    {
+        idToUri[_tokenId] = _uri;
+    }
+
+    function _mint(address _to, uint256 _tokenId) internal {
+        require(_to != address(0));
+        require(ownerId[_tokenId] == address(0));
+
+        _addNFToken(_to, _tokenId);
+
+        emit Transfer(address(this), _to, _tokenId);
+    }
+
+    function mintBorrower(
+        // Only Oracle
         address _to,
         uint256 _tokenId,
+        uint64 _riskScore,
+        uint64 _riskFactor,
+        uint64 _interestRate,
+        uint64 _userMaxTier,
+        uint256 _flatfee,
         string memory _uri
     ) public {
-        _setTokenUri(_tokenId, _uri);
         _mint(_to, _tokenId);
-        }
+        _setTokenUri(_tokenId, _uri);
+        userData[_to] = Data(
+            _flatfee,
+            _riskScore,
+            _riskFactor,
+            _interestRate,
+            _userMaxTier
+        );
+    }
 
+<<<<<<< HEAD
     function safeTransferFrom(
         address _from,
         address _to,
@@ -209,4 +163,51 @@ contract NFTLoan {
     //
     // Making a payment on loan will connect to the NFT and update the latest loan Status
     // NFT will handle striking system, colleting strikes on missed payments.
+=======
+    function _addNFToken(address _to, uint256 _tokenId) internal {
+        require(ownerId[_tokenId] == address(0));
+
+        ownerId[_tokenId] = _to;
+        ownerToNFTokenCount[_to] = ownerToNFTokenCount[_to] + 1;
+    }
+
+    function _removeNFToken(address _from, uint256 _tokenId) internal {
+        require(ownerId[_tokenId] == _from);
+        ownerToNFTokenCount[_from] = ownerToNFTokenCount[_from] - 1;
+        delete ownerId[_tokenId];
+    }
+
+    function _getOwnerNFTCount(address _owner) internal view returns (uint256) {
+        return ownerToNFTokenCount[_owner];
+    }
+
+    function getUser(address _from)
+        public
+        view
+        validEntry
+        returns (
+            uint256,
+            uint256,
+            uint256,
+            uint256,
+            uint256
+        )
+    {
+        return (
+            userData[_from].riskScore,
+            userData[_from].riskScore,
+            userData[_from].riskScore,
+            userData[_from].riskScore,
+            userData[_from].riskScore
+        );
+    }
+
+    function setOracle(address _newOracle) public validEntry {
+        Oracle = _newOracle;
+    }
+
+    function setTreasury(address _newTreasury) public validEntry {
+        Treasury = _newTreasury;
+    }
+>>>>>>> b1a7b8b14e7e066e9cd3a15b5cc5b8fa50629e37
 }

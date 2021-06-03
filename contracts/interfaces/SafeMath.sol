@@ -60,7 +60,7 @@ library SafeMath {
      * number
     */
     function findRate(uint256 a, uint256 b) internal pure returns (uint256) {
-        uint256 c = a*(10 ** 6) / b;
+        uint256 c = a*(10 ** 18) / b;
         return c;
 
     }
