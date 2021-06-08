@@ -58,14 +58,13 @@ library SafeMath {
      * multiply the amount by a factor of 3 so that we can get three decimals
      * on the front end, the return will need to be divided by 1000 to get the actual
      * number
-    */
+     */
     function findRate(uint256 a, uint256 b) internal pure returns (uint256) {
-        uint256 c = a*(10 ** 18) / b;
+        uint256 c = (a * (10**18)) / b;
         return c;
-
     }
 
-    function findFee(uint a) internal pure returns (uint) {
+    function findFee(uint256 a) internal pure returns (uint256) {
         return a / 200;
     }
 }
