@@ -124,6 +124,46 @@ contract NFTLoan {
         );
     }
 
+<<<<<<< HEAD
+    function safeTransferFrom(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) external {
+        _safeTransferFrom(_from, _to, _tokenId);
+    }
+
+    // An encrypter has function for the NFT to protect certain sensitive data.
+
+    function Encrypter(address _to , uint256 _tokenId) 
+    public pure returns (bytes32)
+    {
+        return keccak256(abi.encodePacked(_to , _tokenId));
+    }
+
+    
+ 
+    function setEncrypted(address _to, string memory _data) internal {
+        data[_to] = _data;
+    } 
+    
+    function seeData(address _from) public view returns (string memory _data) {
+        return data[_from];
+    }
+ 
+    // ------------------------ Future development ----------------------------
+    // Encrypted data
+    // Minting two NFTs -- Encrypted data and key do decrypt it
+    // If user defaults on loan - Both NFTs is automatically transfered to Oracle
+    //
+    // Thoughts
+    // Loans will have a signature generated on loan application - This signature could
+    // be used to link the NFT to the user - It could perhaps be generated on the NFT first
+    // and then given to treasure as the key to generate the loan with.
+    //
+    // Making a payment on loan will connect to the NFT and update the latest loan Status
+    // NFT will handle striking system, colleting strikes on missed payments.
+=======
     function _addNFToken(address _to, uint256 _tokenId) internal {
         require(ownerId[_tokenId] == address(0));
 
@@ -169,4 +209,5 @@ contract NFTLoan {
     function setTreasury(address _newTreasury) public validEntry {
         Treasury = _newTreasury;
     }
+>>>>>>> b1a7b8b14e7e066e9cd3a15b5cc5b8fa50629e37
 }

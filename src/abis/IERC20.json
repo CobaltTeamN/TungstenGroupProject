@@ -196,7 +196,7 @@
   "source": "// SPDX-License-Identifier: MIT\npragma solidity >=0.4.22 <0.9.0;\n\n// making sure the tokens that are deposited follow the ERC20 format\nabstract contract IERC20 {\n    event Transfer(address indexed from, address indexed to, uint256 value);\n    event Approval(address indexed owner, address indexed spender, uint256 value);\n\n    function totalSupply() external view virtual returns (uint256);\n\n    function balanceOf(address account) external view virtual returns (uint256);\n\n    function allowance(address owner, address spender) external view virtual returns (uint256);\n\n    function transfer(address recipient, uint256 amount) external virtual returns (bool);\n\n    function approve(address spender, uint256 amount) external virtual returns (bool);\n\n    function transferFrom(address sender, address recipient, uint256 amount) external virtual returns (bool);\n}\n",
   "sourcePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/interfaces/IERC20.sol",
   "ast": {
-    "absolutePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/interfaces/IERC20.sol",
+    "absolutePath": "/D/TungstenGroupProject/contracts/interfaces/IERC20.sol",
     "exportedSymbols": {
       "IERC20": [
         7062
@@ -218,7 +218,7 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "32:32:14"
+        "src": "33:32:3"
       },
       {
         "abstract": true,
@@ -1026,7 +1026,7 @@
   },
   "legacyAST": {
     "attributes": {
-      "absolutePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/interfaces/IERC20.sol",
+      "absolutePath": "/D/TungstenGroupProject/contracts/interfaces/IERC20.sol",
       "exportedSymbols": {
         "IERC20": [
           7062
@@ -1049,7 +1049,7 @@
         },
         "id": 6995,
         "name": "PragmaDirective",
-        "src": "32:32:14"
+        "src": "33:32:3"
       },
       {
         "attributes": {
@@ -1924,7 +1924,19 @@
   },
   "networks": {},
   "schemaVersion": "3.3.4",
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+  "updatedAt": "2021-05-10T06:22:15.234Z",
+=======
+  "updatedAt": "2021-05-09T21:43:05.124Z",
+>>>>>>> 5de18e0f500a89f1f641d061d6eee7abf148037d
+=======
+  "updatedAt": "2021-05-19T01:49:10.705Z",
+>>>>>>> f3fb05f71f97846c82102ff724626038b983b5c6
+=======
   "updatedAt": "2021-06-02T18:15:08.401Z",
+>>>>>>> b1a7b8b14e7e066e9cd3a15b5cc5b8fa50629e37
   "devdoc": {
     "kind": "dev",
     "methods": {},

@@ -240,10 +240,10 @@
   "deployedGeneratedSources": [],
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "// SPDX-License-Identifier: MIT\npragma solidity >=0.4.22 <0.9.0;\n\nimport \"./IERC20.sol\";\n\n//\n//  [ msg.sender ]\n//       | |\n//       | |\n//       \\_/\n// +---------------+ ________________________________\n// | OneSplitAudit | _______________________________  \\\n// +---------------+                                 \\ \\\n//       | |                      ______________      | | (staticcall)\n//       | |                    /  ____________  \\    | |\n//       | | (call)            / /              \\ \\   | |\n//       | |                  / /               | |   | |\n//       \\_/                  | |               \\_/   \\_/\n// +--------------+           | |           +----------------------+\n// | OneSplitWrap |           | |           |   OneSplitViewWrap   |\n// +--------------+           | |           +----------------------+\n//       | |                  | |                     | |\n//       | | (delegatecall)   | | (staticcall)        | | (staticcall)\n//       \\_/                  | |                     \\_/\n// +--------------+           | |             +------------------+\n// |   OneSplit   |           | |             |   OneSplitView   |\n// +--------------+           | |             +------------------+\n//       | |                  / /\n//        \\ \\________________/ /\n//         \\__________________/\n//\n\n\ncontract IOneSplitConsts {\n    // flags = FLAG_DISABLE_UNISWAP + FLAG_DISABLE_BANCOR + ...\n    uint256 internal constant FLAG_DISABLE_UNISWAP = 0x01;\n    uint256 internal constant DEPRECATED_FLAG_DISABLE_KYBER = 0x02; // Deprecated\n    uint256 internal constant FLAG_DISABLE_BANCOR = 0x04;\n    uint256 internal constant FLAG_DISABLE_OASIS = 0x08;\n    uint256 internal constant FLAG_DISABLE_COMPOUND = 0x10;\n    uint256 internal constant FLAG_DISABLE_FULCRUM = 0x20;\n    uint256 internal constant FLAG_DISABLE_CHAI = 0x40;\n    uint256 internal constant FLAG_DISABLE_AAVE = 0x80;\n    uint256 internal constant FLAG_DISABLE_SMART_TOKEN = 0x100;\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_ETH = 0x200; // Deprecated, Turned off by default\n    uint256 internal constant FLAG_DISABLE_BDAI = 0x400;\n    uint256 internal constant FLAG_DISABLE_IEARN = 0x800;\n    uint256 internal constant FLAG_DISABLE_CURVE_COMPOUND = 0x1000;\n    uint256 internal constant FLAG_DISABLE_CURVE_USDT = 0x2000;\n    uint256 internal constant FLAG_DISABLE_CURVE_Y = 0x4000;\n    uint256 internal constant FLAG_DISABLE_CURVE_BINANCE = 0x8000;\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_DAI = 0x10000; // Deprecated, Turned off by default\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_USDC = 0x20000; // Deprecated, Turned off by default\n    uint256 internal constant FLAG_DISABLE_CURVE_SYNTHETIX = 0x40000;\n    uint256 internal constant FLAG_DISABLE_WETH = 0x80000;\n    uint256 internal constant FLAG_DISABLE_UNISWAP_COMPOUND = 0x100000; // Works only when one of assets is ETH or FLAG_ENABLE_MULTI_PATH_ETH\n    uint256 internal constant FLAG_DISABLE_UNISWAP_CHAI = 0x200000; // Works only when ETH<>DAI or FLAG_ENABLE_MULTI_PATH_ETH\n    uint256 internal constant FLAG_DISABLE_UNISWAP_AAVE = 0x400000; // Works only when one of assets is ETH or FLAG_ENABLE_MULTI_PATH_ETH\n    uint256 internal constant FLAG_DISABLE_IDLE = 0x800000;\n    uint256 internal constant FLAG_DISABLE_MOONISWAP = 0x1000000;\n    uint256 internal constant FLAG_DISABLE_UNISWAP_V2 = 0x2000000;\n    uint256 internal constant FLAG_DISABLE_UNISWAP_V2_ETH = 0x4000000;\n    uint256 internal constant FLAG_DISABLE_UNISWAP_V2_DAI = 0x8000000;\n    uint256 internal constant FLAG_DISABLE_UNISWAP_V2_USDC = 0x10000000;\n    uint256 internal constant FLAG_DISABLE_ALL_SPLIT_SOURCES = 0x20000000;\n    uint256 internal constant FLAG_DISABLE_ALL_WRAP_SOURCES = 0x40000000;\n    uint256 internal constant FLAG_DISABLE_CURVE_PAX = 0x80000000;\n    uint256 internal constant FLAG_DISABLE_CURVE_RENBTC = 0x100000000;\n    uint256 internal constant FLAG_DISABLE_CURVE_TBTC = 0x200000000;\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_USDT = 0x400000000; // Deprecated, Turned off by default\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_WBTC = 0x800000000; // Deprecated, Turned off by default\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_TBTC = 0x1000000000; // Deprecated, Turned off by default\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_RENBTC = 0x2000000000; // Deprecated, Turned off by default\n    uint256 internal constant FLAG_DISABLE_DFORCE_SWAP = 0x4000000000;\n    uint256 internal constant FLAG_DISABLE_SHELL = 0x8000000000;\n    uint256 internal constant FLAG_ENABLE_CHI_BURN = 0x10000000000;\n    uint256 internal constant FLAG_DISABLE_MSTABLE_MUSD = 0x20000000000;\n    uint256 internal constant FLAG_DISABLE_CURVE_SBTC = 0x40000000000;\n    uint256 internal constant FLAG_DISABLE_DMM = 0x80000000000;\n    uint256 internal constant FLAG_DISABLE_UNISWAP_ALL = 0x100000000000;\n    uint256 internal constant FLAG_DISABLE_CURVE_ALL = 0x200000000000;\n    uint256 internal constant FLAG_DISABLE_UNISWAP_V2_ALL = 0x400000000000;\n    uint256 internal constant FLAG_DISABLE_SPLIT_RECALCULATION = 0x800000000000;\n    uint256 internal constant FLAG_DISABLE_BALANCER_ALL = 0x1000000000000;\n    uint256 internal constant FLAG_DISABLE_BALANCER_1 = 0x2000000000000;\n    uint256 internal constant FLAG_DISABLE_BALANCER_2 = 0x4000000000000;\n    uint256 internal constant FLAG_DISABLE_BALANCER_3 = 0x8000000000000;\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_KYBER_UNISWAP_RESERVE = 0x10000000000000; // Deprecated, Turned off by default\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_KYBER_OASIS_RESERVE = 0x20000000000000; // Deprecated, Turned off by default\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_KYBER_BANCOR_RESERVE = 0x40000000000000; // Deprecated, Turned off by default\n    uint256 internal constant FLAG_ENABLE_REFERRAL_GAS_SPONSORSHIP = 0x80000000000000; // Turned off by default\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_COMP = 0x100000000000000; // Deprecated, Turned off by default\n    uint256 internal constant FLAG_DISABLE_KYBER_ALL = 0x200000000000000;\n    uint256 internal constant FLAG_DISABLE_KYBER_1 = 0x400000000000000;\n    uint256 internal constant FLAG_DISABLE_KYBER_2 = 0x800000000000000;\n    uint256 internal constant FLAG_DISABLE_KYBER_3 = 0x1000000000000000;\n    uint256 internal constant FLAG_DISABLE_KYBER_4 = 0x2000000000000000;\n    uint256 internal constant FLAG_ENABLE_CHI_BURN_BY_ORIGIN = 0x4000000000000000;\n    uint256 internal constant FLAG_DISABLE_MOONISWAP_ALL = 0x8000000000000000;\n    uint256 internal constant FLAG_DISABLE_MOONISWAP_ETH = 0x10000000000000000;\n    uint256 internal constant FLAG_DISABLE_MOONISWAP_DAI = 0x20000000000000000;\n    uint256 internal constant FLAG_DISABLE_MOONISWAP_USDC = 0x40000000000000000;\n    uint256 internal constant FLAG_DISABLE_MOONISWAP_POOL_TOKEN = 0x80000000000000000;\n}\n\n\nabstract contract IOneSplit is IOneSplitConsts {\n    function getExpectedReturn(\n        IERC20 fromToken,\n        IERC20 destToken,\n        uint256 amount,\n        uint256 parts,\n        uint256 flags // See constants in IOneSplit.sol\n    )\n    public\n    view\n    virtual\n    returns(\n        uint256 returnAmount,\n        uint256[] memory distribution\n    );\n\n    function getExpectedReturnWithGas(\n        IERC20 fromToken,\n        IERC20 destToken,\n        uint256 amount,\n        uint256 parts,\n        uint256 flags, // See constants in IOneSplit.sol\n        uint256 destTokenEthPriceTimesGasPrice\n    )\n    public\n    view\n    virtual\n    returns(\n        uint256 returnAmount,\n        uint256 estimateGasAmount,\n        uint256[] memory distribution\n    );\n\n    function swap(\n        IERC20 fromToken,\n        IERC20 destToken,\n        uint256 amount,\n        uint256 minReturn,\n        uint256[] memory distribution,\n        uint256 flags\n    )\n    public\n    payable\n    virtual\n    returns(uint256 returnAmount);\n}\n\n\nabstract contract IOneSplitMulti is IOneSplit {\n    function getExpectedReturnWithGasMulti(\n        IERC20[] memory tokens,\n        uint256 amount,\n        uint256[] memory parts,\n        uint256[] memory flags,\n        uint256[] memory destTokenEthPriceTimesGasPrices\n    )\n    public\n    view\n    virtual\n    returns(\n        uint256[] memory returnAmounts,\n        uint256 estimateGasAmount,\n        uint256[] memory distribution\n    );\n\n    function swapMulti(\n        IERC20[] memory tokens,\n        uint256 amount,\n        uint256 minReturn,\n        uint256[] memory distribution,\n        uint256[] memory flags\n    )\n    public\n    payable\n    virtual\n    returns(uint256 returnAmount);\n}\n",
-  "sourcePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/interfaces/IOneSplit.sol",
+  "source": "// SPDX-License-Identifier: MIT\r\npragma solidity >=0.4.22 <0.9.0;\r\n\r\nimport \"./IERC20.sol\";\r\n\r\n//\r\n//  [ msg.sender ]\r\n//       | |\r\n//       | |\r\n//       \\_/\r\n// +---------------+ ________________________________\r\n// | OneSplitAudit | _______________________________  \\\r\n// +---------------+                                 \\ \\\r\n//       | |                      ______________      | | (staticcall)\r\n//       | |                    /  ____________  \\    | |\r\n//       | | (call)            / /              \\ \\   | |\r\n//       | |                  / /               | |   | |\r\n//       \\_/                  | |               \\_/   \\_/\r\n// +--------------+           | |           +----------------------+\r\n// | OneSplitWrap |           | |           |   OneSplitViewWrap   |\r\n// +--------------+           | |           +----------------------+\r\n//       | |                  | |                     | |\r\n//       | | (delegatecall)   | | (staticcall)        | | (staticcall)\r\n//       \\_/                  | |                     \\_/\r\n// +--------------+           | |             +------------------+\r\n// |   OneSplit   |           | |             |   OneSplitView   |\r\n// +--------------+           | |             +------------------+\r\n//       | |                  / /\r\n//        \\ \\________________/ /\r\n//         \\__________________/\r\n//\r\n\r\n\r\ncontract IOneSplitConsts {\r\n    // flags = FLAG_DISABLE_UNISWAP + FLAG_DISABLE_BANCOR + ...\r\n    uint256 internal constant FLAG_DISABLE_UNISWAP = 0x01;\r\n    uint256 internal constant DEPRECATED_FLAG_DISABLE_KYBER = 0x02; // Deprecated\r\n    uint256 internal constant FLAG_DISABLE_BANCOR = 0x04;\r\n    uint256 internal constant FLAG_DISABLE_OASIS = 0x08;\r\n    uint256 internal constant FLAG_DISABLE_COMPOUND = 0x10;\r\n    uint256 internal constant FLAG_DISABLE_FULCRUM = 0x20;\r\n    uint256 internal constant FLAG_DISABLE_CHAI = 0x40;\r\n    uint256 internal constant FLAG_DISABLE_AAVE = 0x80;\r\n    uint256 internal constant FLAG_DISABLE_SMART_TOKEN = 0x100;\r\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_ETH = 0x200; // Deprecated, Turned off by default\r\n    uint256 internal constant FLAG_DISABLE_BDAI = 0x400;\r\n    uint256 internal constant FLAG_DISABLE_IEARN = 0x800;\r\n    uint256 internal constant FLAG_DISABLE_CURVE_COMPOUND = 0x1000;\r\n    uint256 internal constant FLAG_DISABLE_CURVE_USDT = 0x2000;\r\n    uint256 internal constant FLAG_DISABLE_CURVE_Y = 0x4000;\r\n    uint256 internal constant FLAG_DISABLE_CURVE_BINANCE = 0x8000;\r\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_DAI = 0x10000; // Deprecated, Turned off by default\r\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_USDC = 0x20000; // Deprecated, Turned off by default\r\n    uint256 internal constant FLAG_DISABLE_CURVE_SYNTHETIX = 0x40000;\r\n    uint256 internal constant FLAG_DISABLE_WETH = 0x80000;\r\n    uint256 internal constant FLAG_DISABLE_UNISWAP_COMPOUND = 0x100000; // Works only when one of assets is ETH or FLAG_ENABLE_MULTI_PATH_ETH\r\n    uint256 internal constant FLAG_DISABLE_UNISWAP_CHAI = 0x200000; // Works only when ETH<>DAI or FLAG_ENABLE_MULTI_PATH_ETH\r\n    uint256 internal constant FLAG_DISABLE_UNISWAP_AAVE = 0x400000; // Works only when one of assets is ETH or FLAG_ENABLE_MULTI_PATH_ETH\r\n    uint256 internal constant FLAG_DISABLE_IDLE = 0x800000;\r\n    uint256 internal constant FLAG_DISABLE_MOONISWAP = 0x1000000;\r\n    uint256 internal constant FLAG_DISABLE_UNISWAP_V2 = 0x2000000;\r\n    uint256 internal constant FLAG_DISABLE_UNISWAP_V2_ETH = 0x4000000;\r\n    uint256 internal constant FLAG_DISABLE_UNISWAP_V2_DAI = 0x8000000;\r\n    uint256 internal constant FLAG_DISABLE_UNISWAP_V2_USDC = 0x10000000;\r\n    uint256 internal constant FLAG_DISABLE_ALL_SPLIT_SOURCES = 0x20000000;\r\n    uint256 internal constant FLAG_DISABLE_ALL_WRAP_SOURCES = 0x40000000;\r\n    uint256 internal constant FLAG_DISABLE_CURVE_PAX = 0x80000000;\r\n    uint256 internal constant FLAG_DISABLE_CURVE_RENBTC = 0x100000000;\r\n    uint256 internal constant FLAG_DISABLE_CURVE_TBTC = 0x200000000;\r\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_USDT = 0x400000000; // Deprecated, Turned off by default\r\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_WBTC = 0x800000000; // Deprecated, Turned off by default\r\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_TBTC = 0x1000000000; // Deprecated, Turned off by default\r\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_RENBTC = 0x2000000000; // Deprecated, Turned off by default\r\n    uint256 internal constant FLAG_DISABLE_DFORCE_SWAP = 0x4000000000;\r\n    uint256 internal constant FLAG_DISABLE_SHELL = 0x8000000000;\r\n    uint256 internal constant FLAG_ENABLE_CHI_BURN = 0x10000000000;\r\n    uint256 internal constant FLAG_DISABLE_MSTABLE_MUSD = 0x20000000000;\r\n    uint256 internal constant FLAG_DISABLE_CURVE_SBTC = 0x40000000000;\r\n    uint256 internal constant FLAG_DISABLE_DMM = 0x80000000000;\r\n    uint256 internal constant FLAG_DISABLE_UNISWAP_ALL = 0x100000000000;\r\n    uint256 internal constant FLAG_DISABLE_CURVE_ALL = 0x200000000000;\r\n    uint256 internal constant FLAG_DISABLE_UNISWAP_V2_ALL = 0x400000000000;\r\n    uint256 internal constant FLAG_DISABLE_SPLIT_RECALCULATION = 0x800000000000;\r\n    uint256 internal constant FLAG_DISABLE_BALANCER_ALL = 0x1000000000000;\r\n    uint256 internal constant FLAG_DISABLE_BALANCER_1 = 0x2000000000000;\r\n    uint256 internal constant FLAG_DISABLE_BALANCER_2 = 0x4000000000000;\r\n    uint256 internal constant FLAG_DISABLE_BALANCER_3 = 0x8000000000000;\r\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_KYBER_UNISWAP_RESERVE = 0x10000000000000; // Deprecated, Turned off by default\r\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_KYBER_OASIS_RESERVE = 0x20000000000000; // Deprecated, Turned off by default\r\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_KYBER_BANCOR_RESERVE = 0x40000000000000; // Deprecated, Turned off by default\r\n    uint256 internal constant FLAG_ENABLE_REFERRAL_GAS_SPONSORSHIP = 0x80000000000000; // Turned off by default\r\n    uint256 internal constant DEPRECATED_FLAG_ENABLE_MULTI_PATH_COMP = 0x100000000000000; // Deprecated, Turned off by default\r\n    uint256 internal constant FLAG_DISABLE_KYBER_ALL = 0x200000000000000;\r\n    uint256 internal constant FLAG_DISABLE_KYBER_1 = 0x400000000000000;\r\n    uint256 internal constant FLAG_DISABLE_KYBER_2 = 0x800000000000000;\r\n    uint256 internal constant FLAG_DISABLE_KYBER_3 = 0x1000000000000000;\r\n    uint256 internal constant FLAG_DISABLE_KYBER_4 = 0x2000000000000000;\r\n    uint256 internal constant FLAG_ENABLE_CHI_BURN_BY_ORIGIN = 0x4000000000000000;\r\n    uint256 internal constant FLAG_DISABLE_MOONISWAP_ALL = 0x8000000000000000;\r\n    uint256 internal constant FLAG_DISABLE_MOONISWAP_ETH = 0x10000000000000000;\r\n    uint256 internal constant FLAG_DISABLE_MOONISWAP_DAI = 0x20000000000000000;\r\n    uint256 internal constant FLAG_DISABLE_MOONISWAP_USDC = 0x40000000000000000;\r\n    uint256 internal constant FLAG_DISABLE_MOONISWAP_POOL_TOKEN = 0x80000000000000000;\r\n}\r\n\r\n\r\nabstract contract IOneSplit is IOneSplitConsts {\r\n    function getExpectedReturn(\r\n        IERC20 fromToken,\r\n        IERC20 destToken,\r\n        uint256 amount,\r\n        uint256 parts,\r\n        uint256 flags // See constants in IOneSplit.sol\r\n    )\r\n    public\r\n    view\r\n    virtual\r\n    returns(\r\n        uint256 returnAmount,\r\n        uint256[] memory distribution\r\n    );\r\n\r\n    function getExpectedReturnWithGas(\r\n        IERC20 fromToken,\r\n        IERC20 destToken,\r\n        uint256 amount,\r\n        uint256 parts,\r\n        uint256 flags, // See constants in IOneSplit.sol\r\n        uint256 destTokenEthPriceTimesGasPrice\r\n    )\r\n    public\r\n    view\r\n    virtual\r\n    returns(\r\n        uint256 returnAmount,\r\n        uint256 estimateGasAmount,\r\n        uint256[] memory distribution\r\n    );\r\n\r\n    function swap(\r\n        IERC20 fromToken,\r\n        IERC20 destToken,\r\n        uint256 amount,\r\n        uint256 minReturn,\r\n        uint256[] memory distribution,\r\n        uint256 flags\r\n    )\r\n    public\r\n    payable\r\n    virtual\r\n    returns(uint256 returnAmount);\r\n}\r\n\r\n\r\nabstract contract IOneSplitMulti is IOneSplit {\r\n    function getExpectedReturnWithGasMulti(\r\n        IERC20[] memory tokens,\r\n        uint256 amount,\r\n        uint256[] memory parts,\r\n        uint256[] memory flags,\r\n        uint256[] memory destTokenEthPriceTimesGasPrices\r\n    )\r\n    public\r\n    view\r\n    virtual\r\n    returns(\r\n        uint256[] memory returnAmounts,\r\n        uint256 estimateGasAmount,\r\n        uint256[] memory distribution\r\n    );\r\n\r\n    function swapMulti(\r\n        IERC20[] memory tokens,\r\n        uint256 amount,\r\n        uint256 minReturn,\r\n        uint256[] memory distribution,\r\n        uint256[] memory flags\r\n    )\r\n    public\r\n    payable\r\n    virtual\r\n    returns(uint256 returnAmount);\r\n}\r\n",
+  "sourcePath": "D:/TungstenGroupProject/contracts/interfaces/IOneSplit.sol",
   "ast": {
-    "absolutePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/interfaces/IOneSplit.sol",
+    "absolutePath": "/D/TungstenGroupProject/contracts/interfaces/IOneSplit.sol",
     "exportedSymbols": {
       "IERC20": [
         7062
@@ -274,10 +274,10 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "32:32:15"
+        "src": "33:32:4"
       },
       {
-        "absolutePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/interfaces/IERC20.sol",
+        "absolutePath": "/D/TungstenGroupProject/contracts/interfaces/IERC20.sol",
         "file": "./IERC20.sol",
         "id": 7065,
         "nodeType": "ImportDirective",
@@ -318,7 +318,7 @@
               "id": 7066,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "1415:7:15",
+              "src": "1450:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -333,7 +333,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "1464:4:15",
+              "src": "1499:4:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_1_by_1",
                 "typeString": "int_const 1"
@@ -360,7 +360,7 @@
               "id": 7069,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "1474:7:15",
+              "src": "1510:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -375,7 +375,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "1532:4:15",
+              "src": "1568:4:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_2_by_1",
                 "typeString": "int_const 2"
@@ -402,7 +402,7 @@
               "id": 7072,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "1556:7:15",
+              "src": "1593:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -417,7 +417,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "1604:4:15",
+              "src": "1641:4:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_4_by_1",
                 "typeString": "int_const 4"
@@ -444,7 +444,7 @@
               "id": 7075,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "1614:7:15",
+              "src": "1652:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -459,7 +459,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "1661:4:15",
+              "src": "1699:4:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_8_by_1",
                 "typeString": "int_const 8"
@@ -486,7 +486,7 @@
               "id": 7078,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "1671:7:15",
+              "src": "1710:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -501,7 +501,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "1721:4:15",
+              "src": "1760:4:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_16_by_1",
                 "typeString": "int_const 16"
@@ -528,7 +528,7 @@
               "id": 7081,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "1731:7:15",
+              "src": "1771:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -543,7 +543,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "1780:4:15",
+              "src": "1820:4:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_32_by_1",
                 "typeString": "int_const 32"
@@ -570,7 +570,7 @@
               "id": 7084,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "1790:7:15",
+              "src": "1831:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -585,7 +585,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "1836:4:15",
+              "src": "1877:4:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_64_by_1",
                 "typeString": "int_const 64"
@@ -612,7 +612,7 @@
               "id": 7087,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "1846:7:15",
+              "src": "1888:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -627,7 +627,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "1892:4:15",
+              "src": "1934:4:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_128_by_1",
                 "typeString": "int_const 128"
@@ -654,7 +654,7 @@
               "id": 7090,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "1902:7:15",
+              "src": "1945:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -669,7 +669,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "1955:5:15",
+              "src": "1998:5:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_256_by_1",
                 "typeString": "int_const 256"
@@ -696,7 +696,7 @@
               "id": 7093,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "1966:7:15",
+              "src": "2010:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -711,7 +711,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "2032:5:15",
+              "src": "2076:5:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_512_by_1",
                 "typeString": "int_const 512"
@@ -738,7 +738,7 @@
               "id": 7096,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "2080:7:15",
+              "src": "2125:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -753,7 +753,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "2126:5:15",
+              "src": "2171:5:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_1024_by_1",
                 "typeString": "int_const 1024"
@@ -780,7 +780,7 @@
               "id": 7099,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "2137:7:15",
+              "src": "2183:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -795,7 +795,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "2184:5:15",
+              "src": "2230:5:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_2048_by_1",
                 "typeString": "int_const 2048"
@@ -822,7 +822,7 @@
               "id": 7102,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "2195:7:15",
+              "src": "2242:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -837,7 +837,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "2251:6:15",
+              "src": "2298:6:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_4096_by_1",
                 "typeString": "int_const 4096"
@@ -864,7 +864,7 @@
               "id": 7105,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "2263:7:15",
+              "src": "2311:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -879,7 +879,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "2315:6:15",
+              "src": "2363:6:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_8192_by_1",
                 "typeString": "int_const 8192"
@@ -906,7 +906,7 @@
               "id": 7108,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "2327:7:15",
+              "src": "2376:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -921,7 +921,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "2376:6:15",
+              "src": "2425:6:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_16384_by_1",
                 "typeString": "int_const 16384"
@@ -948,7 +948,7 @@
               "id": 7111,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "2388:7:15",
+              "src": "2438:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -963,7 +963,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "2443:6:15",
+              "src": "2493:6:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_32768_by_1",
                 "typeString": "int_const 32768"
@@ -990,7 +990,7 @@
               "id": 7114,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "2455:7:15",
+              "src": "2506:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1005,7 +1005,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "2521:7:15",
+              "src": "2572:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_65536_by_1",
                 "typeString": "int_const 65536"
@@ -1032,7 +1032,7 @@
               "id": 7117,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "2571:7:15",
+              "src": "2623:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1047,7 +1047,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "2638:7:15",
+              "src": "2690:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_131072_by_1",
                 "typeString": "int_const 131072"
@@ -1074,7 +1074,7 @@
               "id": 7120,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "2688:7:15",
+              "src": "2741:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1089,7 +1089,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "2745:7:15",
+              "src": "2798:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_262144_by_1",
                 "typeString": "int_const 262144"
@@ -1116,7 +1116,7 @@
               "id": 7123,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "2758:7:15",
+              "src": "2812:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1131,7 +1131,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "2804:7:15",
+              "src": "2858:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_524288_by_1",
                 "typeString": "int_const 524288"
@@ -1158,7 +1158,7 @@
               "id": 7126,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "2817:7:15",
+              "src": "2872:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1173,7 +1173,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "2875:8:15",
+              "src": "2930:8:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_1048576_by_1",
                 "typeString": "int_const 1048576"
@@ -1200,7 +1200,7 @@
               "id": 7129,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "2959:7:15",
+              "src": "3015:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1215,7 +1215,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "3013:8:15",
+              "src": "3069:8:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_2097152_by_1",
                 "typeString": "int_const 2097152"
@@ -1242,7 +1242,7 @@
               "id": 7132,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "3085:7:15",
+              "src": "3142:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1257,7 +1257,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "3139:8:15",
+              "src": "3196:8:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_4194304_by_1",
                 "typeString": "int_const 4194304"
@@ -1284,7 +1284,7 @@
               "id": 7135,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "3223:7:15",
+              "src": "3281:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1299,7 +1299,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "3269:8:15",
+              "src": "3327:8:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_8388608_by_1",
                 "typeString": "int_const 8388608"
@@ -1326,7 +1326,7 @@
               "id": 7138,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "3283:7:15",
+              "src": "3342:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1341,7 +1341,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "3334:9:15",
+              "src": "3393:9:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_16777216_by_1",
                 "typeString": "int_const 16777216"
@@ -1368,7 +1368,7 @@
               "id": 7141,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "3349:7:15",
+              "src": "3409:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1383,7 +1383,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "3401:9:15",
+              "src": "3461:9:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_33554432_by_1",
                 "typeString": "int_const 33554432"
@@ -1410,7 +1410,7 @@
               "id": 7144,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "3416:7:15",
+              "src": "3477:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1425,7 +1425,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "3472:9:15",
+              "src": "3533:9:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_67108864_by_1",
                 "typeString": "int_const 67108864"
@@ -1452,7 +1452,7 @@
               "id": 7147,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "3487:7:15",
+              "src": "3549:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1467,7 +1467,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "3543:9:15",
+              "src": "3605:9:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_134217728_by_1",
                 "typeString": "int_const 134217728"
@@ -1494,7 +1494,7 @@
               "id": 7150,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "3558:7:15",
+              "src": "3621:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1509,7 +1509,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "3615:10:15",
+              "src": "3678:10:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_268435456_by_1",
                 "typeString": "int_const 268435456"
@@ -1536,7 +1536,7 @@
               "id": 7153,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "3631:7:15",
+              "src": "3695:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1551,7 +1551,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "3690:10:15",
+              "src": "3754:10:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_536870912_by_1",
                 "typeString": "int_const 536870912"
@@ -1578,7 +1578,7 @@
               "id": 7156,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "3706:7:15",
+              "src": "3771:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1593,7 +1593,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "3764:10:15",
+              "src": "3829:10:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_1073741824_by_1",
                 "typeString": "int_const 1073741824"
@@ -1620,7 +1620,7 @@
               "id": 7159,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "3780:7:15",
+              "src": "3846:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1635,7 +1635,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "3831:10:15",
+              "src": "3897:10:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_2147483648_by_1",
                 "typeString": "int_const 2147483648"
@@ -1662,7 +1662,7 @@
               "id": 7162,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "3847:7:15",
+              "src": "3914:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1677,7 +1677,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "3901:11:15",
+              "src": "3968:11:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_4294967296_by_1",
                 "typeString": "int_const 4294967296"
@@ -1704,7 +1704,7 @@
               "id": 7165,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "3918:7:15",
+              "src": "3986:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1719,7 +1719,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "3970:11:15",
+              "src": "4038:11:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_8589934592_by_1",
                 "typeString": "int_const 8589934592"
@@ -1746,7 +1746,7 @@
               "id": 7168,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "3987:7:15",
+              "src": "4056:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1761,7 +1761,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "4054:11:15",
+              "src": "4123:11:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_17179869184_by_1",
                 "typeString": "int_const 17179869184"
@@ -1788,7 +1788,7 @@
               "id": 7171,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "4108:7:15",
+              "src": "4178:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1803,7 +1803,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "4175:11:15",
+              "src": "4245:11:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_34359738368_by_1",
                 "typeString": "int_const 34359738368"
@@ -1830,7 +1830,7 @@
               "id": 7174,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "4229:7:15",
+              "src": "4300:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1845,7 +1845,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "4296:12:15",
+              "src": "4367:12:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_68719476736_by_1",
                 "typeString": "int_const 68719476736"
@@ -1872,7 +1872,7 @@
               "id": 7177,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "4351:7:15",
+              "src": "4423:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1887,7 +1887,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "4420:12:15",
+              "src": "4492:12:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_137438953472_by_1",
                 "typeString": "int_const 137438953472"
@@ -1914,7 +1914,7 @@
               "id": 7180,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "4475:7:15",
+              "src": "4548:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1929,7 +1929,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "4528:12:15",
+              "src": "4601:12:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_274877906944_by_1",
                 "typeString": "int_const 274877906944"
@@ -1956,7 +1956,7 @@
               "id": 7183,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "4546:7:15",
+              "src": "4620:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1971,7 +1971,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "4593:12:15",
+              "src": "4667:12:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_549755813888_by_1",
                 "typeString": "int_const 549755813888"
@@ -1998,7 +1998,7 @@
               "id": 7186,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "4611:7:15",
+              "src": "4686:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2013,7 +2013,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "4660:13:15",
+              "src": "4735:13:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_1099511627776_by_1",
                 "typeString": "int_const 1099511627776"
@@ -2040,7 +2040,7 @@
               "id": 7189,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "4679:7:15",
+              "src": "4755:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2055,7 +2055,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "4733:13:15",
+              "src": "4809:13:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_2199023255552_by_1",
                 "typeString": "int_const 2199023255552"
@@ -2082,7 +2082,7 @@
               "id": 7192,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "4752:7:15",
+              "src": "4829:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2097,7 +2097,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "4804:13:15",
+              "src": "4881:13:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_4398046511104_by_1",
                 "typeString": "int_const 4398046511104"
@@ -2124,7 +2124,7 @@
               "id": 7195,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "4823:7:15",
+              "src": "4901:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2139,7 +2139,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "4868:13:15",
+              "src": "4946:13:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_8796093022208_by_1",
                 "typeString": "int_const 8796093022208"
@@ -2166,7 +2166,7 @@
               "id": 7198,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "4887:7:15",
+              "src": "4966:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2181,7 +2181,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "4940:14:15",
+              "src": "5019:14:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_17592186044416_by_1",
                 "typeString": "int_const 17592186044416"
@@ -2208,7 +2208,7 @@
               "id": 7201,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "4960:7:15",
+              "src": "5040:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2223,7 +2223,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "5011:14:15",
+              "src": "5091:14:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_35184372088832_by_1",
                 "typeString": "int_const 35184372088832"
@@ -2250,7 +2250,7 @@
               "id": 7204,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "5031:7:15",
+              "src": "5112:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2265,7 +2265,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "5087:14:15",
+              "src": "5168:14:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_70368744177664_by_1",
                 "typeString": "int_const 70368744177664"
@@ -2292,7 +2292,7 @@
               "id": 7207,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "5107:7:15",
+              "src": "5189:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2307,7 +2307,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "5168:14:15",
+              "src": "5250:14:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_140737488355328_by_1",
                 "typeString": "int_const 140737488355328"
@@ -2334,7 +2334,7 @@
               "id": 7210,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "5188:7:15",
+              "src": "5271:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2349,7 +2349,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "5242:15:15",
+              "src": "5325:15:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_281474976710656_by_1",
                 "typeString": "int_const 281474976710656"
@@ -2376,7 +2376,7 @@
               "id": 7213,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "5263:7:15",
+              "src": "5347:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2391,7 +2391,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "5315:15:15",
+              "src": "5399:15:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_562949953421312_by_1",
                 "typeString": "int_const 562949953421312"
@@ -2418,7 +2418,7 @@
               "id": 7216,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "5336:7:15",
+              "src": "5421:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2433,7 +2433,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "5388:15:15",
+              "src": "5473:15:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_1125899906842624_by_1",
                 "typeString": "int_const 1125899906842624"
@@ -2460,7 +2460,7 @@
               "id": 7219,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "5409:7:15",
+              "src": "5495:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2475,7 +2475,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "5461:15:15",
+              "src": "5547:15:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_2251799813685248_by_1",
                 "typeString": "int_const 2251799813685248"
@@ -2502,7 +2502,7 @@
               "id": 7222,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "5482:7:15",
+              "src": "5569:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2517,7 +2517,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "5555:16:15",
+              "src": "5642:16:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_4503599627370496_by_1",
                 "typeString": "int_const 4503599627370496"
@@ -2544,7 +2544,7 @@
               "id": 7225,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "5614:7:15",
+              "src": "5702:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2559,7 +2559,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "5685:16:15",
+              "src": "5773:16:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_9007199254740992_by_1",
                 "typeString": "int_const 9007199254740992"
@@ -2586,7 +2586,7 @@
               "id": 7228,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "5744:7:15",
+              "src": "5833:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2601,7 +2601,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "5816:16:15",
+              "src": "5905:16:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_18014398509481984_by_1",
                 "typeString": "int_const 18014398509481984"
@@ -2628,7 +2628,7 @@
               "id": 7231,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "5875:7:15",
+              "src": "5965:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2643,7 +2643,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "5940:16:15",
+              "src": "6030:16:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_36028797018963968_by_1",
                 "typeString": "int_const 36028797018963968"
@@ -2670,7 +2670,7 @@
               "id": 7234,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "5987:7:15",
+              "src": "6078:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2685,7 +2685,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "6054:17:15",
+              "src": "6145:17:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_72057594037927936_by_1",
                 "typeString": "int_const 72057594037927936"
@@ -2712,7 +2712,7 @@
               "id": 7237,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "6114:7:15",
+              "src": "6206:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2727,7 +2727,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "6165:17:15",
+              "src": "6257:17:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_144115188075855872_by_1",
                 "typeString": "int_const 144115188075855872"
@@ -2754,7 +2754,7 @@
               "id": 7240,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "6188:7:15",
+              "src": "6281:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2769,7 +2769,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "6237:17:15",
+              "src": "6330:17:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_288230376151711744_by_1",
                 "typeString": "int_const 288230376151711744"
@@ -2796,7 +2796,7 @@
               "id": 7243,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "6260:7:15",
+              "src": "6354:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2811,7 +2811,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "6309:17:15",
+              "src": "6403:17:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_576460752303423488_by_1",
                 "typeString": "int_const 576460752303423488"
@@ -2838,7 +2838,7 @@
               "id": 7246,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "6332:7:15",
+              "src": "6427:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2853,7 +2853,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "6381:18:15",
+              "src": "6476:18:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_1152921504606846976_by_1",
                 "typeString": "int_const 1152921504606846976"
@@ -2880,7 +2880,7 @@
               "id": 7249,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "6405:7:15",
+              "src": "6501:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2895,7 +2895,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "6454:18:15",
+              "src": "6550:18:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_2305843009213693952_by_1",
                 "typeString": "int_const 2305843009213693952"
@@ -2922,7 +2922,7 @@
               "id": 7252,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "6478:7:15",
+              "src": "6575:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2937,7 +2937,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "6537:18:15",
+              "src": "6634:18:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_4611686018427387904_by_1",
                 "typeString": "int_const 4611686018427387904"
@@ -2964,7 +2964,7 @@
               "id": 7255,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "6561:7:15",
+              "src": "6659:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2979,7 +2979,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "6616:18:15",
+              "src": "6714:18:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_9223372036854775808_by_1",
                 "typeString": "int_const 9223372036854775808"
@@ -3006,7 +3006,7 @@
               "id": 7258,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "6640:7:15",
+              "src": "6739:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -3021,7 +3021,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "6695:19:15",
+              "src": "6794:19:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_18446744073709551616_by_1",
                 "typeString": "int_const 18446744073709551616"
@@ -3048,7 +3048,7 @@
               "id": 7261,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "6720:7:15",
+              "src": "6820:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -3063,7 +3063,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "6775:19:15",
+              "src": "6875:19:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_36893488147419103232_by_1",
                 "typeString": "int_const 36893488147419103232"
@@ -3090,7 +3090,7 @@
               "id": 7264,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "6800:7:15",
+              "src": "6901:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -3105,7 +3105,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "6856:19:15",
+              "src": "6957:19:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_73786976294838206464_by_1",
                 "typeString": "int_const 73786976294838206464"
@@ -3132,7 +3132,7 @@
               "id": 7267,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "6881:7:15",
+              "src": "6983:7:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -3147,7 +3147,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "6943:19:15",
+              "src": "7045:19:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_147573952589676412928_by_1",
                 "typeString": "int_const 147573952589676412928"
@@ -3177,7 +3177,7 @@
             },
             "id": 7272,
             "nodeType": "InheritanceSpecifier",
-            "src": "6999:15:15"
+            "src": "7105:15:4"
           }
         ],
         "contractDependencies": [
@@ -3277,7 +3277,7 @@
                     "id": 7277,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7109:7:15",
+                    "src": "7219:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3303,7 +3303,7 @@
                     "id": 7279,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7133:7:15",
+                    "src": "7244:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3329,7 +3329,7 @@
                     "id": 7281,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7156:7:15",
+                    "src": "7268:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3338,7 +3338,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "7047:162:15"
+              "src": "7154:168:4"
             },
             "returnParameters": {
               "id": 7289,
@@ -3362,7 +3362,7 @@
                     "id": 7284,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7263:7:15",
+                    "src": "7381:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3389,7 +3389,7 @@
                       "id": 7286,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "7293:7:15",
+                      "src": "7412:7:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -3397,7 +3397,7 @@
                     },
                     "id": 7287,
                     "nodeType": "ArrayTypeName",
-                    "src": "7293:9:15",
+                    "src": "7412:9:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                       "typeString": "uint256[]"
@@ -3406,7 +3406,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "7253:75:15"
+              "src": "7370:78:4"
             },
             "scope": 7331,
             "src": "7021:308:15",
@@ -3498,7 +3498,7 @@
                     "id": 7295,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7430:7:15",
+                    "src": "7555:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3524,7 +3524,7 @@
                     "id": 7297,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7454:7:15",
+                    "src": "7580:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3550,7 +3550,7 @@
                     "id": 7299,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7477:7:15",
+                    "src": "7604:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3576,7 +3576,7 @@
                     "id": 7301,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7534:7:15",
+                    "src": "7662:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3585,7 +3585,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "7368:210:15"
+              "src": "7490:217:4"
             },
             "returnParameters": {
               "id": 7311,
@@ -3609,7 +3609,7 @@
                     "id": 7304,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7632:7:15",
+                    "src": "7766:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3635,7 +3635,7 @@
                     "id": 7306,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7662:7:15",
+                    "src": "7797:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3662,7 +3662,7 @@
                       "id": 7308,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "7697:7:15",
+                      "src": "7833:7:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -3670,7 +3670,7 @@
                     },
                     "id": 7309,
                     "nodeType": "ArrayTypeName",
-                    "src": "7697:9:15",
+                    "src": "7833:9:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                       "typeString": "uint256[]"
@@ -3679,7 +3679,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "7622:110:15"
+              "src": "7755:114:4"
             },
             "scope": 7331,
             "src": "7335:398:15",
@@ -3771,7 +3771,7 @@
                     "id": 7317,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7814:7:15",
+                    "src": "7956:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3797,7 +3797,7 @@
                     "id": 7319,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7838:7:15",
+                    "src": "7981:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3824,7 +3824,7 @@
                       "id": 7321,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "7865:7:15",
+                      "src": "8009:7:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -3832,7 +3832,7 @@
                     },
                     "id": 7322,
                     "nodeType": "ArrayTypeName",
-                    "src": "7865:9:15",
+                    "src": "8009:9:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                       "typeString": "uint256[]"
@@ -3858,7 +3858,7 @@
                     "id": 7324,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7904:7:15",
+                    "src": "8049:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3867,7 +3867,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "7752:171:15"
+              "src": "7891:178:4"
             },
             "returnParameters": {
               "id": 7329,
@@ -3891,7 +3891,7 @@
                     "id": 7327,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7971:7:15",
+                    "src": "8121:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3900,7 +3900,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "7970:22:15"
+              "src": "8120:22:4"
             },
             "scope": 7331,
             "src": "7739:254:15",
@@ -3929,7 +3929,7 @@
             },
             "id": 7333,
             "nodeType": "InheritanceSpecifier",
-            "src": "8034:9:15"
+            "src": "8188:9:4"
           }
         ],
         "contractDependencies": [
@@ -3987,7 +3987,7 @@
                     },
                     "id": 7335,
                     "nodeType": "ArrayTypeName",
-                    "src": "8098:8:15",
+                    "src": "8254:8:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_contract$_IERC20_$7062_$dyn_storage_ptr",
                       "typeString": "contract IERC20[]"
@@ -4013,7 +4013,7 @@
                     "id": 7337,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "8130:7:15",
+                    "src": "8287:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -4040,7 +4040,7 @@
                       "id": 7339,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "8154:7:15",
+                      "src": "8312:7:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -4048,7 +4048,7 @@
                     },
                     "id": 7340,
                     "nodeType": "ArrayTypeName",
-                    "src": "8154:9:15",
+                    "src": "8312:9:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                       "typeString": "uint256[]"
@@ -4075,7 +4075,7 @@
                       "id": 7342,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "8186:7:15",
+                      "src": "8345:7:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -4083,7 +4083,7 @@
                     },
                     "id": 7343,
                     "nodeType": "ArrayTypeName",
-                    "src": "8186:9:15",
+                    "src": "8345:9:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                       "typeString": "uint256[]"
@@ -4110,7 +4110,7 @@
                       "id": 7345,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "8218:7:15",
+                      "src": "8378:7:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -4118,7 +4118,7 @@
                     },
                     "id": 7346,
                     "nodeType": "ArrayTypeName",
-                    "src": "8218:9:15",
+                    "src": "8378:9:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                       "typeString": "uint256[]"
@@ -4127,7 +4127,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "8088:184:15"
+              "src": "8243:190:4"
             },
             "returnParameters": {
               "id": 7357,
@@ -4152,7 +4152,7 @@
                       "id": 7349,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "8326:7:15",
+                      "src": "8492:7:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -4160,7 +4160,7 @@
                     },
                     "id": 7350,
                     "nodeType": "ArrayTypeName",
-                    "src": "8326:9:15",
+                    "src": "8492:9:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                       "typeString": "uint256[]"
@@ -4186,7 +4186,7 @@
                     "id": 7352,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "8366:7:15",
+                    "src": "8533:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -4213,7 +4213,7 @@
                       "id": 7354,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "8401:7:15",
+                      "src": "8569:7:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -4221,7 +4221,7 @@
                     },
                     "id": 7355,
                     "nodeType": "ArrayTypeName",
-                    "src": "8401:9:15",
+                    "src": "8569:9:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                       "typeString": "uint256[]"
@@ -4230,7 +4230,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "8316:120:15"
+              "src": "8481:124:4"
             },
             "scope": 7377,
             "src": "8050:387:15",
@@ -4278,7 +4278,7 @@
                     },
                     "id": 7360,
                     "nodeType": "ArrayTypeName",
-                    "src": "8471:8:15",
+                    "src": "8643:8:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_contract$_IERC20_$7062_$dyn_storage_ptr",
                       "typeString": "contract IERC20[]"
@@ -4304,7 +4304,7 @@
                     "id": 7362,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "8503:7:15",
+                    "src": "8676:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -4330,7 +4330,7 @@
                     "id": 7364,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "8527:7:15",
+                    "src": "8701:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -4357,7 +4357,7 @@
                       "id": 7366,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "8554:7:15",
+                      "src": "8729:7:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -4365,7 +4365,7 @@
                     },
                     "id": 7367,
                     "nodeType": "ArrayTypeName",
-                    "src": "8554:9:15",
+                    "src": "8729:9:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                       "typeString": "uint256[]"
@@ -4392,7 +4392,7 @@
                       "id": 7369,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "8593:7:15",
+                      "src": "8769:7:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -4400,7 +4400,7 @@
                     },
                     "id": 7370,
                     "nodeType": "ArrayTypeName",
-                    "src": "8593:9:15",
+                    "src": "8769:9:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                       "typeString": "uint256[]"
@@ -4409,7 +4409,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "8461:160:15"
+              "src": "8632:166:4"
             },
             "returnParameters": {
               "id": 7375,
@@ -4433,7 +4433,7 @@
                     "id": 7373,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "8669:7:15",
+                    "src": "8850:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -4442,7 +4442,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "8668:22:15"
+              "src": "8849:22:4"
             },
             "scope": 7377,
             "src": "8443:248:15",
@@ -4455,11 +4455,11 @@
         "src": "7998:695:15"
       }
     ],
-    "src": "32:8662:15"
+    "src": "33:8844:4"
   },
   "legacyAST": {
     "attributes": {
-      "absolutePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/interfaces/IOneSplit.sol",
+      "absolutePath": "/D/TungstenGroupProject/contracts/interfaces/IOneSplit.sol",
       "exportedSymbols": {
         "IERC20": [
           7062
@@ -4491,7 +4491,7 @@
         },
         "id": 7064,
         "name": "PragmaDirective",
-        "src": "32:32:15"
+        "src": "33:32:4"
       },
       {
         "attributes": {
@@ -4506,7 +4506,7 @@
         },
         "id": 7065,
         "name": "ImportDirective",
-        "src": "66:22:15"
+        "src": "69:22:4"
       },
       {
         "attributes": {
@@ -4545,7 +4545,7 @@
                 },
                 "id": 7066,
                 "name": "ElementaryTypeName",
-                "src": "1415:7:15"
+                "src": "1450:7:4"
               },
               {
                 "attributes": {
@@ -4560,12 +4560,12 @@
                 },
                 "id": 7067,
                 "name": "Literal",
-                "src": "1464:4:15"
+                "src": "1499:4:4"
               }
             ],
             "id": 7068,
             "name": "VariableDeclaration",
-            "src": "1415:53:15"
+            "src": "1450:53:4"
           },
           {
             "attributes": {
@@ -4586,7 +4586,7 @@
                 },
                 "id": 7069,
                 "name": "ElementaryTypeName",
-                "src": "1474:7:15"
+                "src": "1510:7:4"
               },
               {
                 "attributes": {
@@ -4601,12 +4601,12 @@
                 },
                 "id": 7070,
                 "name": "Literal",
-                "src": "1532:4:15"
+                "src": "1568:4:4"
               }
             ],
             "id": 7071,
             "name": "VariableDeclaration",
-            "src": "1474:62:15"
+            "src": "1510:62:4"
           },
           {
             "attributes": {
@@ -4627,7 +4627,7 @@
                 },
                 "id": 7072,
                 "name": "ElementaryTypeName",
-                "src": "1556:7:15"
+                "src": "1593:7:4"
               },
               {
                 "attributes": {
@@ -4642,12 +4642,12 @@
                 },
                 "id": 7073,
                 "name": "Literal",
-                "src": "1604:4:15"
+                "src": "1641:4:4"
               }
             ],
             "id": 7074,
             "name": "VariableDeclaration",
-            "src": "1556:52:15"
+            "src": "1593:52:4"
           },
           {
             "attributes": {
@@ -4668,7 +4668,7 @@
                 },
                 "id": 7075,
                 "name": "ElementaryTypeName",
-                "src": "1614:7:15"
+                "src": "1652:7:4"
               },
               {
                 "attributes": {
@@ -4683,12 +4683,12 @@
                 },
                 "id": 7076,
                 "name": "Literal",
-                "src": "1661:4:15"
+                "src": "1699:4:4"
               }
             ],
             "id": 7077,
             "name": "VariableDeclaration",
-            "src": "1614:51:15"
+            "src": "1652:51:4"
           },
           {
             "attributes": {
@@ -4709,7 +4709,7 @@
                 },
                 "id": 7078,
                 "name": "ElementaryTypeName",
-                "src": "1671:7:15"
+                "src": "1710:7:4"
               },
               {
                 "attributes": {
@@ -4724,12 +4724,12 @@
                 },
                 "id": 7079,
                 "name": "Literal",
-                "src": "1721:4:15"
+                "src": "1760:4:4"
               }
             ],
             "id": 7080,
             "name": "VariableDeclaration",
-            "src": "1671:54:15"
+            "src": "1710:54:4"
           },
           {
             "attributes": {
@@ -4750,7 +4750,7 @@
                 },
                 "id": 7081,
                 "name": "ElementaryTypeName",
-                "src": "1731:7:15"
+                "src": "1771:7:4"
               },
               {
                 "attributes": {
@@ -4765,12 +4765,12 @@
                 },
                 "id": 7082,
                 "name": "Literal",
-                "src": "1780:4:15"
+                "src": "1820:4:4"
               }
             ],
             "id": 7083,
             "name": "VariableDeclaration",
-            "src": "1731:53:15"
+            "src": "1771:53:4"
           },
           {
             "attributes": {
@@ -4791,7 +4791,7 @@
                 },
                 "id": 7084,
                 "name": "ElementaryTypeName",
-                "src": "1790:7:15"
+                "src": "1831:7:4"
               },
               {
                 "attributes": {
@@ -4806,12 +4806,12 @@
                 },
                 "id": 7085,
                 "name": "Literal",
-                "src": "1836:4:15"
+                "src": "1877:4:4"
               }
             ],
             "id": 7086,
             "name": "VariableDeclaration",
-            "src": "1790:50:15"
+            "src": "1831:50:4"
           },
           {
             "attributes": {
@@ -4832,7 +4832,7 @@
                 },
                 "id": 7087,
                 "name": "ElementaryTypeName",
-                "src": "1846:7:15"
+                "src": "1888:7:4"
               },
               {
                 "attributes": {
@@ -4847,12 +4847,12 @@
                 },
                 "id": 7088,
                 "name": "Literal",
-                "src": "1892:4:15"
+                "src": "1934:4:4"
               }
             ],
             "id": 7089,
             "name": "VariableDeclaration",
-            "src": "1846:50:15"
+            "src": "1888:50:4"
           },
           {
             "attributes": {
@@ -4873,7 +4873,7 @@
                 },
                 "id": 7090,
                 "name": "ElementaryTypeName",
-                "src": "1902:7:15"
+                "src": "1945:7:4"
               },
               {
                 "attributes": {
@@ -4888,12 +4888,12 @@
                 },
                 "id": 7091,
                 "name": "Literal",
-                "src": "1955:5:15"
+                "src": "1998:5:4"
               }
             ],
             "id": 7092,
             "name": "VariableDeclaration",
-            "src": "1902:58:15"
+            "src": "1945:58:4"
           },
           {
             "attributes": {
@@ -4914,7 +4914,7 @@
                 },
                 "id": 7093,
                 "name": "ElementaryTypeName",
-                "src": "1966:7:15"
+                "src": "2010:7:4"
               },
               {
                 "attributes": {
@@ -4929,12 +4929,12 @@
                 },
                 "id": 7094,
                 "name": "Literal",
-                "src": "2032:5:15"
+                "src": "2076:5:4"
               }
             ],
             "id": 7095,
             "name": "VariableDeclaration",
-            "src": "1966:71:15"
+            "src": "2010:71:4"
           },
           {
             "attributes": {
@@ -4955,7 +4955,7 @@
                 },
                 "id": 7096,
                 "name": "ElementaryTypeName",
-                "src": "2080:7:15"
+                "src": "2125:7:4"
               },
               {
                 "attributes": {
@@ -4970,12 +4970,12 @@
                 },
                 "id": 7097,
                 "name": "Literal",
-                "src": "2126:5:15"
+                "src": "2171:5:4"
               }
             ],
             "id": 7098,
             "name": "VariableDeclaration",
-            "src": "2080:51:15"
+            "src": "2125:51:4"
           },
           {
             "attributes": {
@@ -4996,7 +4996,7 @@
                 },
                 "id": 7099,
                 "name": "ElementaryTypeName",
-                "src": "2137:7:15"
+                "src": "2183:7:4"
               },
               {
                 "attributes": {
@@ -5011,12 +5011,12 @@
                 },
                 "id": 7100,
                 "name": "Literal",
-                "src": "2184:5:15"
+                "src": "2230:5:4"
               }
             ],
             "id": 7101,
             "name": "VariableDeclaration",
-            "src": "2137:52:15"
+            "src": "2183:52:4"
           },
           {
             "attributes": {
@@ -5037,7 +5037,7 @@
                 },
                 "id": 7102,
                 "name": "ElementaryTypeName",
-                "src": "2195:7:15"
+                "src": "2242:7:4"
               },
               {
                 "attributes": {
@@ -5052,12 +5052,12 @@
                 },
                 "id": 7103,
                 "name": "Literal",
-                "src": "2251:6:15"
+                "src": "2298:6:4"
               }
             ],
             "id": 7104,
             "name": "VariableDeclaration",
-            "src": "2195:62:15"
+            "src": "2242:62:4"
           },
           {
             "attributes": {
@@ -5078,7 +5078,7 @@
                 },
                 "id": 7105,
                 "name": "ElementaryTypeName",
-                "src": "2263:7:15"
+                "src": "2311:7:4"
               },
               {
                 "attributes": {
@@ -5093,12 +5093,12 @@
                 },
                 "id": 7106,
                 "name": "Literal",
-                "src": "2315:6:15"
+                "src": "2363:6:4"
               }
             ],
             "id": 7107,
             "name": "VariableDeclaration",
-            "src": "2263:58:15"
+            "src": "2311:58:4"
           },
           {
             "attributes": {
@@ -5119,7 +5119,7 @@
                 },
                 "id": 7108,
                 "name": "ElementaryTypeName",
-                "src": "2327:7:15"
+                "src": "2376:7:4"
               },
               {
                 "attributes": {
@@ -5134,12 +5134,12 @@
                 },
                 "id": 7109,
                 "name": "Literal",
-                "src": "2376:6:15"
+                "src": "2425:6:4"
               }
             ],
             "id": 7110,
             "name": "VariableDeclaration",
-            "src": "2327:55:15"
+            "src": "2376:55:4"
           },
           {
             "attributes": {
@@ -5160,7 +5160,7 @@
                 },
                 "id": 7111,
                 "name": "ElementaryTypeName",
-                "src": "2388:7:15"
+                "src": "2438:7:4"
               },
               {
                 "attributes": {
@@ -5175,12 +5175,12 @@
                 },
                 "id": 7112,
                 "name": "Literal",
-                "src": "2443:6:15"
+                "src": "2493:6:4"
               }
             ],
             "id": 7113,
             "name": "VariableDeclaration",
-            "src": "2388:61:15"
+            "src": "2438:61:4"
           },
           {
             "attributes": {
@@ -5201,7 +5201,7 @@
                 },
                 "id": 7114,
                 "name": "ElementaryTypeName",
-                "src": "2455:7:15"
+                "src": "2506:7:4"
               },
               {
                 "attributes": {
@@ -5216,12 +5216,12 @@
                 },
                 "id": 7115,
                 "name": "Literal",
-                "src": "2521:7:15"
+                "src": "2572:7:4"
               }
             ],
             "id": 7116,
             "name": "VariableDeclaration",
-            "src": "2455:73:15"
+            "src": "2506:73:4"
           },
           {
             "attributes": {
@@ -5242,7 +5242,7 @@
                 },
                 "id": 7117,
                 "name": "ElementaryTypeName",
-                "src": "2571:7:15"
+                "src": "2623:7:4"
               },
               {
                 "attributes": {
@@ -5257,12 +5257,12 @@
                 },
                 "id": 7118,
                 "name": "Literal",
-                "src": "2638:7:15"
+                "src": "2690:7:4"
               }
             ],
             "id": 7119,
             "name": "VariableDeclaration",
-            "src": "2571:74:15"
+            "src": "2623:74:4"
           },
           {
             "attributes": {
@@ -5283,7 +5283,7 @@
                 },
                 "id": 7120,
                 "name": "ElementaryTypeName",
-                "src": "2688:7:15"
+                "src": "2741:7:4"
               },
               {
                 "attributes": {
@@ -5298,12 +5298,12 @@
                 },
                 "id": 7121,
                 "name": "Literal",
-                "src": "2745:7:15"
+                "src": "2798:7:4"
               }
             ],
             "id": 7122,
             "name": "VariableDeclaration",
-            "src": "2688:64:15"
+            "src": "2741:64:4"
           },
           {
             "attributes": {
@@ -5324,7 +5324,7 @@
                 },
                 "id": 7123,
                 "name": "ElementaryTypeName",
-                "src": "2758:7:15"
+                "src": "2812:7:4"
               },
               {
                 "attributes": {
@@ -5339,12 +5339,12 @@
                 },
                 "id": 7124,
                 "name": "Literal",
-                "src": "2804:7:15"
+                "src": "2858:7:4"
               }
             ],
             "id": 7125,
             "name": "VariableDeclaration",
-            "src": "2758:53:15"
+            "src": "2812:53:4"
           },
           {
             "attributes": {
@@ -5365,7 +5365,7 @@
                 },
                 "id": 7126,
                 "name": "ElementaryTypeName",
-                "src": "2817:7:15"
+                "src": "2872:7:4"
               },
               {
                 "attributes": {
@@ -5380,12 +5380,12 @@
                 },
                 "id": 7127,
                 "name": "Literal",
-                "src": "2875:8:15"
+                "src": "2930:8:4"
               }
             ],
             "id": 7128,
             "name": "VariableDeclaration",
-            "src": "2817:66:15"
+            "src": "2872:66:4"
           },
           {
             "attributes": {
@@ -5406,7 +5406,7 @@
                 },
                 "id": 7129,
                 "name": "ElementaryTypeName",
-                "src": "2959:7:15"
+                "src": "3015:7:4"
               },
               {
                 "attributes": {
@@ -5421,12 +5421,12 @@
                 },
                 "id": 7130,
                 "name": "Literal",
-                "src": "3013:8:15"
+                "src": "3069:8:4"
               }
             ],
             "id": 7131,
             "name": "VariableDeclaration",
-            "src": "2959:62:15"
+            "src": "3015:62:4"
           },
           {
             "attributes": {
@@ -5447,7 +5447,7 @@
                 },
                 "id": 7132,
                 "name": "ElementaryTypeName",
-                "src": "3085:7:15"
+                "src": "3142:7:4"
               },
               {
                 "attributes": {
@@ -5462,12 +5462,12 @@
                 },
                 "id": 7133,
                 "name": "Literal",
-                "src": "3139:8:15"
+                "src": "3196:8:4"
               }
             ],
             "id": 7134,
             "name": "VariableDeclaration",
-            "src": "3085:62:15"
+            "src": "3142:62:4"
           },
           {
             "attributes": {
@@ -5488,7 +5488,7 @@
                 },
                 "id": 7135,
                 "name": "ElementaryTypeName",
-                "src": "3223:7:15"
+                "src": "3281:7:4"
               },
               {
                 "attributes": {
@@ -5503,12 +5503,12 @@
                 },
                 "id": 7136,
                 "name": "Literal",
-                "src": "3269:8:15"
+                "src": "3327:8:4"
               }
             ],
             "id": 7137,
             "name": "VariableDeclaration",
-            "src": "3223:54:15"
+            "src": "3281:54:4"
           },
           {
             "attributes": {
@@ -5529,7 +5529,7 @@
                 },
                 "id": 7138,
                 "name": "ElementaryTypeName",
-                "src": "3283:7:15"
+                "src": "3342:7:4"
               },
               {
                 "attributes": {
@@ -5544,12 +5544,12 @@
                 },
                 "id": 7139,
                 "name": "Literal",
-                "src": "3334:9:15"
+                "src": "3393:9:4"
               }
             ],
             "id": 7140,
             "name": "VariableDeclaration",
-            "src": "3283:60:15"
+            "src": "3342:60:4"
           },
           {
             "attributes": {
@@ -5570,7 +5570,7 @@
                 },
                 "id": 7141,
                 "name": "ElementaryTypeName",
-                "src": "3349:7:15"
+                "src": "3409:7:4"
               },
               {
                 "attributes": {
@@ -5585,12 +5585,12 @@
                 },
                 "id": 7142,
                 "name": "Literal",
-                "src": "3401:9:15"
+                "src": "3461:9:4"
               }
             ],
             "id": 7143,
             "name": "VariableDeclaration",
-            "src": "3349:61:15"
+            "src": "3409:61:4"
           },
           {
             "attributes": {
@@ -5611,7 +5611,7 @@
                 },
                 "id": 7144,
                 "name": "ElementaryTypeName",
-                "src": "3416:7:15"
+                "src": "3477:7:4"
               },
               {
                 "attributes": {
@@ -5626,12 +5626,12 @@
                 },
                 "id": 7145,
                 "name": "Literal",
-                "src": "3472:9:15"
+                "src": "3533:9:4"
               }
             ],
             "id": 7146,
             "name": "VariableDeclaration",
-            "src": "3416:65:15"
+            "src": "3477:65:4"
           },
           {
             "attributes": {
@@ -5652,7 +5652,7 @@
                 },
                 "id": 7147,
                 "name": "ElementaryTypeName",
-                "src": "3487:7:15"
+                "src": "3549:7:4"
               },
               {
                 "attributes": {
@@ -5667,12 +5667,12 @@
                 },
                 "id": 7148,
                 "name": "Literal",
-                "src": "3543:9:15"
+                "src": "3605:9:4"
               }
             ],
             "id": 7149,
             "name": "VariableDeclaration",
-            "src": "3487:65:15"
+            "src": "3549:65:4"
           },
           {
             "attributes": {
@@ -5693,7 +5693,7 @@
                 },
                 "id": 7150,
                 "name": "ElementaryTypeName",
-                "src": "3558:7:15"
+                "src": "3621:7:4"
               },
               {
                 "attributes": {
@@ -5708,12 +5708,12 @@
                 },
                 "id": 7151,
                 "name": "Literal",
-                "src": "3615:10:15"
+                "src": "3678:10:4"
               }
             ],
             "id": 7152,
             "name": "VariableDeclaration",
-            "src": "3558:67:15"
+            "src": "3621:67:4"
           },
           {
             "attributes": {
@@ -5734,7 +5734,7 @@
                 },
                 "id": 7153,
                 "name": "ElementaryTypeName",
-                "src": "3631:7:15"
+                "src": "3695:7:4"
               },
               {
                 "attributes": {
@@ -5749,12 +5749,12 @@
                 },
                 "id": 7154,
                 "name": "Literal",
-                "src": "3690:10:15"
+                "src": "3754:10:4"
               }
             ],
             "id": 7155,
             "name": "VariableDeclaration",
-            "src": "3631:69:15"
+            "src": "3695:69:4"
           },
           {
             "attributes": {
@@ -5775,7 +5775,7 @@
                 },
                 "id": 7156,
                 "name": "ElementaryTypeName",
-                "src": "3706:7:15"
+                "src": "3771:7:4"
               },
               {
                 "attributes": {
@@ -5790,12 +5790,12 @@
                 },
                 "id": 7157,
                 "name": "Literal",
-                "src": "3764:10:15"
+                "src": "3829:10:4"
               }
             ],
             "id": 7158,
             "name": "VariableDeclaration",
-            "src": "3706:68:15"
+            "src": "3771:68:4"
           },
           {
             "attributes": {
@@ -5816,7 +5816,7 @@
                 },
                 "id": 7159,
                 "name": "ElementaryTypeName",
-                "src": "3780:7:15"
+                "src": "3846:7:4"
               },
               {
                 "attributes": {
@@ -5831,12 +5831,12 @@
                 },
                 "id": 7160,
                 "name": "Literal",
-                "src": "3831:10:15"
+                "src": "3897:10:4"
               }
             ],
             "id": 7161,
             "name": "VariableDeclaration",
-            "src": "3780:61:15"
+            "src": "3846:61:4"
           },
           {
             "attributes": {
@@ -5857,7 +5857,7 @@
                 },
                 "id": 7162,
                 "name": "ElementaryTypeName",
-                "src": "3847:7:15"
+                "src": "3914:7:4"
               },
               {
                 "attributes": {
@@ -5872,12 +5872,12 @@
                 },
                 "id": 7163,
                 "name": "Literal",
-                "src": "3901:11:15"
+                "src": "3968:11:4"
               }
             ],
             "id": 7164,
             "name": "VariableDeclaration",
-            "src": "3847:65:15"
+            "src": "3914:65:4"
           },
           {
             "attributes": {
@@ -5898,7 +5898,7 @@
                 },
                 "id": 7165,
                 "name": "ElementaryTypeName",
-                "src": "3918:7:15"
+                "src": "3986:7:4"
               },
               {
                 "attributes": {
@@ -5913,12 +5913,12 @@
                 },
                 "id": 7166,
                 "name": "Literal",
-                "src": "3970:11:15"
+                "src": "4038:11:4"
               }
             ],
             "id": 7167,
             "name": "VariableDeclaration",
-            "src": "3918:63:15"
+            "src": "3986:63:4"
           },
           {
             "attributes": {
@@ -5939,7 +5939,7 @@
                 },
                 "id": 7168,
                 "name": "ElementaryTypeName",
-                "src": "3987:7:15"
+                "src": "4056:7:4"
               },
               {
                 "attributes": {
@@ -5954,12 +5954,12 @@
                 },
                 "id": 7169,
                 "name": "Literal",
-                "src": "4054:11:15"
+                "src": "4123:11:4"
               }
             ],
             "id": 7170,
             "name": "VariableDeclaration",
-            "src": "3987:78:15"
+            "src": "4056:78:4"
           },
           {
             "attributes": {
@@ -5980,7 +5980,7 @@
                 },
                 "id": 7171,
                 "name": "ElementaryTypeName",
-                "src": "4108:7:15"
+                "src": "4178:7:4"
               },
               {
                 "attributes": {
@@ -5995,12 +5995,12 @@
                 },
                 "id": 7172,
                 "name": "Literal",
-                "src": "4175:11:15"
+                "src": "4245:11:4"
               }
             ],
             "id": 7173,
             "name": "VariableDeclaration",
-            "src": "4108:78:15"
+            "src": "4178:78:4"
           },
           {
             "attributes": {
@@ -6021,7 +6021,7 @@
                 },
                 "id": 7174,
                 "name": "ElementaryTypeName",
-                "src": "4229:7:15"
+                "src": "4300:7:4"
               },
               {
                 "attributes": {
@@ -6036,12 +6036,12 @@
                 },
                 "id": 7175,
                 "name": "Literal",
-                "src": "4296:12:15"
+                "src": "4367:12:4"
               }
             ],
             "id": 7176,
             "name": "VariableDeclaration",
-            "src": "4229:79:15"
+            "src": "4300:79:4"
           },
           {
             "attributes": {
@@ -6062,7 +6062,7 @@
                 },
                 "id": 7177,
                 "name": "ElementaryTypeName",
-                "src": "4351:7:15"
+                "src": "4423:7:4"
               },
               {
                 "attributes": {
@@ -6077,12 +6077,12 @@
                 },
                 "id": 7178,
                 "name": "Literal",
-                "src": "4420:12:15"
+                "src": "4492:12:4"
               }
             ],
             "id": 7179,
             "name": "VariableDeclaration",
-            "src": "4351:81:15"
+            "src": "4423:81:4"
           },
           {
             "attributes": {
@@ -6103,7 +6103,7 @@
                 },
                 "id": 7180,
                 "name": "ElementaryTypeName",
-                "src": "4475:7:15"
+                "src": "4548:7:4"
               },
               {
                 "attributes": {
@@ -6118,12 +6118,12 @@
                 },
                 "id": 7181,
                 "name": "Literal",
-                "src": "4528:12:15"
+                "src": "4601:12:4"
               }
             ],
             "id": 7182,
             "name": "VariableDeclaration",
-            "src": "4475:65:15"
+            "src": "4548:65:4"
           },
           {
             "attributes": {
@@ -6144,7 +6144,7 @@
                 },
                 "id": 7183,
                 "name": "ElementaryTypeName",
-                "src": "4546:7:15"
+                "src": "4620:7:4"
               },
               {
                 "attributes": {
@@ -6159,12 +6159,12 @@
                 },
                 "id": 7184,
                 "name": "Literal",
-                "src": "4593:12:15"
+                "src": "4667:12:4"
               }
             ],
             "id": 7185,
             "name": "VariableDeclaration",
-            "src": "4546:59:15"
+            "src": "4620:59:4"
           },
           {
             "attributes": {
@@ -6185,7 +6185,7 @@
                 },
                 "id": 7186,
                 "name": "ElementaryTypeName",
-                "src": "4611:7:15"
+                "src": "4686:7:4"
               },
               {
                 "attributes": {
@@ -6200,12 +6200,12 @@
                 },
                 "id": 7187,
                 "name": "Literal",
-                "src": "4660:13:15"
+                "src": "4735:13:4"
               }
             ],
             "id": 7188,
             "name": "VariableDeclaration",
-            "src": "4611:62:15"
+            "src": "4686:62:4"
           },
           {
             "attributes": {
@@ -6226,7 +6226,7 @@
                 },
                 "id": 7189,
                 "name": "ElementaryTypeName",
-                "src": "4679:7:15"
+                "src": "4755:7:4"
               },
               {
                 "attributes": {
@@ -6241,12 +6241,12 @@
                 },
                 "id": 7190,
                 "name": "Literal",
-                "src": "4733:13:15"
+                "src": "4809:13:4"
               }
             ],
             "id": 7191,
             "name": "VariableDeclaration",
-            "src": "4679:67:15"
+            "src": "4755:67:4"
           },
           {
             "attributes": {
@@ -6267,7 +6267,7 @@
                 },
                 "id": 7192,
                 "name": "ElementaryTypeName",
-                "src": "4752:7:15"
+                "src": "4829:7:4"
               },
               {
                 "attributes": {
@@ -6282,12 +6282,12 @@
                 },
                 "id": 7193,
                 "name": "Literal",
-                "src": "4804:13:15"
+                "src": "4881:13:4"
               }
             ],
             "id": 7194,
             "name": "VariableDeclaration",
-            "src": "4752:65:15"
+            "src": "4829:65:4"
           },
           {
             "attributes": {
@@ -6308,7 +6308,7 @@
                 },
                 "id": 7195,
                 "name": "ElementaryTypeName",
-                "src": "4823:7:15"
+                "src": "4901:7:4"
               },
               {
                 "attributes": {
@@ -6323,12 +6323,12 @@
                 },
                 "id": 7196,
                 "name": "Literal",
-                "src": "4868:13:15"
+                "src": "4946:13:4"
               }
             ],
             "id": 7197,
             "name": "VariableDeclaration",
-            "src": "4823:58:15"
+            "src": "4901:58:4"
           },
           {
             "attributes": {
@@ -6349,7 +6349,7 @@
                 },
                 "id": 7198,
                 "name": "ElementaryTypeName",
-                "src": "4887:7:15"
+                "src": "4966:7:4"
               },
               {
                 "attributes": {
@@ -6364,12 +6364,12 @@
                 },
                 "id": 7199,
                 "name": "Literal",
-                "src": "4940:14:15"
+                "src": "5019:14:4"
               }
             ],
             "id": 7200,
             "name": "VariableDeclaration",
-            "src": "4887:67:15"
+            "src": "4966:67:4"
           },
           {
             "attributes": {
@@ -6390,7 +6390,7 @@
                 },
                 "id": 7201,
                 "name": "ElementaryTypeName",
-                "src": "4960:7:15"
+                "src": "5040:7:4"
               },
               {
                 "attributes": {
@@ -6405,12 +6405,12 @@
                 },
                 "id": 7202,
                 "name": "Literal",
-                "src": "5011:14:15"
+                "src": "5091:14:4"
               }
             ],
             "id": 7203,
             "name": "VariableDeclaration",
-            "src": "4960:65:15"
+            "src": "5040:65:4"
           },
           {
             "attributes": {
@@ -6431,7 +6431,7 @@
                 },
                 "id": 7204,
                 "name": "ElementaryTypeName",
-                "src": "5031:7:15"
+                "src": "5112:7:4"
               },
               {
                 "attributes": {
@@ -6446,12 +6446,12 @@
                 },
                 "id": 7205,
                 "name": "Literal",
-                "src": "5087:14:15"
+                "src": "5168:14:4"
               }
             ],
             "id": 7206,
             "name": "VariableDeclaration",
-            "src": "5031:70:15"
+            "src": "5112:70:4"
           },
           {
             "attributes": {
@@ -6472,7 +6472,7 @@
                 },
                 "id": 7207,
                 "name": "ElementaryTypeName",
-                "src": "5107:7:15"
+                "src": "5189:7:4"
               },
               {
                 "attributes": {
@@ -6487,12 +6487,12 @@
                 },
                 "id": 7208,
                 "name": "Literal",
-                "src": "5168:14:15"
+                "src": "5250:14:4"
               }
             ],
             "id": 7209,
             "name": "VariableDeclaration",
-            "src": "5107:75:15"
+            "src": "5189:75:4"
           },
           {
             "attributes": {
@@ -6513,7 +6513,7 @@
                 },
                 "id": 7210,
                 "name": "ElementaryTypeName",
-                "src": "5188:7:15"
+                "src": "5271:7:4"
               },
               {
                 "attributes": {
@@ -6528,12 +6528,12 @@
                 },
                 "id": 7211,
                 "name": "Literal",
-                "src": "5242:15:15"
+                "src": "5325:15:4"
               }
             ],
             "id": 7212,
             "name": "VariableDeclaration",
-            "src": "5188:69:15"
+            "src": "5271:69:4"
           },
           {
             "attributes": {
@@ -6554,7 +6554,7 @@
                 },
                 "id": 7213,
                 "name": "ElementaryTypeName",
-                "src": "5263:7:15"
+                "src": "5347:7:4"
               },
               {
                 "attributes": {
@@ -6569,12 +6569,12 @@
                 },
                 "id": 7214,
                 "name": "Literal",
-                "src": "5315:15:15"
+                "src": "5399:15:4"
               }
             ],
             "id": 7215,
             "name": "VariableDeclaration",
-            "src": "5263:67:15"
+            "src": "5347:67:4"
           },
           {
             "attributes": {
@@ -6595,7 +6595,7 @@
                 },
                 "id": 7216,
                 "name": "ElementaryTypeName",
-                "src": "5336:7:15"
+                "src": "5421:7:4"
               },
               {
                 "attributes": {
@@ -6610,12 +6610,12 @@
                 },
                 "id": 7217,
                 "name": "Literal",
-                "src": "5388:15:15"
+                "src": "5473:15:4"
               }
             ],
             "id": 7218,
             "name": "VariableDeclaration",
-            "src": "5336:67:15"
+            "src": "5421:67:4"
           },
           {
             "attributes": {
@@ -6636,7 +6636,7 @@
                 },
                 "id": 7219,
                 "name": "ElementaryTypeName",
-                "src": "5409:7:15"
+                "src": "5495:7:4"
               },
               {
                 "attributes": {
@@ -6651,12 +6651,12 @@
                 },
                 "id": 7220,
                 "name": "Literal",
-                "src": "5461:15:15"
+                "src": "5547:15:4"
               }
             ],
             "id": 7221,
             "name": "VariableDeclaration",
-            "src": "5409:67:15"
+            "src": "5495:67:4"
           },
           {
             "attributes": {
@@ -6677,7 +6677,7 @@
                 },
                 "id": 7222,
                 "name": "ElementaryTypeName",
-                "src": "5482:7:15"
+                "src": "5569:7:4"
               },
               {
                 "attributes": {
@@ -6692,12 +6692,12 @@
                 },
                 "id": 7223,
                 "name": "Literal",
-                "src": "5555:16:15"
+                "src": "5642:16:4"
               }
             ],
             "id": 7224,
             "name": "VariableDeclaration",
-            "src": "5482:89:15"
+            "src": "5569:89:4"
           },
           {
             "attributes": {
@@ -6718,7 +6718,7 @@
                 },
                 "id": 7225,
                 "name": "ElementaryTypeName",
-                "src": "5614:7:15"
+                "src": "5702:7:4"
               },
               {
                 "attributes": {
@@ -6733,12 +6733,12 @@
                 },
                 "id": 7226,
                 "name": "Literal",
-                "src": "5685:16:15"
+                "src": "5773:16:4"
               }
             ],
             "id": 7227,
             "name": "VariableDeclaration",
-            "src": "5614:87:15"
+            "src": "5702:87:4"
           },
           {
             "attributes": {
@@ -6759,7 +6759,7 @@
                 },
                 "id": 7228,
                 "name": "ElementaryTypeName",
-                "src": "5744:7:15"
+                "src": "5833:7:4"
               },
               {
                 "attributes": {
@@ -6774,12 +6774,12 @@
                 },
                 "id": 7229,
                 "name": "Literal",
-                "src": "5816:16:15"
+                "src": "5905:16:4"
               }
             ],
             "id": 7230,
             "name": "VariableDeclaration",
-            "src": "5744:88:15"
+            "src": "5833:88:4"
           },
           {
             "attributes": {
@@ -6800,7 +6800,7 @@
                 },
                 "id": 7231,
                 "name": "ElementaryTypeName",
-                "src": "5875:7:15"
+                "src": "5965:7:4"
               },
               {
                 "attributes": {
@@ -6815,12 +6815,12 @@
                 },
                 "id": 7232,
                 "name": "Literal",
-                "src": "5940:16:15"
+                "src": "6030:16:4"
               }
             ],
             "id": 7233,
             "name": "VariableDeclaration",
-            "src": "5875:81:15"
+            "src": "5965:81:4"
           },
           {
             "attributes": {
@@ -6841,7 +6841,7 @@
                 },
                 "id": 7234,
                 "name": "ElementaryTypeName",
-                "src": "5987:7:15"
+                "src": "6078:7:4"
               },
               {
                 "attributes": {
@@ -6856,12 +6856,12 @@
                 },
                 "id": 7235,
                 "name": "Literal",
-                "src": "6054:17:15"
+                "src": "6145:17:4"
               }
             ],
             "id": 7236,
             "name": "VariableDeclaration",
-            "src": "5987:84:15"
+            "src": "6078:84:4"
           },
           {
             "attributes": {
@@ -6882,7 +6882,7 @@
                 },
                 "id": 7237,
                 "name": "ElementaryTypeName",
-                "src": "6114:7:15"
+                "src": "6206:7:4"
               },
               {
                 "attributes": {
@@ -6897,12 +6897,12 @@
                 },
                 "id": 7238,
                 "name": "Literal",
-                "src": "6165:17:15"
+                "src": "6257:17:4"
               }
             ],
             "id": 7239,
             "name": "VariableDeclaration",
-            "src": "6114:68:15"
+            "src": "6206:68:4"
           },
           {
             "attributes": {
@@ -6923,7 +6923,7 @@
                 },
                 "id": 7240,
                 "name": "ElementaryTypeName",
-                "src": "6188:7:15"
+                "src": "6281:7:4"
               },
               {
                 "attributes": {
@@ -6938,12 +6938,12 @@
                 },
                 "id": 7241,
                 "name": "Literal",
-                "src": "6237:17:15"
+                "src": "6330:17:4"
               }
             ],
             "id": 7242,
             "name": "VariableDeclaration",
-            "src": "6188:66:15"
+            "src": "6281:66:4"
           },
           {
             "attributes": {
@@ -6964,7 +6964,7 @@
                 },
                 "id": 7243,
                 "name": "ElementaryTypeName",
-                "src": "6260:7:15"
+                "src": "6354:7:4"
               },
               {
                 "attributes": {
@@ -6979,12 +6979,12 @@
                 },
                 "id": 7244,
                 "name": "Literal",
-                "src": "6309:17:15"
+                "src": "6403:17:4"
               }
             ],
             "id": 7245,
             "name": "VariableDeclaration",
-            "src": "6260:66:15"
+            "src": "6354:66:4"
           },
           {
             "attributes": {
@@ -7005,7 +7005,7 @@
                 },
                 "id": 7246,
                 "name": "ElementaryTypeName",
-                "src": "6332:7:15"
+                "src": "6427:7:4"
               },
               {
                 "attributes": {
@@ -7020,12 +7020,12 @@
                 },
                 "id": 7247,
                 "name": "Literal",
-                "src": "6381:18:15"
+                "src": "6476:18:4"
               }
             ],
             "id": 7248,
             "name": "VariableDeclaration",
-            "src": "6332:67:15"
+            "src": "6427:67:4"
           },
           {
             "attributes": {
@@ -7046,7 +7046,7 @@
                 },
                 "id": 7249,
                 "name": "ElementaryTypeName",
-                "src": "6405:7:15"
+                "src": "6501:7:4"
               },
               {
                 "attributes": {
@@ -7061,12 +7061,12 @@
                 },
                 "id": 7250,
                 "name": "Literal",
-                "src": "6454:18:15"
+                "src": "6550:18:4"
               }
             ],
             "id": 7251,
             "name": "VariableDeclaration",
-            "src": "6405:67:15"
+            "src": "6501:67:4"
           },
           {
             "attributes": {
@@ -7087,7 +7087,7 @@
                 },
                 "id": 7252,
                 "name": "ElementaryTypeName",
-                "src": "6478:7:15"
+                "src": "6575:7:4"
               },
               {
                 "attributes": {
@@ -7102,12 +7102,12 @@
                 },
                 "id": 7253,
                 "name": "Literal",
-                "src": "6537:18:15"
+                "src": "6634:18:4"
               }
             ],
             "id": 7254,
             "name": "VariableDeclaration",
-            "src": "6478:77:15"
+            "src": "6575:77:4"
           },
           {
             "attributes": {
@@ -7128,7 +7128,7 @@
                 },
                 "id": 7255,
                 "name": "ElementaryTypeName",
-                "src": "6561:7:15"
+                "src": "6659:7:4"
               },
               {
                 "attributes": {
@@ -7143,12 +7143,12 @@
                 },
                 "id": 7256,
                 "name": "Literal",
-                "src": "6616:18:15"
+                "src": "6714:18:4"
               }
             ],
             "id": 7257,
             "name": "VariableDeclaration",
-            "src": "6561:73:15"
+            "src": "6659:73:4"
           },
           {
             "attributes": {
@@ -7169,7 +7169,7 @@
                 },
                 "id": 7258,
                 "name": "ElementaryTypeName",
-                "src": "6640:7:15"
+                "src": "6739:7:4"
               },
               {
                 "attributes": {
@@ -7184,12 +7184,12 @@
                 },
                 "id": 7259,
                 "name": "Literal",
-                "src": "6695:19:15"
+                "src": "6794:19:4"
               }
             ],
             "id": 7260,
             "name": "VariableDeclaration",
-            "src": "6640:74:15"
+            "src": "6739:74:4"
           },
           {
             "attributes": {
@@ -7210,7 +7210,7 @@
                 },
                 "id": 7261,
                 "name": "ElementaryTypeName",
-                "src": "6720:7:15"
+                "src": "6820:7:4"
               },
               {
                 "attributes": {
@@ -7225,12 +7225,12 @@
                 },
                 "id": 7262,
                 "name": "Literal",
-                "src": "6775:19:15"
+                "src": "6875:19:4"
               }
             ],
             "id": 7263,
             "name": "VariableDeclaration",
-            "src": "6720:74:15"
+            "src": "6820:74:4"
           },
           {
             "attributes": {
@@ -7251,7 +7251,7 @@
                 },
                 "id": 7264,
                 "name": "ElementaryTypeName",
-                "src": "6800:7:15"
+                "src": "6901:7:4"
               },
               {
                 "attributes": {
@@ -7266,12 +7266,12 @@
                 },
                 "id": 7265,
                 "name": "Literal",
-                "src": "6856:19:15"
+                "src": "6957:19:4"
               }
             ],
             "id": 7266,
             "name": "VariableDeclaration",
-            "src": "6800:75:15"
+            "src": "6901:75:4"
           },
           {
             "attributes": {
@@ -7292,7 +7292,7 @@
                 },
                 "id": 7267,
                 "name": "ElementaryTypeName",
-                "src": "6881:7:15"
+                "src": "6983:7:4"
               },
               {
                 "attributes": {
@@ -7307,17 +7307,17 @@
                 },
                 "id": 7268,
                 "name": "Literal",
-                "src": "6943:19:15"
+                "src": "7045:19:4"
               }
             ],
             "id": 7269,
             "name": "VariableDeclaration",
-            "src": "6881:81:15"
+            "src": "6983:81:4"
           }
         ],
         "id": 7270,
         "name": "ContractDefinition",
-        "src": "1320:5645:15"
+        "src": "1353:5715:4"
       },
       {
         "attributes": {
@@ -7346,12 +7346,12 @@
                 },
                 "id": 7271,
                 "name": "UserDefinedTypeName",
-                "src": "6999:15:15"
+                "src": "7105:15:4"
               }
             ],
             "id": 7272,
             "name": "InheritanceSpecifier",
-            "src": "6999:15:15"
+            "src": "7105:15:4"
           },
           {
             "attributes": {
@@ -7391,12 +7391,12 @@
                         },
                         "id": 7273,
                         "name": "UserDefinedTypeName",
-                        "src": "7057:6:15"
+                        "src": "7165:6:4"
                       }
                     ],
                     "id": 7274,
                     "name": "VariableDeclaration",
-                    "src": "7057:16:15"
+                    "src": "7165:16:4"
                   },
                   {
                     "attributes": {
@@ -7418,12 +7418,12 @@
                         },
                         "id": 7275,
                         "name": "UserDefinedTypeName",
-                        "src": "7083:6:15"
+                        "src": "7192:6:4"
                       }
                     ],
                     "id": 7276,
                     "name": "VariableDeclaration",
-                    "src": "7083:16:15"
+                    "src": "7192:16:4"
                   },
                   {
                     "attributes": {
@@ -7444,12 +7444,12 @@
                         },
                         "id": 7277,
                         "name": "ElementaryTypeName",
-                        "src": "7109:7:15"
+                        "src": "7219:7:4"
                       }
                     ],
                     "id": 7278,
                     "name": "VariableDeclaration",
-                    "src": "7109:14:15"
+                    "src": "7219:14:4"
                   },
                   {
                     "attributes": {
@@ -7470,12 +7470,12 @@
                         },
                         "id": 7279,
                         "name": "ElementaryTypeName",
-                        "src": "7133:7:15"
+                        "src": "7244:7:4"
                       }
                     ],
                     "id": 7280,
                     "name": "VariableDeclaration",
-                    "src": "7133:13:15"
+                    "src": "7244:13:4"
                   },
                   {
                     "attributes": {
@@ -7496,17 +7496,17 @@
                         },
                         "id": 7281,
                         "name": "ElementaryTypeName",
-                        "src": "7156:7:15"
+                        "src": "7268:7:4"
                       }
                     ],
                     "id": 7282,
                     "name": "VariableDeclaration",
-                    "src": "7156:13:15"
+                    "src": "7268:13:4"
                   }
                 ],
                 "id": 7283,
                 "name": "ParameterList",
-                "src": "7047:162:15"
+                "src": "7154:168:4"
               },
               {
                 "children": [
@@ -7529,12 +7529,12 @@
                         },
                         "id": 7284,
                         "name": "ElementaryTypeName",
-                        "src": "7263:7:15"
+                        "src": "7381:7:4"
                       }
                     ],
                     "id": 7285,
                     "name": "VariableDeclaration",
-                    "src": "7263:20:15"
+                    "src": "7381:20:4"
                   },
                   {
                     "attributes": {
@@ -7560,27 +7560,27 @@
                             },
                             "id": 7286,
                             "name": "ElementaryTypeName",
-                            "src": "7293:7:15"
+                            "src": "7412:7:4"
                           }
                         ],
                         "id": 7287,
                         "name": "ArrayTypeName",
-                        "src": "7293:9:15"
+                        "src": "7412:9:4"
                       }
                     ],
                     "id": 7288,
                     "name": "VariableDeclaration",
-                    "src": "7293:29:15"
+                    "src": "7412:29:4"
                   }
                 ],
                 "id": 7289,
                 "name": "ParameterList",
-                "src": "7253:75:15"
+                "src": "7370:78:4"
               }
             ],
             "id": 7290,
             "name": "FunctionDefinition",
-            "src": "7021:308:15"
+            "src": "7128:321:4"
           },
           {
             "attributes": {
@@ -7620,12 +7620,12 @@
                         },
                         "id": 7291,
                         "name": "UserDefinedTypeName",
-                        "src": "7378:6:15"
+                        "src": "7501:6:4"
                       }
                     ],
                     "id": 7292,
                     "name": "VariableDeclaration",
-                    "src": "7378:16:15"
+                    "src": "7501:16:4"
                   },
                   {
                     "attributes": {
@@ -7647,12 +7647,12 @@
                         },
                         "id": 7293,
                         "name": "UserDefinedTypeName",
-                        "src": "7404:6:15"
+                        "src": "7528:6:4"
                       }
                     ],
                     "id": 7294,
                     "name": "VariableDeclaration",
-                    "src": "7404:16:15"
+                    "src": "7528:16:4"
                   },
                   {
                     "attributes": {
@@ -7673,12 +7673,12 @@
                         },
                         "id": 7295,
                         "name": "ElementaryTypeName",
-                        "src": "7430:7:15"
+                        "src": "7555:7:4"
                       }
                     ],
                     "id": 7296,
                     "name": "VariableDeclaration",
-                    "src": "7430:14:15"
+                    "src": "7555:14:4"
                   },
                   {
                     "attributes": {
@@ -7699,12 +7699,12 @@
                         },
                         "id": 7297,
                         "name": "ElementaryTypeName",
-                        "src": "7454:7:15"
+                        "src": "7580:7:4"
                       }
                     ],
                     "id": 7298,
                     "name": "VariableDeclaration",
-                    "src": "7454:13:15"
+                    "src": "7580:13:4"
                   },
                   {
                     "attributes": {
@@ -7725,12 +7725,12 @@
                         },
                         "id": 7299,
                         "name": "ElementaryTypeName",
-                        "src": "7477:7:15"
+                        "src": "7604:7:4"
                       }
                     ],
                     "id": 7300,
                     "name": "VariableDeclaration",
-                    "src": "7477:13:15"
+                    "src": "7604:13:4"
                   },
                   {
                     "attributes": {
@@ -7751,17 +7751,17 @@
                         },
                         "id": 7301,
                         "name": "ElementaryTypeName",
-                        "src": "7534:7:15"
+                        "src": "7662:7:4"
                       }
                     ],
                     "id": 7302,
                     "name": "VariableDeclaration",
-                    "src": "7534:38:15"
+                    "src": "7662:38:4"
                   }
                 ],
                 "id": 7303,
                 "name": "ParameterList",
-                "src": "7368:210:15"
+                "src": "7490:217:4"
               },
               {
                 "children": [
@@ -7784,12 +7784,12 @@
                         },
                         "id": 7304,
                         "name": "ElementaryTypeName",
-                        "src": "7632:7:15"
+                        "src": "7766:7:4"
                       }
                     ],
                     "id": 7305,
                     "name": "VariableDeclaration",
-                    "src": "7632:20:15"
+                    "src": "7766:20:4"
                   },
                   {
                     "attributes": {
@@ -7810,12 +7810,12 @@
                         },
                         "id": 7306,
                         "name": "ElementaryTypeName",
-                        "src": "7662:7:15"
+                        "src": "7797:7:4"
                       }
                     ],
                     "id": 7307,
                     "name": "VariableDeclaration",
-                    "src": "7662:25:15"
+                    "src": "7797:25:4"
                   },
                   {
                     "attributes": {
@@ -7841,27 +7841,27 @@
                             },
                             "id": 7308,
                             "name": "ElementaryTypeName",
-                            "src": "7697:7:15"
+                            "src": "7833:7:4"
                           }
                         ],
                         "id": 7309,
                         "name": "ArrayTypeName",
-                        "src": "7697:9:15"
+                        "src": "7833:9:4"
                       }
                     ],
                     "id": 7310,
                     "name": "VariableDeclaration",
-                    "src": "7697:29:15"
+                    "src": "7833:29:4"
                   }
                 ],
                 "id": 7311,
                 "name": "ParameterList",
-                "src": "7622:110:15"
+                "src": "7755:114:4"
               }
             ],
             "id": 7312,
             "name": "FunctionDefinition",
-            "src": "7335:398:15"
+            "src": "7457:413:4"
           },
           {
             "attributes": {
@@ -7901,12 +7901,12 @@
                         },
                         "id": 7313,
                         "name": "UserDefinedTypeName",
-                        "src": "7762:6:15"
+                        "src": "7902:6:4"
                       }
                     ],
                     "id": 7314,
                     "name": "VariableDeclaration",
-                    "src": "7762:16:15"
+                    "src": "7902:16:4"
                   },
                   {
                     "attributes": {
@@ -7928,12 +7928,12 @@
                         },
                         "id": 7315,
                         "name": "UserDefinedTypeName",
-                        "src": "7788:6:15"
+                        "src": "7929:6:4"
                       }
                     ],
                     "id": 7316,
                     "name": "VariableDeclaration",
-                    "src": "7788:16:15"
+                    "src": "7929:16:4"
                   },
                   {
                     "attributes": {
@@ -7954,12 +7954,12 @@
                         },
                         "id": 7317,
                         "name": "ElementaryTypeName",
-                        "src": "7814:7:15"
+                        "src": "7956:7:4"
                       }
                     ],
                     "id": 7318,
                     "name": "VariableDeclaration",
-                    "src": "7814:14:15"
+                    "src": "7956:14:4"
                   },
                   {
                     "attributes": {
@@ -7980,12 +7980,12 @@
                         },
                         "id": 7319,
                         "name": "ElementaryTypeName",
-                        "src": "7838:7:15"
+                        "src": "7981:7:4"
                       }
                     ],
                     "id": 7320,
                     "name": "VariableDeclaration",
-                    "src": "7838:17:15"
+                    "src": "7981:17:4"
                   },
                   {
                     "attributes": {
@@ -8011,17 +8011,17 @@
                             },
                             "id": 7321,
                             "name": "ElementaryTypeName",
-                            "src": "7865:7:15"
+                            "src": "8009:7:4"
                           }
                         ],
                         "id": 7322,
                         "name": "ArrayTypeName",
-                        "src": "7865:9:15"
+                        "src": "8009:9:4"
                       }
                     ],
                     "id": 7323,
                     "name": "VariableDeclaration",
-                    "src": "7865:29:15"
+                    "src": "8009:29:4"
                   },
                   {
                     "attributes": {
@@ -8042,17 +8042,17 @@
                         },
                         "id": 7324,
                         "name": "ElementaryTypeName",
-                        "src": "7904:7:15"
+                        "src": "8049:7:4"
                       }
                     ],
                     "id": 7325,
                     "name": "VariableDeclaration",
-                    "src": "7904:13:15"
+                    "src": "8049:13:4"
                   }
                 ],
                 "id": 7326,
                 "name": "ParameterList",
-                "src": "7752:171:15"
+                "src": "7891:178:4"
               },
               {
                 "children": [
@@ -8075,27 +8075,27 @@
                         },
                         "id": 7327,
                         "name": "ElementaryTypeName",
-                        "src": "7971:7:15"
+                        "src": "8121:7:4"
                       }
                     ],
                     "id": 7328,
                     "name": "VariableDeclaration",
-                    "src": "7971:20:15"
+                    "src": "8121:20:4"
                   }
                 ],
                 "id": 7329,
                 "name": "ParameterList",
-                "src": "7970:22:15"
+                "src": "8120:22:4"
               }
             ],
             "id": 7330,
             "name": "FunctionDefinition",
-            "src": "7739:254:15"
+            "src": "7878:265:4"
           }
         ],
         "id": 7331,
         "name": "ContractDefinition",
-        "src": "6968:1027:15"
+        "src": "7074:1072:4"
       },
       {
         "attributes": {
@@ -8126,12 +8126,12 @@
                 },
                 "id": 7332,
                 "name": "UserDefinedTypeName",
-                "src": "8034:9:15"
+                "src": "8188:9:4"
               }
             ],
             "id": 7333,
             "name": "InheritanceSpecifier",
-            "src": "8034:9:15"
+            "src": "8188:9:4"
           },
           {
             "attributes": {
@@ -8176,17 +8176,17 @@
                             },
                             "id": 7334,
                             "name": "UserDefinedTypeName",
-                            "src": "8098:6:15"
+                            "src": "8254:6:4"
                           }
                         ],
                         "id": 7335,
                         "name": "ArrayTypeName",
-                        "src": "8098:8:15"
+                        "src": "8254:8:4"
                       }
                     ],
                     "id": 7336,
                     "name": "VariableDeclaration",
-                    "src": "8098:22:15"
+                    "src": "8254:22:4"
                   },
                   {
                     "attributes": {
@@ -8207,12 +8207,12 @@
                         },
                         "id": 7337,
                         "name": "ElementaryTypeName",
-                        "src": "8130:7:15"
+                        "src": "8287:7:4"
                       }
                     ],
                     "id": 7338,
                     "name": "VariableDeclaration",
-                    "src": "8130:14:15"
+                    "src": "8287:14:4"
                   },
                   {
                     "attributes": {
@@ -8238,17 +8238,17 @@
                             },
                             "id": 7339,
                             "name": "ElementaryTypeName",
-                            "src": "8154:7:15"
+                            "src": "8312:7:4"
                           }
                         ],
                         "id": 7340,
                         "name": "ArrayTypeName",
-                        "src": "8154:9:15"
+                        "src": "8312:9:4"
                       }
                     ],
                     "id": 7341,
                     "name": "VariableDeclaration",
-                    "src": "8154:22:15"
+                    "src": "8312:22:4"
                   },
                   {
                     "attributes": {
@@ -8274,17 +8274,17 @@
                             },
                             "id": 7342,
                             "name": "ElementaryTypeName",
-                            "src": "8186:7:15"
+                            "src": "8345:7:4"
                           }
                         ],
                         "id": 7343,
                         "name": "ArrayTypeName",
-                        "src": "8186:9:15"
+                        "src": "8345:9:4"
                       }
                     ],
                     "id": 7344,
                     "name": "VariableDeclaration",
-                    "src": "8186:22:15"
+                    "src": "8345:22:4"
                   },
                   {
                     "attributes": {
@@ -8310,22 +8310,22 @@
                             },
                             "id": 7345,
                             "name": "ElementaryTypeName",
-                            "src": "8218:7:15"
+                            "src": "8378:7:4"
                           }
                         ],
                         "id": 7346,
                         "name": "ArrayTypeName",
-                        "src": "8218:9:15"
+                        "src": "8378:9:4"
                       }
                     ],
                     "id": 7347,
                     "name": "VariableDeclaration",
-                    "src": "8218:48:15"
+                    "src": "8378:48:4"
                   }
                 ],
                 "id": 7348,
                 "name": "ParameterList",
-                "src": "8088:184:15"
+                "src": "8243:190:4"
               },
               {
                 "children": [
@@ -8353,17 +8353,17 @@
                             },
                             "id": 7349,
                             "name": "ElementaryTypeName",
-                            "src": "8326:7:15"
+                            "src": "8492:7:4"
                           }
                         ],
                         "id": 7350,
                         "name": "ArrayTypeName",
-                        "src": "8326:9:15"
+                        "src": "8492:9:4"
                       }
                     ],
                     "id": 7351,
                     "name": "VariableDeclaration",
-                    "src": "8326:30:15"
+                    "src": "8492:30:4"
                   },
                   {
                     "attributes": {
@@ -8384,12 +8384,12 @@
                         },
                         "id": 7352,
                         "name": "ElementaryTypeName",
-                        "src": "8366:7:15"
+                        "src": "8533:7:4"
                       }
                     ],
                     "id": 7353,
                     "name": "VariableDeclaration",
-                    "src": "8366:25:15"
+                    "src": "8533:25:4"
                   },
                   {
                     "attributes": {
@@ -8415,27 +8415,27 @@
                             },
                             "id": 7354,
                             "name": "ElementaryTypeName",
-                            "src": "8401:7:15"
+                            "src": "8569:7:4"
                           }
                         ],
                         "id": 7355,
                         "name": "ArrayTypeName",
-                        "src": "8401:9:15"
+                        "src": "8569:9:4"
                       }
                     ],
                     "id": 7356,
                     "name": "VariableDeclaration",
-                    "src": "8401:29:15"
+                    "src": "8569:29:4"
                   }
                 ],
                 "id": 7357,
                 "name": "ParameterList",
-                "src": "8316:120:15"
+                "src": "8481:124:4"
               }
             ],
             "id": 7358,
             "name": "FunctionDefinition",
-            "src": "8050:387:15"
+            "src": "8205:401:4"
           },
           {
             "attributes": {
@@ -8480,17 +8480,17 @@
                             },
                             "id": 7359,
                             "name": "UserDefinedTypeName",
-                            "src": "8471:6:15"
+                            "src": "8643:6:4"
                           }
                         ],
                         "id": 7360,
                         "name": "ArrayTypeName",
-                        "src": "8471:8:15"
+                        "src": "8643:8:4"
                       }
                     ],
                     "id": 7361,
                     "name": "VariableDeclaration",
-                    "src": "8471:22:15"
+                    "src": "8643:22:4"
                   },
                   {
                     "attributes": {
@@ -8511,12 +8511,12 @@
                         },
                         "id": 7362,
                         "name": "ElementaryTypeName",
-                        "src": "8503:7:15"
+                        "src": "8676:7:4"
                       }
                     ],
                     "id": 7363,
                     "name": "VariableDeclaration",
-                    "src": "8503:14:15"
+                    "src": "8676:14:4"
                   },
                   {
                     "attributes": {
@@ -8537,12 +8537,12 @@
                         },
                         "id": 7364,
                         "name": "ElementaryTypeName",
-                        "src": "8527:7:15"
+                        "src": "8701:7:4"
                       }
                     ],
                     "id": 7365,
                     "name": "VariableDeclaration",
-                    "src": "8527:17:15"
+                    "src": "8701:17:4"
                   },
                   {
                     "attributes": {
@@ -8568,17 +8568,17 @@
                             },
                             "id": 7366,
                             "name": "ElementaryTypeName",
-                            "src": "8554:7:15"
+                            "src": "8729:7:4"
                           }
                         ],
                         "id": 7367,
                         "name": "ArrayTypeName",
-                        "src": "8554:9:15"
+                        "src": "8729:9:4"
                       }
                     ],
                     "id": 7368,
                     "name": "VariableDeclaration",
-                    "src": "8554:29:15"
+                    "src": "8729:29:4"
                   },
                   {
                     "attributes": {
@@ -8604,22 +8604,22 @@
                             },
                             "id": 7369,
                             "name": "ElementaryTypeName",
-                            "src": "8593:7:15"
+                            "src": "8769:7:4"
                           }
                         ],
                         "id": 7370,
                         "name": "ArrayTypeName",
-                        "src": "8593:9:15"
+                        "src": "8769:9:4"
                       }
                     ],
                     "id": 7371,
                     "name": "VariableDeclaration",
-                    "src": "8593:22:15"
+                    "src": "8769:22:4"
                   }
                 ],
                 "id": 7372,
                 "name": "ParameterList",
-                "src": "8461:160:15"
+                "src": "8632:166:4"
               },
               {
                 "children": [
@@ -8642,32 +8642,32 @@
                         },
                         "id": 7373,
                         "name": "ElementaryTypeName",
-                        "src": "8669:7:15"
+                        "src": "8850:7:4"
                       }
                     ],
                     "id": 7374,
                     "name": "VariableDeclaration",
-                    "src": "8669:20:15"
+                    "src": "8850:20:4"
                   }
                 ],
                 "id": 7375,
                 "name": "ParameterList",
-                "src": "8668:22:15"
+                "src": "8849:22:4"
               }
             ],
             "id": 7376,
             "name": "FunctionDefinition",
-            "src": "8443:248:15"
+            "src": "8614:258:4"
           }
         ],
         "id": 7377,
         "name": "ContractDefinition",
-        "src": "7998:695:15"
+        "src": "8152:723:4"
       }
     ],
     "id": 7378,
     "name": "SourceUnit",
-    "src": "32:8662:15"
+    "src": "33:8844:4"
   },
   "compiler": {
     "name": "solc",
@@ -8675,7 +8675,19 @@
   },
   "networks": {},
   "schemaVersion": "3.3.4",
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+  "updatedAt": "2021-05-10T06:22:15.261Z",
+=======
+  "updatedAt": "2021-05-09T21:43:05.131Z",
+>>>>>>> 5de18e0f500a89f1f641d061d6eee7abf148037d
+=======
+  "updatedAt": "2021-05-19T01:49:10.711Z",
+>>>>>>> f3fb05f71f97846c82102ff724626038b983b5c6
+=======
   "updatedAt": "2021-06-02T18:15:08.414Z",
+>>>>>>> b1a7b8b14e7e066e9cd3a15b5cc5b8fa50629e37
   "devdoc": {
     "kind": "dev",
     "methods": {},

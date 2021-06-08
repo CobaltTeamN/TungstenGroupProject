@@ -177,7 +177,33 @@ contract Bank is Ownable {
     }
 
     // proposeBoolChange(bool _bool)  proposedChange = "bool"
+    function proposeBoolChange(bool _bool) public
+    {
+        for (uint256 i = 0 ; i < devArray.length; i++)
+        {
+            if(_bool == false)
+            {
+                devBook[devArray[i]] = false
+            }
+            
+        }
+        boolProposed = _bool;
+        proposedChange = "bool";
+
+    }
     // proposeAddressChange(address _address)  proposedChange = "string"
+    proposeAddressChange(address _address){
+        for (uint256 i = 0 ; i < devArray.length; i++)
+        {
+            if(_address != _address)
+            {
+                devBook[devArray[i]] = false
+            }
+            
+        }
+        addressProposed = _add;
+        proposedChange = "string";
+    }
     // addDevTeam
     // deleteDevTeam
 
@@ -376,6 +402,142 @@ contract Bank is Ownable {
         loanRecords[msg.sender].push(loanBook[msg.sender]);
         delete loanBook[msg.sender];
     }
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+    // **************************** Voting *******************************
+
+    mapping(uint256 => mapping(address => bool)) voteBook; // Signature key => mapping( voters => voted)
+
+    mapping(uint256 => address[]) uintArray;
+<<<<<<< HEAD
+    //
+=======
+
+    // mapping(uint => uint) voterCost;
+
+>>>>>>> b374fead5f38a388ced49273b602b3b94035719f
+    // User tries to vote
+    // Contract checks if they have sufficient funds in CBLT tokens - Tiers
+    // Function checks if 7 days have passsed since loan first went into voting
+    // Function checks if loan array has a length <= tier max
+    // Voter casts votes
+    // Vote gets added to counter to yes or no in loan
+    // msg.sender is added to uintArray - Access with the unique signature for each loan
+    // Validate loan checking if enough votes have been casted. 21% of the votes
+    // Check if majority of the votes say yes or no
+    // Change loan status depending on how voting went
+    // Give second wind to the loan depending on if its the first time
+    // Reset voting but keep voters inside
+    // Update 1 ---
+    // -------- Add an address array to keep track of the users we owe interest to
+    // -------- No second-wind option for loans (being discussed)
+    // -------- Payout for voters occurs at the end but payment of interest is prioritized
+
+    enum State {Created, Voting, Ended}
+    State public state;
+
+    modifier inState(State _state) {
+        require(state == _state);
+        _;
+    }
+
+    /**
+     * @dev creating function the right to vote
+     * if a person holds a certain amount of CBLT
+     * they can for tier 1
+     *
+     */
+    function rightToVoteTiers(address loanSignature) internal view {
+        uint256 balanceInCBLT =
+            SafeMath.add(
+                token.balanceOf(msg.sender),
+                userBook[msg.sender].rewardWallet
+            );
+
+        // PULL FROM ORACLE // ORACLE ENTRY!!!!!
+        uint256 USDtoCBLT =
+            SafeMath.div(
+                1000000000000000000,
+                SafeMath.mul(2000000000000, 2843)
+            );
+    }
+
+    /**
+     * @dev starts the voting process
+     *
+     */
+    function startVote() internal inState(State.Created) {
+        state = State.Voting;
+    }
+
+    /**
+     * @dev DOES the vote takes in the voter choice
+     *
+     */
+
+    function doVote(uint256 _signature, bool _vote)
+        public
+        inState(State.Voting)
+        returns (bool voted)
+    {
+        // bool found = false;
+        // require(
+        //     voteBook[_signature][msg.sender] == false,
+        //     "You have already voted."
+        // );
+        // voteBook[_signature][msg.sender] = true;
+        // if (_vote == true) {
+        //     loanBook[msg.sender].yes++;
+        // } else {
+        //     loanBook[msg.sender].no++;
+        // }
+        // loanBook[msg.sender].totalVote++;
+        // return true;
+    }
+
+    /**
+     * @dev Ends the voting
+     *
+     */
+
+    function endVote() internal inState(State.Voting) {
+        // the  1619656173 represents 7 days in epoch and must be less then 7 days
+        uint256 weekOfEpoch = 1619656173;
+
+        // in which it requires at least 50% of the voters to past
+        // will not use multiple ifs for tiers to save on gas
+        if (loanBook[msg.sender].timeCreated <= weekOfEpoch) {
+            require(
+                SafeMath.multiply(loanBook[msg.sender].totalVote, 50, 100) >= 50
+            );
+            require(
+                SafeMath.multiply(loanBook[msg.sender].totalVote, 50, 200) >= 50
+            );
+            require(
+                SafeMath.multiply(loanBook[msg.sender].totalVote, 50, 400) >= 50
+            );
+            require(
+                SafeMath.multiply(loanBook[msg.sender].totalVote, 50, 800) >= 50
+            );
+            require(
+                SafeMath.multiply(loanBook[msg.sender].totalVote, 50, 1600) >=
+                    50
+            );
+
+            state = State.Ended;
+        } else {
+            state = State.Ended;
+        }
+    }
+
+    //How to give voters another chance if the someone did not vote needs to be added
+    // in
+
+    // if voting is past 7 days then loan ends. Must take 21 votes
+
+
+    // **************************** Staking *******************************
 
     // **************************** Staking ******************************
     struct crossTier {

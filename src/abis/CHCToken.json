@@ -444,7 +444,7 @@
   "source": "// SPDX-License-Identifier: MIT\npragma solidity >=0.6.0 <0.8.0;\n\ncontract CHCToken {\n    // coin info\n    string public constant name = \"CHrisCoin\";\n    string public constant symbol = \"CHC\";\n    uint8 public constant decimals = 18;\n\n    // coin starting params\n    address public owner;\n    uint256 public total;\n    mapping(address => uint256) public borrosewStart;\n    mapping(address => bool) public borrowedCooldown;\n\n    // save user balance of token and allowed amount to take out\n    mapping(address => uint256) public balances;\n    mapping(address => mapping(address => uint256)) allowed;\n    mapping(address => uint256) timestamp;\n\n    // Events\n    event MinterChanged(address indexed from, address to);\n    event Balance(address from, uint256 amount);\n    event Mint(address reciever, uint256 amount);\n    event Borrowed(address borrower, uint256 amount, uint256 timestamp);\n\n    // on contract deploy set the total supply and assign ownership\n    constructor(uint256 _initialSupply) {\n        owner = msg.sender;\n        total = _initialSupply;\n    }\n\n    // Information on contract balance\n    function totalSupply() public view returns (uint256) {\n        return total;\n    }\n\n    // Information on user balance\n    function balanceOf(address _user) public returns (uint256) {\n        emit Balance(_user, balances[_user]);\n        return balances[_user];\n    }\n\n    function allowance(address _owner, address _spender)\n        public\n        view\n        returns (uint256)\n    {\n        return allowed[_owner][_spender];\n    }\n\n    function transfer(\n        address _recipient,\n        address _sender,\n        uint256 _numTokens\n    ) public returns (bool) {\n        require(_numTokens <= balances[_sender]);\n        balances[_sender] = balances[_sender] - _numTokens; // substract numTokens from user balance\n        balances[_recipient] = balances[_recipient] + _numTokens; // add numTokens to reciever address\n        return true;\n    }\n\n    // owner gives approval for another account to spend a set amount\n    // of tokens as allowance\n    function approve(\n        address _owner,\n        address _delegate,\n        uint256 _tokenAmount\n    ) public returns (bool) {\n        allowed[_owner][_delegate] = _tokenAmount;\n        return true;\n    }\n\n    // user is allowed to make transactions from main account or a delegate of\n    function transferFrom(\n        address _owner,\n        address _sender,\n        address _recepient,\n        uint256 _tokens\n    ) public returns (bool) {\n        require(_tokens <= balances[_owner]);\n        require(_tokens <= allowed[_owner][_sender]);\n\n        balances[_owner] = balances[_owner] - _tokens;\n        allowed[_owner][_sender] = allowed[_owner][_sender] - _tokens;\n        balances[_recepient] = balances[_recepient] + _tokens;\n        return true;\n    }\n\n    function borrow(address _borrower, uint256 _amount) public payable {\n        require(_amount <= 100000);\n        balances[_borrower] =\n            balances[_borrower] +\n            (_amount * 1000000000000000000);\n        timestamp[_borrower] = block.timestamp;\n        emit Borrowed(_borrower, _amount, block.timestamp);\n    }\n\n    function donate(address _donator, uint256 _amount) public payable {\n        require(balances[_donator] >= _amount * 1000000000000000000);\n        balances[_donator] = balances[_donator] - _amount * 1000000000000000000;\n    }\n\n    // ownership of contract changed\n    function passMinterRole(address _mycontractAddress) public returns (bool) {\n        require(\n            // require caller to me owner\n            msg.sender == owner,\n            \"Error, only owner can change pass minter role\"\n        );\n        owner = _mycontractAddress;\n\n        emit MinterChanged(msg.sender, _mycontractAddress);\n        return true;\n    }\n\n    // Mint function\n    function mint(uint256 _amount) public {\n        //check if msg.sender have minter role\n        require(\n            msg.sender == owner,\n            \"Error, msg.sender doesn't have minter role\"\n        );\n        total = total + _amount * 1000000000000000000;\n    }\n}\n",
   "sourcePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/Token.sol",
   "ast": {
-    "absolutePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/Token.sol",
+    "absolutePath": "/D/TungstenGroupProject/contracts/Token.sol",
     "exportedSymbols": {
       "CHCToken": [
         6518
@@ -466,7 +466,7 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "32:31:11"
+        "src": "33:31:11"
       },
       {
         "abstract": false,
@@ -500,7 +500,7 @@
               "id": 6146,
               "name": "string",
               "nodeType": "ElementaryTypeName",
-              "src": "106:6:11",
+              "src": "111:6:11",
               "typeDescriptions": {
                 "typeIdentifier": "t_string_storage_ptr",
                 "typeString": "string"
@@ -515,7 +515,7 @@
               "kind": "string",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "136:11:11",
+              "src": "141:11:11",
               "typeDescriptions": {
                 "typeIdentifier": "t_stringliteral_34c8b63e52d91d82caab76ca5d38a7d2f440935b193d98d135ba39de47c94dee",
                 "typeString": "literal_string \"CHrisCoin\""
@@ -543,7 +543,7 @@
               "id": 6149,
               "name": "string",
               "nodeType": "ElementaryTypeName",
-              "src": "153:6:11",
+              "src": "159:6:11",
               "typeDescriptions": {
                 "typeIdentifier": "t_string_storage_ptr",
                 "typeString": "string"
@@ -558,7 +558,7 @@
               "kind": "string",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "185:5:11",
+              "src": "191:5:11",
               "typeDescriptions": {
                 "typeIdentifier": "t_stringliteral_387de1a0d3a40db084fa80b8dc0c4446f823eb9ae73b485dafd77473456eda5e",
                 "typeString": "literal_string \"CHC\""
@@ -586,7 +586,7 @@
               "id": 6152,
               "name": "uint8",
               "nodeType": "ElementaryTypeName",
-              "src": "196:5:11",
+              "src": "203:5:11",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint8",
                 "typeString": "uint8"
@@ -601,7 +601,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "229:2:11",
+              "src": "236:2:11",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_18_by_1",
                 "typeString": "int_const 18"
@@ -629,7 +629,7 @@
               "id": 6155,
               "name": "address",
               "nodeType": "ElementaryTypeName",
-              "src": "266:7:11",
+              "src": "276:7:11",
               "stateMutability": "nonpayable",
               "typeDescriptions": {
                 "typeIdentifier": "t_address",
@@ -657,7 +657,7 @@
               "id": 6157,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "292:7:11",
+              "src": "303:7:11",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -686,14 +686,14 @@
                 "id": 6159,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "326:7:11",
+                "src": "338:7:11",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
                 }
               },
               "nodeType": "Mapping",
-              "src": "318:27:11",
+              "src": "330:27:11",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                 "typeString": "mapping(address => uint256)"
@@ -702,7 +702,7 @@
                 "id": 6160,
                 "name": "uint256",
                 "nodeType": "ElementaryTypeName",
-                "src": "337:7:11",
+                "src": "349:7:11",
                 "typeDescriptions": {
                   "typeIdentifier": "t_uint256",
                   "typeString": "uint256"
@@ -732,14 +732,14 @@
                 "id": 6163,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "380:7:11",
+                "src": "393:7:11",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
                 }
               },
               "nodeType": "Mapping",
-              "src": "372:24:11",
+              "src": "385:24:11",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_address_$_t_bool_$",
                 "typeString": "mapping(address => bool)"
@@ -748,7 +748,7 @@
                 "id": 6164,
                 "name": "bool",
                 "nodeType": "ElementaryTypeName",
-                "src": "391:4:11",
+                "src": "404:4:11",
                 "typeDescriptions": {
                   "typeIdentifier": "t_bool",
                   "typeString": "bool"
@@ -778,14 +778,14 @@
                 "id": 6167,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "500:7:11",
+                "src": "516:7:11",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
                 }
               },
               "nodeType": "Mapping",
-              "src": "492:27:11",
+              "src": "508:27:11",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                 "typeString": "mapping(address => uint256)"
@@ -794,7 +794,7 @@
                 "id": 6168,
                 "name": "uint256",
                 "nodeType": "ElementaryTypeName",
-                "src": "511:7:11",
+                "src": "527:7:11",
                 "typeDescriptions": {
                   "typeIdentifier": "t_uint256",
                   "typeString": "uint256"
@@ -823,14 +823,14 @@
                 "id": 6171,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "549:7:11",
+                "src": "566:7:11",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
                 }
               },
               "nodeType": "Mapping",
-              "src": "541:47:11",
+              "src": "558:47:11",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$",
                 "typeString": "mapping(address => mapping(address => uint256))"
@@ -841,14 +841,14 @@
                   "id": 6172,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
-                  "src": "568:7:11",
+                  "src": "585:7:11",
                   "typeDescriptions": {
                     "typeIdentifier": "t_address",
                     "typeString": "address"
                   }
                 },
                 "nodeType": "Mapping",
-                "src": "560:27:11",
+                "src": "577:27:11",
                 "typeDescriptions": {
                   "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                   "typeString": "mapping(address => uint256)"
@@ -857,7 +857,7 @@
                   "id": 6173,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
-                  "src": "579:7:11",
+                  "src": "596:7:11",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint256",
                     "typeString": "uint256"
@@ -887,14 +887,14 @@
                 "id": 6177,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "610:7:11",
+                "src": "628:7:11",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
                 }
               },
               "nodeType": "Mapping",
-              "src": "602:27:11",
+              "src": "620:27:11",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                 "typeString": "mapping(address => uint256)"
@@ -903,7 +903,7 @@
                 "id": 6178,
                 "name": "uint256",
                 "nodeType": "ElementaryTypeName",
-                "src": "621:7:11",
+                "src": "639:7:11",
                 "typeDescriptions": {
                   "typeIdentifier": "t_uint256",
                   "typeString": "uint256"
@@ -940,7 +940,7 @@
                     "id": 6181,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "680:7:11",
+                    "src": "701:7:11",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -968,7 +968,7 @@
                     "id": 6183,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "702:7:11",
+                    "src": "723:7:11",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -978,9 +978,9 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "679:34:11"
+              "src": "700:34:11"
             },
-            "src": "660:54:11"
+            "src": "681:54:11"
           },
           {
             "anonymous": false,
@@ -1010,7 +1010,7 @@
                     "id": 6187,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "733:7:11",
+                    "src": "755:7:11",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1038,7 +1038,7 @@
                     "id": 6189,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "747:7:11",
+                    "src": "769:7:11",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1047,9 +1047,9 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "732:30:11"
+              "src": "754:30:11"
             },
-            "src": "719:44:11"
+            "src": "741:44:11"
           },
           {
             "anonymous": false,
@@ -1079,7 +1079,7 @@
                     "id": 6193,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "779:7:11",
+                    "src": "802:7:11",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1107,7 +1107,7 @@
                     "id": 6195,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "797:7:11",
+                    "src": "820:7:11",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1116,9 +1116,9 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "778:34:11"
+              "src": "801:34:11"
             },
-            "src": "768:45:11"
+            "src": "791:45:11"
           },
           {
             "anonymous": false,
@@ -1148,7 +1148,7 @@
                     "id": 6199,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "833:7:11",
+                    "src": "857:7:11",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1176,7 +1176,7 @@
                     "id": 6201,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "851:7:11",
+                    "src": "875:7:11",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1203,7 +1203,7 @@
                     "id": 6203,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "867:7:11",
+                    "src": "891:7:11",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1212,9 +1212,9 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "832:53:11"
+              "src": "856:53:11"
             },
-            "src": "818:68:11"
+            "src": "842:68:11"
           },
           {
             "body": {
@@ -1352,7 +1352,7 @@
                     "id": 6207,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "972:7:11",
+                    "src": "999:7:11",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1361,7 +1361,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "971:24:11"
+              "src": "998:24:11"
             },
             "returnParameters": {
               "id": 6210,
@@ -5065,7 +5065,7 @@
   },
   "legacyAST": {
     "attributes": {
-      "absolutePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/Token.sol",
+      "absolutePath": "/D/TungstenGroupProject/contracts/Token.sol",
       "exportedSymbols": {
         "CHCToken": [
           6518
@@ -5088,7 +5088,7 @@
         },
         "id": 6145,
         "name": "PragmaDirective",
-        "src": "32:31:11"
+        "src": "33:31:11"
       },
       {
         "attributes": {
@@ -5128,7 +5128,7 @@
                 },
                 "id": 6146,
                 "name": "ElementaryTypeName",
-                "src": "106:6:11"
+                "src": "111:6:11"
               },
               {
                 "attributes": {
@@ -5143,12 +5143,12 @@
                 },
                 "id": 6147,
                 "name": "Literal",
-                "src": "136:11:11"
+                "src": "141:11:11"
               }
             ],
             "id": 6148,
             "name": "VariableDeclaration",
-            "src": "106:41:11"
+            "src": "111:41:11"
           },
           {
             "attributes": {
@@ -5170,7 +5170,7 @@
                 },
                 "id": 6149,
                 "name": "ElementaryTypeName",
-                "src": "153:6:11"
+                "src": "159:6:11"
               },
               {
                 "attributes": {
@@ -5185,12 +5185,12 @@
                 },
                 "id": 6150,
                 "name": "Literal",
-                "src": "185:5:11"
+                "src": "191:5:11"
               }
             ],
             "id": 6151,
             "name": "VariableDeclaration",
-            "src": "153:37:11"
+            "src": "159:37:11"
           },
           {
             "attributes": {
@@ -5212,7 +5212,7 @@
                 },
                 "id": 6152,
                 "name": "ElementaryTypeName",
-                "src": "196:5:11"
+                "src": "203:5:11"
               },
               {
                 "attributes": {
@@ -5227,12 +5227,12 @@
                 },
                 "id": 6153,
                 "name": "Literal",
-                "src": "229:2:11"
+                "src": "236:2:11"
               }
             ],
             "id": 6154,
             "name": "VariableDeclaration",
-            "src": "196:35:11"
+            "src": "203:35:11"
           },
           {
             "attributes": {
@@ -5255,12 +5255,12 @@
                 },
                 "id": 6155,
                 "name": "ElementaryTypeName",
-                "src": "266:7:11"
+                "src": "276:7:11"
               }
             ],
             "id": 6156,
             "name": "VariableDeclaration",
-            "src": "266:20:11"
+            "src": "276:20:11"
           },
           {
             "attributes": {
@@ -5282,12 +5282,12 @@
                 },
                 "id": 6157,
                 "name": "ElementaryTypeName",
-                "src": "292:7:11"
+                "src": "303:7:11"
               }
             ],
             "id": 6158,
             "name": "VariableDeclaration",
-            "src": "292:20:11"
+            "src": "303:20:11"
           },
           {
             "attributes": {
@@ -5314,7 +5314,7 @@
                     },
                     "id": 6159,
                     "name": "ElementaryTypeName",
-                    "src": "326:7:11"
+                    "src": "338:7:11"
                   },
                   {
                     "attributes": {
@@ -5323,17 +5323,17 @@
                     },
                     "id": 6160,
                     "name": "ElementaryTypeName",
-                    "src": "337:7:11"
+                    "src": "349:7:11"
                   }
                 ],
                 "id": 6161,
                 "name": "Mapping",
-                "src": "318:27:11"
+                "src": "330:27:11"
               }
             ],
             "id": 6162,
             "name": "VariableDeclaration",
-            "src": "318:48:11"
+            "src": "330:48:11"
           },
           {
             "attributes": {
@@ -5360,7 +5360,7 @@
                     },
                     "id": 6163,
                     "name": "ElementaryTypeName",
-                    "src": "380:7:11"
+                    "src": "393:7:11"
                   },
                   {
                     "attributes": {
@@ -5369,17 +5369,17 @@
                     },
                     "id": 6164,
                     "name": "ElementaryTypeName",
-                    "src": "391:4:11"
+                    "src": "404:4:11"
                   }
                 ],
                 "id": 6165,
                 "name": "Mapping",
-                "src": "372:24:11"
+                "src": "385:24:11"
               }
             ],
             "id": 6166,
             "name": "VariableDeclaration",
-            "src": "372:48:11"
+            "src": "385:48:11"
           },
           {
             "attributes": {
@@ -5406,7 +5406,7 @@
                     },
                     "id": 6167,
                     "name": "ElementaryTypeName",
-                    "src": "500:7:11"
+                    "src": "516:7:11"
                   },
                   {
                     "attributes": {
@@ -5415,17 +5415,17 @@
                     },
                     "id": 6168,
                     "name": "ElementaryTypeName",
-                    "src": "511:7:11"
+                    "src": "527:7:11"
                   }
                 ],
                 "id": 6169,
                 "name": "Mapping",
-                "src": "492:27:11"
+                "src": "508:27:11"
               }
             ],
             "id": 6170,
             "name": "VariableDeclaration",
-            "src": "492:43:11"
+            "src": "508:43:11"
           },
           {
             "attributes": {
@@ -5451,7 +5451,7 @@
                     },
                     "id": 6171,
                     "name": "ElementaryTypeName",
-                    "src": "549:7:11"
+                    "src": "566:7:11"
                   },
                   {
                     "attributes": {
@@ -5465,7 +5465,7 @@
                         },
                         "id": 6172,
                         "name": "ElementaryTypeName",
-                        "src": "568:7:11"
+                        "src": "585:7:11"
                       },
                       {
                         "attributes": {
@@ -5474,22 +5474,22 @@
                         },
                         "id": 6173,
                         "name": "ElementaryTypeName",
-                        "src": "579:7:11"
+                        "src": "596:7:11"
                       }
                     ],
                     "id": 6174,
                     "name": "Mapping",
-                    "src": "560:27:11"
+                    "src": "577:27:11"
                   }
                 ],
                 "id": 6175,
                 "name": "Mapping",
-                "src": "541:47:11"
+                "src": "558:47:11"
               }
             ],
             "id": 6176,
             "name": "VariableDeclaration",
-            "src": "541:55:11"
+            "src": "558:55:11"
           },
           {
             "attributes": {
@@ -5515,7 +5515,7 @@
                     },
                     "id": 6177,
                     "name": "ElementaryTypeName",
-                    "src": "610:7:11"
+                    "src": "628:7:11"
                   },
                   {
                     "attributes": {
@@ -5524,17 +5524,17 @@
                     },
                     "id": 6178,
                     "name": "ElementaryTypeName",
-                    "src": "621:7:11"
+                    "src": "639:7:11"
                   }
                 ],
                 "id": 6179,
                 "name": "Mapping",
-                "src": "602:27:11"
+                "src": "620:27:11"
               }
             ],
             "id": 6180,
             "name": "VariableDeclaration",
-            "src": "602:37:11"
+            "src": "620:37:11"
           },
           {
             "attributes": {
@@ -5565,12 +5565,12 @@
                         },
                         "id": 6181,
                         "name": "ElementaryTypeName",
-                        "src": "680:7:11"
+                        "src": "701:7:11"
                       }
                     ],
                     "id": 6182,
                     "name": "VariableDeclaration",
-                    "src": "680:20:11"
+                    "src": "701:20:11"
                   },
                   {
                     "attributes": {
@@ -5593,22 +5593,22 @@
                         },
                         "id": 6183,
                         "name": "ElementaryTypeName",
-                        "src": "702:7:11"
+                        "src": "723:7:11"
                       }
                     ],
                     "id": 6184,
                     "name": "VariableDeclaration",
-                    "src": "702:10:11"
+                    "src": "723:10:11"
                   }
                 ],
                 "id": 6185,
                 "name": "ParameterList",
-                "src": "679:34:11"
+                "src": "700:34:11"
               }
             ],
             "id": 6186,
             "name": "EventDefinition",
-            "src": "660:54:11"
+            "src": "681:54:11"
           },
           {
             "attributes": {
@@ -5639,12 +5639,12 @@
                         },
                         "id": 6187,
                         "name": "ElementaryTypeName",
-                        "src": "733:7:11"
+                        "src": "755:7:11"
                       }
                     ],
                     "id": 6188,
                     "name": "VariableDeclaration",
-                    "src": "733:12:11"
+                    "src": "755:12:11"
                   },
                   {
                     "attributes": {
@@ -5666,22 +5666,22 @@
                         },
                         "id": 6189,
                         "name": "ElementaryTypeName",
-                        "src": "747:7:11"
+                        "src": "769:7:11"
                       }
                     ],
                     "id": 6190,
                     "name": "VariableDeclaration",
-                    "src": "747:14:11"
+                    "src": "769:14:11"
                   }
                 ],
                 "id": 6191,
                 "name": "ParameterList",
-                "src": "732:30:11"
+                "src": "754:30:11"
               }
             ],
             "id": 6192,
             "name": "EventDefinition",
-            "src": "719:44:11"
+            "src": "741:44:11"
           },
           {
             "attributes": {
@@ -5712,12 +5712,12 @@
                         },
                         "id": 6193,
                         "name": "ElementaryTypeName",
-                        "src": "779:7:11"
+                        "src": "802:7:11"
                       }
                     ],
                     "id": 6194,
                     "name": "VariableDeclaration",
-                    "src": "779:16:11"
+                    "src": "802:16:11"
                   },
                   {
                     "attributes": {
@@ -5739,22 +5739,22 @@
                         },
                         "id": 6195,
                         "name": "ElementaryTypeName",
-                        "src": "797:7:11"
+                        "src": "820:7:11"
                       }
                     ],
                     "id": 6196,
                     "name": "VariableDeclaration",
-                    "src": "797:14:11"
+                    "src": "820:14:11"
                   }
                 ],
                 "id": 6197,
                 "name": "ParameterList",
-                "src": "778:34:11"
+                "src": "801:34:11"
               }
             ],
             "id": 6198,
             "name": "EventDefinition",
-            "src": "768:45:11"
+            "src": "791:45:11"
           },
           {
             "attributes": {
@@ -5785,12 +5785,12 @@
                         },
                         "id": 6199,
                         "name": "ElementaryTypeName",
-                        "src": "833:7:11"
+                        "src": "857:7:11"
                       }
                     ],
                     "id": 6200,
                     "name": "VariableDeclaration",
-                    "src": "833:16:11"
+                    "src": "857:16:11"
                   },
                   {
                     "attributes": {
@@ -5812,12 +5812,12 @@
                         },
                         "id": 6201,
                         "name": "ElementaryTypeName",
-                        "src": "851:7:11"
+                        "src": "875:7:11"
                       }
                     ],
                     "id": 6202,
                     "name": "VariableDeclaration",
-                    "src": "851:14:11"
+                    "src": "875:14:11"
                   },
                   {
                     "attributes": {
@@ -5839,22 +5839,22 @@
                         },
                         "id": 6203,
                         "name": "ElementaryTypeName",
-                        "src": "867:7:11"
+                        "src": "891:7:11"
                       }
                     ],
                     "id": 6204,
                     "name": "VariableDeclaration",
-                    "src": "867:17:11"
+                    "src": "891:17:11"
                   }
                 ],
                 "id": 6205,
                 "name": "ParameterList",
-                "src": "832:53:11"
+                "src": "856:53:11"
               }
             ],
             "id": 6206,
             "name": "EventDefinition",
-            "src": "818:68:11"
+            "src": "842:68:11"
           },
           {
             "attributes": {
@@ -5892,17 +5892,17 @@
                         },
                         "id": 6207,
                         "name": "ElementaryTypeName",
-                        "src": "972:7:11"
+                        "src": "999:7:11"
                       }
                     ],
                     "id": 6208,
                     "name": "VariableDeclaration",
-                    "src": "972:22:11"
+                    "src": "999:22:11"
                   }
                 ],
                 "id": 6209,
                 "name": "ParameterList",
-                "src": "971:24:11"
+                "src": "998:24:11"
               },
               {
                 "attributes": {
@@ -10050,7 +10050,20 @@
     }
   },
   "schemaVersion": "3.3.4",
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+  "updatedAt": "2021-05-09T20:01:01.021Z",
+=======
+  "updatedAt": "2021-05-09T21:47:43.026Z",
+=======
+  "updatedAt": "2021-05-19T01:53:39.343Z",
+>>>>>>> f3fb05f71f97846c82102ff724626038b983b5c6
+  "networkType": "ethereum",
+>>>>>>> 5de18e0f500a89f1f641d061d6eee7abf148037d
+=======
   "updatedAt": "2021-06-02T18:15:08.393Z",
+>>>>>>> b1a7b8b14e7e066e9cd3a15b5cc5b8fa50629e37
   "devdoc": {
     "kind": "dev",
     "methods": {},

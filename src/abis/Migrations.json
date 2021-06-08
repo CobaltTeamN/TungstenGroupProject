@@ -70,7 +70,7 @@
   "source": "// SPDX-License-Identifier: MIT\npragma solidity >=0.6.0 <0.8.0;\n\ncontract Migrations {\n    address public owner;\n    uint256 public last_completed_migration;\n\n    constructor() {\n        owner = msg.sender;\n    }\n\n    modifier restricted() {\n        if (msg.sender == owner) _;\n    }\n\n    function setCompleted(uint256 completed) public restricted {\n        last_completed_migration = completed;\n    }\n\n    function upgrade(address new_address) public restricted {\n        Migrations upgraded = Migrations(new_address);\n        upgraded.setCompleted(last_completed_migration);\n    }\n}\n",
   "sourcePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/Migrations.sol",
   "ast": {
-    "absolutePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/Migrations.sol",
+    "absolutePath": "/D/TungstenGroupProject/contracts/Migrations.sol",
     "exportedSymbols": {
       "Migrations": [
         4323
@@ -92,7 +92,7 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "32:31:6"
+        "src": "33:31:6"
       },
       {
         "abstract": false,
@@ -126,7 +126,7 @@
               "id": 4269,
               "name": "address",
               "nodeType": "ElementaryTypeName",
-              "src": "91:7:6",
+              "src": "95:7:6",
               "stateMutability": "nonpayable",
               "typeDescriptions": {
                 "typeIdentifier": "t_address",
@@ -154,7 +154,7 @@
               "id": 4271,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "117:7:6",
+              "src": "122:7:6",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -237,7 +237,7 @@
               "id": 4273,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "174:2:6"
+              "src": "181:2:6"
             },
             "returnParameters": {
               "id": 4274,
@@ -700,7 +700,7 @@
   },
   "legacyAST": {
     "attributes": {
-      "absolutePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/Migrations.sol",
+      "absolutePath": "/D/TungstenGroupProject/contracts/Migrations.sol",
       "exportedSymbols": {
         "Migrations": [
           4323
@@ -723,7 +723,7 @@
         },
         "id": 4268,
         "name": "PragmaDirective",
-        "src": "32:31:6"
+        "src": "33:31:6"
       },
       {
         "attributes": {
@@ -764,12 +764,12 @@
                 },
                 "id": 4269,
                 "name": "ElementaryTypeName",
-                "src": "91:7:6"
+                "src": "95:7:6"
               }
             ],
             "id": 4270,
             "name": "VariableDeclaration",
-            "src": "91:20:6"
+            "src": "95:20:6"
           },
           {
             "attributes": {
@@ -791,12 +791,12 @@
                 },
                 "id": 4271,
                 "name": "ElementaryTypeName",
-                "src": "117:7:6"
+                "src": "122:7:6"
               }
             ],
             "id": 4272,
             "name": "VariableDeclaration",
-            "src": "117:39:6"
+            "src": "122:39:6"
           },
           {
             "attributes": {
@@ -822,7 +822,7 @@
                 "children": [],
                 "id": 4273,
                 "name": "ParameterList",
-                "src": "174:2:6"
+                "src": "181:2:6"
               },
               {
                 "attributes": {
@@ -1431,7 +1431,20 @@
     }
   },
   "schemaVersion": "3.3.4",
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+  "updatedAt": "2021-05-09T20:01:00.976Z",
+=======
+  "updatedAt": "2021-05-09T21:47:43.153Z",
+=======
+  "updatedAt": "2021-05-19T01:53:39.470Z",
+>>>>>>> f3fb05f71f97846c82102ff724626038b983b5c6
+  "networkType": "ethereum",
+>>>>>>> 5de18e0f500a89f1f641d061d6eee7abf148037d
+=======
   "updatedAt": "2021-06-02T18:15:08.360Z",
+>>>>>>> b1a7b8b14e7e066e9cd3a15b5cc5b8fa50629e37
   "devdoc": {
     "kind": "dev",
     "methods": {},

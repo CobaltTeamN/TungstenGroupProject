@@ -233,7 +233,7 @@
   "source": "// SPDX-License-Identifier: MIT\npragma solidity >=0.4.22 <0.9.0;\n\nimport \"./interfaces/Ownable.sol\";\n\ncontract ExchangeOracle is Ownable {\n    uint256 USDpriceETH = 400000;\n    mapping(address => Token) tokenData; // Token information accessed by token address\n\n    // Struct saving token data\n    struct Token {\n        uint256 value;\n        bool active;\n    }\n\n    modifier activeToken(address _tokenAddress) {\n        require(\n            tokenData[_tokenAddress].active == true,\n            \"Token not currently supported.\"\n        );\n        _;\n    }\n\n    // Events\n    event deletedToken(address token);\n\n    event tokenUpdatedData(uint256 _value);\n\n    constructor() {\n        tokenData[0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE] = Token(\n            1000000000000000000,\n            true\n        );\n        // rinkeby weth address to work with uniswap\n        tokenData[0xc778417E063141139Fce010982780140Aa0cD5Ab] = Token(\n            1000000000000000000,\n            true\n        );\n        tokenData[0x433C6E3D2def6E1fb414cf9448724EFB0399b698] = Token(\n            2000000000000,\n            true\n        );\n    }\n\n    function updateToken(\n        address _tokenAddress,\n        uint256 _value,\n        bool _status\n    ) public {\n        // Update token data\n        tokenData[_tokenAddress] = Token(_value, _status);\n        // Emit event with new token information\n        emit tokenUpdatedData(_value);\n    }\n\n    function priceOfPair(address _sellTokenAddress, address _buyTokenAddress)\n        public\n        view\n        returns (\n            uint256 sellTokenPrice,\n            uint256 buyTokenPrice,\n            bool success\n        )\n    {\n        if (tokenData[_sellTokenAddress].active) {\n            return (\n                tokenData[_sellTokenAddress].value,\n                tokenData[_buyTokenAddress].value,\n                true\n            );\n        } else {\n            return (0, 0, false);\n        }\n    }\n\n    function priceOfETHandCBLT(address _cbltToken)\n        public\n        view\n        returns (uint256, uint256)\n    {\n        return (tokenData[_cbltToken].value, USDpriceETH);\n    }\n\n    function priceOfETH() public view returns (uint256) {\n        return (USDpriceETH);\n    }\n\n    function priceOfToken(address _tokenAddress)\n        public\n        view\n        activeToken(_tokenAddress)\n        returns (uint256)\n    {\n        return (tokenData[_tokenAddress].value);\n    }\n\n    function testConnection()\n        public\n        pure\n        returns (uint256 sellTokenPrice, uint256 buyTokenPrice)\n    {\n        return (1, 1);\n    }\n}\n",
   "sourcePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/ExchangeOracle.sol",
   "ast": {
-    "absolutePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/ExchangeOracle.sol",
+    "absolutePath": "/D/TungstenGroupProject/contracts/ExchangeOracle.sol",
     "exportedSymbols": {
       "ExchangeOracle": [
         3960
@@ -261,7 +261,7 @@
         "src": "32:32:4"
       },
       {
-        "absolutePath": "/Users/christianroque/Desktop/TungstenGroupProject/contracts/interfaces/Ownable.sol",
+        "absolutePath": "/D/TungstenGroupProject/contracts/interfaces/Ownable.sol",
         "file": "./interfaces/Ownable.sol",
         "id": 3775,
         "nodeType": "ImportDirective",
@@ -5032,7 +5032,20 @@
     }
   },
   "schemaVersion": "3.3.4",
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+  "updatedAt": "2021-05-10T06:22:15.216Z",
+=======
+  "updatedAt": "2021-05-09T21:47:43.133Z",
+  "networkType": "ethereum",
+>>>>>>> 5de18e0f500a89f1f641d061d6eee7abf148037d
+=======
+  "updatedAt": "2021-05-21T18:40:02.301Z",
+>>>>>>> f3fb05f71f97846c82102ff724626038b983b5c6
+=======
   "updatedAt": "2021-06-02T18:15:08.351Z",
+>>>>>>> b1a7b8b14e7e066e9cd3a15b5cc5b8fa50629e37
   "devdoc": {
     "kind": "dev",
     "methods": {},
