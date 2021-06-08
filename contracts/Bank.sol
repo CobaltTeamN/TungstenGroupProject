@@ -177,7 +177,33 @@ contract Bank is Ownable {
     }
 
     // proposeBoolChange(bool _bool)  proposedChange = "bool"
+    function proposeBoolChange(bool _bool) public
+    {
+        for (uint256 i = 0 ; i < devArray.length; i++)
+        {
+            if(_bool == false)
+            {
+                devBook[devArray[i]] = false
+            }
+            
+        }
+        boolProposed = _bool;
+        proposedChange = "bool";
+
+    }
     // proposeAddressChange(address _address)  proposedChange = "string"
+    proposeAddressChange(address _address){
+        for (uint256 i = 0 ; i < devArray.length; i++)
+        {
+            if(_address != _address)
+            {
+                devBook[devArray[i]] = false
+            }
+            
+        }
+        addressProposed = _add;
+        proposedChange = "string";
+    }
     // addDevTeam
     // deleteDevTeam
 
@@ -510,13 +536,10 @@ contract Bank is Ownable {
 
     // if voting is past 7 days then loan ends. Must take 21 votes
 
-=======
->>>>>>> f3fb05f71f97846c82102ff724626038b983b5c6
+
     // **************************** Staking *******************************
 
-=======
     // **************************** Staking ******************************
->>>>>>> b1a7b8b14e7e066e9cd3a15b5cc5b8fa50629e37
     struct crossTier {
         uint256 interest;
         uint256 amountStakersLeft;
