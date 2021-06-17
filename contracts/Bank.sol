@@ -199,6 +199,40 @@ contract Bank is Ownable {
         uint256 _tierDuration
     ) public {}
 
+    // Adds a new developer to the devArray
+    function addDevTeam(address _dev) public {
+        devArray.push(_dev);
+    }
+    
+    // Function used to delete a member from the devArray
+    // Slightly more inefficient, but it completely removes the member from the devArray
+    // Need to test: Make sure it only deletes if the param is within the length of devArray
+    function deleteDevTeam(uint index) public {
+        for(uint i = index; i < devArray.length - 1; i++) {
+            devArray[i] = devArray[i+1];
+        }
+        devArray.pop();
+    }
+    
+    // "Deletes" developer from array by changing their address to a zero address
+    // Cheaper/faster but it leaves the zero address in the array (length does not change)
+    // Need to test: Figure out how to reduce length even when the address is not removed
+    function modifyDevTeam(uint256 index) public {
+        devArray[index] = address(0);
+    }
+    
+    // Displays the contents of devArray
+    // Used for testing
+    function displayDevArray() external view returns (address[] memory){
+        return devArray;
+    }
+    
+    // Displays the length of devArray
+    // Used for testing
+    function displayDevLength() external view returns (uint256) {
+        return devArray.length;
+    }
+    
     // need modifier for public functions
     // function proposeBoolChange(bool _bool) public {}
     // proposeAddressChange(address _address)  proposedChange = "string"
